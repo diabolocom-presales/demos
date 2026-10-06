@@ -11,12 +11,12 @@
      --tag1/2/3 : pastilles de categorie dans le bandeau BLOCS N°1
      ===================================================================== */
   :root{
-    --bg:#eef3f8; --card:#23415f; --card2:#2e4f73; --line:#3a5c82;
-    --banner:#dce6f0; --footer:#ffffff;
-    --txt:#f2f5f8; --muted:#b4c4d6; --accent:#f26a1b;
+    --bg:#f5f4f0; --card:#ffffff; --card2:#ece9e2; --line:#e3dfd6;
+    --banner:#ffd205; --footer:#ffffff;
+    --txt:#000000; --muted:#4a4a4a; --accent:#ffd205;
     --tag1:#2d6cdf; --tag2:#2e9e6b; --tag3:#8a6fd1;
     --ok:#2ea043; --pending:#d29922;
-    --footer-txt:#14304f; --footer-muted:#4a5b6e; --footer-line:#e2e6ea;
+    --footer-txt:#000000; --footer-muted:#4a4a4a; --footer-line:#e2e6ea;
   }
   *{box-sizing:border-box}
   body{margin:0;overflow-x:hidden;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:#1a1f26}
@@ -39,7 +39,7 @@
   .col-left{display:flex;flex-direction:column;gap:20px}
   .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 18px;color:var(--txt)}
   .card h2{font-size:16px;margin:0 0 8px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
-  .card h2 a{font-size:13px;color:var(--accent);text-decoration:none}
+  .card h2 a{font-size:13px;color:var(--txt);font-weight:600;text-decoration:underline}
   .row{display:flex;align-items:center;gap:12px;padding:7px 0;border-bottom:1px solid var(--line)}
   .row:last-child{border-bottom:none}
   .tag{width:40px;height:40px;border-radius:8px;display:grid;place-items:center;font-size:12px;font-weight:700;color:#fff;flex:none}
@@ -48,8 +48,8 @@
   .row .info b{display:block;font-size:14px}
   .row .info span{font-size:12px;color:var(--muted)}
   .status{font-size:12px;padding:3px 8px;border-radius:20px;font-weight:600;white-space:nowrap;flex:none}
-  .status.ok{background:rgba(46,160,67,.2);color:#5fd07a}
-  .status.pending{background:rgba(210,153,34,.2);color:#e3b64a}
+  .status.ok{background:rgba(46,160,67,.15);color:#1e7a33}
+  .status.pending{background:rgba(210,153,34,.18);color:#8a5d00}
   .amount{font-weight:700;font-size:15px;min-width:60px;text-align:right;flex:none}
  
   .demo-note{text-align:left;color:#5a6672;font-size:14px;font-style:italic;margin:0 0 18px;white-space:nowrap;line-height:1.6}
@@ -61,10 +61,10 @@
   .nav-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:0 0 32px}
   @media(max-width:600px){.nav-grid{grid-template-columns:repeat(2,1fr)}}
   .nav-tile{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:14px;text-align:center;color:var(--txt);text-decoration:none;transition:transform .1s,background .1s}
-  .nav-tile:hover{transform:translateY(-2px);background:var(--accent);color:#fff}
-  .nav-tile img{width:34px;height:34px;object-fit:contain;filter:invert(1) brightness(1.6)}
+  .nav-tile:hover{transform:translateY(-2px);background:var(--accent);color:#000}
+  .nav-tile img{width:34px;height:34px;object-fit:contain;filter:none}
   .nav-tile span{display:block;margin-top:8px;font-size:11px;font-weight:600}
-  .promo{background:linear-gradient(135deg,#2b3138,#363d46);border:1px solid var(--line);border-radius:14px;padding:20px;color:var(--txt);display:flex;flex-direction:column;height:100%}
+  .promo{background:linear-gradient(135deg,var(--card),var(--card2));border:1px solid var(--line);border-radius:14px;padding:20px;color:var(--txt);display:flex;flex-direction:column;height:100%}
   .promo h3{margin:0 0 6px;font-size:15px}
   .promo p{margin:0 0 14px;color:var(--muted);font-size:13px}
   .promo img{width:100%;border-radius:10px;display:block;flex:1;min-height:0;object-fit:cover}
@@ -85,8 +85,8 @@
   @media(max-width:760px){.help-grid,.help-grid-3{grid-template-columns:repeat(2,1fr)}}
   @media(max-width:420px){.help-grid,.help-grid-3{grid-template-columns:1fr}}
   .help-tile{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:21px 14px;text-align:center;color:var(--txt);text-decoration:none;transition:transform .1s,background .1s;display:flex;flex-direction:column;align-items:center;gap:11px}
-  .help-tile:hover{transform:translateY(-2px);background:var(--accent);color:#fff}
-  .help-tile img{width:42px;height:42px;object-fit:contain;filter:invert(1) brightness(1.6)}
+  .help-tile:hover{transform:translateY(-2px);background:var(--accent);color:#000}
+  .help-tile img{width:42px;height:42px;object-fit:contain;filter:none}
   .help-tile span{font-size:12px;font-weight:600}
  
   /* ---- Bandeau langue pleine largeur, collé au footer ---- */
