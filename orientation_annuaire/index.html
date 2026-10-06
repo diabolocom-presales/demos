@@ -3,147 +3,75 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ville de Gennevilliers - Orientation des appels DMRU</title>
+<title>Orientation des appels DMRU</title>
 <style>
   :root{
     --bg:#f5f4f0; --card:#ffffff; --card2:#ece9e2; --line:#e3dfd6;
-    --banner:#ffffff; --locale:#ffd205; --footer:#ffffff;
     --txt:#000000; --muted:#4a4a4a; --accent:#ffd205;
     --ok:#1e7a33; --pending:#8a5d00;
-    --footer-txt:#000000; --footer-muted:#4a4a4a; --footer-line:#e2e6ea;
   }
   *{box-sizing:border-box}
-  body{margin:0;overflow-x:hidden;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--txt)}
-  header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:8px 24px;border-bottom:1px solid var(--footer-line);background:var(--footer)}
-  .brand{display:flex;align-items:center;gap:10px}
-  .logo{height:32px;max-width:150px;object-fit:contain}
-  nav{display:flex;flex-wrap:wrap;justify-content:center}
-  nav a{color:var(--footer-muted);text-decoration:none;margin:0 10px;font-size:14px;padding-bottom:2px}
-  nav a:hover{color:var(--footer-txt)}
-  nav a.active{font-weight:700;color:var(--footer-txt);border-bottom:2px solid var(--accent)}
-  .user{display:flex;align-items:center;gap:10px;color:var(--footer-txt)}
-  .avatar{width:34px;height:34px;border-radius:50%;background:#eef1f5;color:#1a1f26;border:1px solid #dce1e7;display:grid;place-items:center;font-size:13px;font-weight:700;flex:none}
-  main{max-width:1280px;margin:0 auto;padding:14px 24px}
-  h1{font-size:22px;margin:0 0 2px}
-  h1 .name{background:linear-gradient(transparent 62%,var(--accent) 62%)}
-  .sub{color:var(--muted);margin:0 0 10px;font-size:13px}
-  .demo-note{color:var(--muted);font-size:13px;font-style:italic;margin:0 0 8px;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-
-  .layout{display:grid;grid-template-columns:minmax(260px,.7fr) 1.3fr;gap:16px;align-items:start}
-  @media(max-width:820px){.layout{grid-template-columns:1fr}}
-  /* hauteur de l'écran : tout tient sans scroll de page, chaque bloc défile en interne si besoin */
-  @media(min-width:821px){
-    html,body{height:100%}
-    body{display:flex;flex-direction:column}
-    main{flex:1;min-height:0;width:100%;display:flex;flex-direction:column}
-    .layout{flex:1;min-height:0;align-items:stretch}
-    .layout>.card{min-height:0;overflow:auto}
-  }
-  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
-  .card h2{font-size:15px;margin:0 0 8px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+  html,body{height:100%}
+  body{margin:0;overflow-x:hidden;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--txt);padding:8px}
+  .layout{height:100%;display:grid;grid-template-columns:minmax(260px,.75fr) 1.25fr;gap:10px;align-items:stretch}
+  @media(max-width:820px){html,body{height:auto}.layout{height:auto;grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px;min-height:0;overflow:auto}
+  .card h2{font-size:15px;margin:0 0 6px;display:flex;justify-content:space-between;align-items:center;gap:10px}
 
   /* ---- Questions ---- */
-  .step{display:flex;gap:12px;padding:8px 0;border-top:1px solid var(--line)}
-  .step:first-of-type{border-top:none;padding-top:0}
+  .step{display:flex;gap:10px;padding:7px 0;border-top:1px solid var(--line)}
+  .step:first-of-type{border-top:none;padding-top:2px}
   .step.enter{animation:in .25s ease-out}
   @keyframes in{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
-  .num{width:26px;height:26px;border-radius:50%;background:var(--accent);color:#000;font-weight:700;font-size:14px;display:grid;place-items:center;flex:none}
+  .num{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#000;font-weight:700;font-size:13px;display:grid;place-items:center;flex:none}
   .step .body{flex:1;min-width:0}
-  .step label.q{display:block;font-weight:600;font-size:14px;margin-bottom:6px}
-  select{width:100%;background:var(--card);color:var(--txt);border:1.5px solid #bdb8ab;border-radius:8px;padding:7px 10px;font-size:13px;cursor:pointer}
+  .step label.q{display:block;font-weight:600;font-size:13px;line-height:1.25;margin-bottom:5px}
+  select{width:100%;background:var(--card);color:var(--txt);border:1.5px solid #bdb8ab;border-radius:8px;padding:6px 8px;font-size:12.5px;cursor:pointer}
   select:focus,.tick input:focus-visible+span{outline:2px solid #000;outline-offset:2px}
-  .ticks{display:flex;gap:12px;flex-wrap:wrap}
-  .tick{display:flex;align-items:center;gap:10px;border:1.5px solid #bdb8ab;border-radius:8px;padding:6px 14px;cursor:pointer;font-size:13px;font-weight:600;user-select:none}
+  .ticks{display:flex;gap:10px;flex-wrap:wrap}
+  .tick{display:flex;align-items:center;gap:8px;border:1.5px solid #bdb8ab;border-radius:8px;padding:5px 12px;cursor:pointer;font-size:12.5px;font-weight:600;user-select:none}
   .tick input{position:absolute;opacity:0;pointer-events:none}
-  .tick .box{width:20px;height:20px;border:2px solid #000;border-radius:4px;display:grid;place-items:center;flex:none;background:#fff}
+  .tick .box{width:17px;height:17px;border:2px solid #000;border-radius:4px;display:grid;place-items:center;flex:none;background:#fff}
   .tick input:checked+.box{background:var(--accent)}
-  .tick input:checked+.box::after{content:"";width:5px;height:10px;border:solid #000;border-width:0 2px 2px 0;transform:rotate(45deg) translate(-1px,-1px)}
+  .tick input:checked+.box::after{content:"";width:4px;height:9px;border:solid #000;border-width:0 2px 2px 0;transform:rotate(45deg) translate(-1px,-1px)}
   .tick:has(input:checked){border-color:#000;background:#fffbe0}
-
-  .btn{background:var(--accent);color:#000;border:none;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:700;cursor:pointer}
+  .btn{background:var(--accent);color:#000;border:none;border-radius:8px;padding:5px 11px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}
   .btn:hover{filter:brightness(.95)}
-  .btn.ghost{background:#fff;border:1.5px solid #000}
+  .btn.ghost{background:#fff;border:1.5px solid #000;padding:3px 9px;font-size:11px}
   .btn:disabled{background:var(--card2);color:#8a8578;cursor:not-allowed;filter:none}
 
-  /* ---- Resultats ---- */
-  .result-title{margin-bottom:6px}
-  .note{background:#fffbe0;border-left:4px solid var(--accent);border-radius:6px;padding:8px 12px;font-size:13px;line-height:1.4;margin:0 0 10px}
-  .placeholder{color:var(--muted);font-style:italic;font-size:14px;margin:0}
+  /* ---- Annuaire ---- */
+  .note{background:#fffbe0;border-left:4px solid var(--accent);border-radius:6px;padding:6px 10px;font-size:12.5px;line-height:1.35;margin:0 0 6px}
+  .placeholder{color:var(--muted);font-style:italic;font-size:13px;margin:0}
   .table-wrap{overflow-x:auto}
-  table{width:100%;border-collapse:collapse;font-size:13px}
-  th{text-align:left;font-size:12px;color:var(--muted);font-weight:600;padding:6px 6px;border-bottom:2px solid var(--line)}
-  td{padding:6px 6px;border-bottom:1px solid var(--line);vertical-align:middle}
+  table{width:100%;border-collapse:collapse;font-size:12.5px}
+  th{text-align:left;font-size:11px;color:var(--muted);font-weight:600;padding:4px 6px;border-bottom:2px solid var(--line)}
+  td{padding:5px 6px;border-bottom:1px solid var(--line);vertical-align:middle}
   tr:last-child td{border-bottom:none}
-  td .svc{display:block;font-size:12px;color:var(--muted)}
+  td .svc{display:block;font-size:11px;color:var(--muted);line-height:1.2}
   td.tel{font-variant-numeric:tabular-nums;white-space:nowrap;font-weight:600;font-size:12px}
-  .status{font-size:12px;padding:2px 9px;border-radius:20px;font-weight:600;display:inline-flex;align-items:center;gap:6px}
-  .status::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}
+  .status{font-size:11.5px;padding:2px 8px;border-radius:20px;font-weight:600;display:inline-flex;align-items:center;gap:6px}
+  .status::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor;flex:none}
   .status.dispo{background:rgba(46,160,67,.15);color:var(--ok)}
   .status.hors{background:#e8e6e0;color:#555}
   .status.absent{background:rgba(210,153,34,.18);color:var(--pending)}
 
-  .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#000;color:#fff;padding:12px 20px;border-radius:10px;font-size:14px;box-shadow:0 6px 20px rgba(0,0,0,.25);opacity:0;pointer-events:none;transition:opacity .2s;max-width:90vw;text-align:center;z-index:10}
+  .toast{position:fixed;left:50%;bottom:12px;transform:translateX(-50%);background:#000;color:#fff;padding:10px 16px;border-radius:10px;font-size:13px;box-shadow:0 6px 20px rgba(0,0,0,.25);opacity:0;pointer-events:none;transition:opacity .2s;max-width:90vw;text-align:center;z-index:10}
   .toast.show{opacity:1}
-
-  .locale-bar{background:var(--locale);border-top:1px solid var(--line);padding:6px 24px;display:flex;align-items:center;justify-content:flex-end;gap:16px;margin-top:12px}
-  .locale-bar select{width:auto;background:var(--card2);color:var(--txt);border:1px solid var(--line)}
-  footer.site{background:var(--footer);color:var(--footer-txt)}
-  footer.site .inner{max-width:1280px;margin:0 auto;padding:10px 24px;display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center}
-  footer.site a{color:var(--footer-muted);text-decoration:none;font-size:12px}
-  footer.site a:hover{color:var(--footer-txt)}
-  footer.site .copy{color:var(--footer-muted);font-size:13px;margin-left:auto}
-  @media(max-width:600px){footer.site .copy{margin-left:0;width:100%}}
-  @media(max-width:520px){
-    header{padding:12px 16px}
-    main{padding:20px 16px}
-    h1{font-size:22px}
-    .user span:last-child{display:none}
-  }
 </style>
 </head>
 <body>
-<header>
-  <div class="brand"><img class="logo" src="https://alter-c3.com/wp-content/uploads/2023/01/logo_gennevilliers_noir.png" alt="Ville de Gennevilliers"></div>
-  <nav>
-    <a href="#" class="active">Orientation des appels</a><a href="#">Annuaire des services</a><a href="#">Historique</a><a href="#">Aide</a>
-  </nav>
-  <div class="user"><span class="avatar">AT</span><span>Andréas Trupin</span></div>
-</header>
+<div class="layout">
+  <section class="card" aria-labelledby="t-questions">
+    <h2 id="t-questions">Questions à poser à l'appelant <button class="btn ghost" id="reset" type="button">Réinitialiser</button></h2>
+    <div id="steps"></div>
+  </section>
 
-<main>
-  <p class="demo-note">Site de démonstration conçu par l'équipe Presales de Diabolocom. Données fictives.</p>
-  <h1>Orientation des appels <span class="name">DMRU</span></h1>
-  <p class="sub">Direction Municipale de la Relation Usager : identifiez le bon interlocuteur.</p>
-
-  <div class="layout">
-    <section class="card questions" aria-labelledby="t-questions">
-      <h2 id="t-questions">Questions à poser à l'appelant <button class="btn ghost" id="reset" type="button">Réinitialiser</button></h2>
-      <div id="steps"></div>
-    </section>
-
-    <section class="card" aria-labelledby="t-result" aria-live="polite">
-      <h2 id="t-result" class="result-title">Interlocuteurs recommandés</h2>
-      <div id="result"></div>
-    </section>
-  </div>
-</main>
-
-<div class="locale-bar">
-  <select aria-label="Langue">
-    <option selected>France</option>
-  </select>
+  <section class="card" aria-labelledby="t-result" aria-live="polite">
+    <h2 id="t-result">Interlocuteurs recommandés</h2>
+    <div id="result"></div>
+  </section>
 </div>
-
-<footer class="site">
-  <div class="inner">
-    <a href="#">Plan du site</a>
-    <a href="#">Accessibilité</a>
-    <a href="#">Données personnelles</a>
-    <a href="#">Mentions légales</a>
-    <a href="#">Contact</a>
-    <span class="copy">&copy; Diabolocom, 2026</span>
-  </div>
-</footer>
 <div class="toast" id="toast" role="status"></div>
 
 <script>
@@ -169,101 +97,51 @@ const PEOPLE = [
   {n:"Sophie Lambert", s:"SAC", t:"01 99 00 12 03", st:"absent", until:"9 oct."},
   {n:"Mathilde Chevalier", s:"SAC", t:"01 99 00 12 04", st:"dispo"},
   {n:"Nicolas Perrot", s:"SAC", t:"01 99 00 12 05", st:"hors"},
-  {n:"Aïcha Bouzid", s:"SAC", t:"01 99 00 12 06", st:"dispo"},
-  {n:"Bruno Faure", s:"SAC", t:"01 99 00 12 07", st:"absent", until:"12 oct."},
-  {n:"Camille Lacroix", s:"SAC", t:"01 99 00 12 08", st:"dispo"},
-  {n:"Samuel Weber", s:"SAC", t:"01 99 00 12 09", st:"hors"},
-  {n:"Élodie Navarro", s:"SAC", t:"01 99 00 12 10", st:"dispo"},
   {n:"Julien Moreau", s:"SADP", t:"01 99 00 22 01", st:"dispo"},
   {n:"Nadia Haddad", s:"SADP", t:"01 99 00 22 02", st:"dispo"},
   {n:"Thomas Girard", s:"SADP", t:"01 99 00 22 03", st:"absent", until:"12 oct."},
   {n:"Laure Bertrand", s:"SADP", t:"01 99 00 22 04", st:"dispo"},
   {n:"Mehdi Kaci", s:"SADP", t:"01 99 00 22 05", st:"hors"},
-  {n:"Pauline Roche", s:"SADP", t:"01 99 00 22 06", st:"dispo"},
-  {n:"Cédric Morel", s:"SADP", t:"01 99 00 22 07", st:"absent", until:"12 oct."},
-  {n:"Inès Barbier", s:"SADP", t:"01 99 00 22 08", st:"dispo"},
-  {n:"Paul Giraud", s:"SADP", t:"01 99 00 22 09", st:"hors"},
-  {n:"Sonia Lemoine", s:"SADP", t:"01 99 00 22 10", st:"dispo"},
   {n:"Claire Fontaine", s:"CCAS", t:"01 99 00 32 01", st:"hors"},
   {n:"Mamadou Diallo", s:"CCAS", t:"01 99 00 32 02", st:"dispo"},
   {n:"Isabelle Roux", s:"CCAS", t:"01 99 00 32 03", st:"absent", until:"8 oct."},
   {n:"Valérie Dupuis", s:"CCAS", t:"01 99 00 32 04", st:"dispo"},
   {n:"Omar Sylla", s:"CCAS", t:"01 99 00 32 05", st:"hors"},
-  {n:"Julie Clément", s:"CCAS", t:"01 99 00 32 06", st:"dispo"},
-  {n:"Franck Renard", s:"CCAS", t:"01 99 00 32 07", st:"absent", until:"12 oct."},
-  {n:"Marion Tessier", s:"CCAS", t:"01 99 00 32 08", st:"dispo"},
-  {n:"Yacine Amrani", s:"CCAS", t:"01 99 00 32 09", st:"hors"},
-  {n:"Nathalie Boyer", s:"CCAS", t:"01 99 00 32 10", st:"dispo"},
   {n:"Pierre Lefèvre", s:"GCR", t:"01 99 00 42 01", st:"dispo"},
   {n:"Léa Martin", s:"GCR", t:"01 99 00 42 02", st:"hors"},
   {n:"Gaëlle Monnier", s:"GCR", t:"01 99 00 42 03", st:"dispo"},
   {n:"Lucas Berger", s:"GCR", t:"01 99 00 42 04", st:"hors"},
   {n:"Aurélie Colas", s:"GCR", t:"01 99 00 42 05", st:"dispo"},
-  {n:"Sébastien Huet", s:"GCR", t:"01 99 00 42 06", st:"absent", until:"12 oct."},
-  {n:"Dalila Ferhat", s:"GCR", t:"01 99 00 42 07", st:"dispo"},
-  {n:"Mathieu Rey", s:"GCR", t:"01 99 00 42 08", st:"hors"},
-  {n:"Chloé Vidal", s:"GCR", t:"01 99 00 42 09", st:"dispo"},
-  {n:"Benoît Marais", s:"GCR", t:"01 99 00 42 10", st:"absent", until:"9 oct."},
   {n:"Olivier Vasseur", s:"URB", t:"01 99 00 52 01", st:"absent", until:"15 oct."},
   {n:"Sandrine Petit", s:"URB", t:"01 99 00 52 02", st:"dispo"},
   {n:"Vincent Aubert", s:"URB", t:"01 99 00 52 03", st:"dispo"},
   {n:"Leïla Chaoui", s:"URB", t:"01 99 00 52 04", st:"hors"},
   {n:"Damien Fournier", s:"URB", t:"01 99 00 52 05", st:"dispo"},
-  {n:"Marine Lopez", s:"URB", t:"01 99 00 52 06", st:"absent", until:"12 oct."},
-  {n:"Alexandre Noël", s:"URB", t:"01 99 00 52 07", st:"dispo"},
-  {n:"Sabrina Henry", s:"URB", t:"01 99 00 52 08", st:"hors"},
-  {n:"Grégory Pires", s:"URB", t:"01 99 00 52 09", st:"dispo"},
-  {n:"Anne-Sophie Carré", s:"URB", t:"01 99 00 52 10", st:"absent", until:"9 oct."},
   {n:"Yann Le Gall", s:"PROP", t:"01 99 00 62 01", st:"dispo"},
   {n:"Fatou Camara", s:"PROP", t:"01 99 00 62 02", st:"hors"},
   {n:"Bastien Roy", s:"PROP", t:"01 99 00 62 03", st:"dispo"},
   {n:"Mélanie Guillot", s:"PROP", t:"01 99 00 62 04", st:"hors"},
   {n:"Idriss Traoré", s:"PROP", t:"01 99 00 62 05", st:"dispo"},
-  {n:"Cécile Marchand", s:"PROP", t:"01 99 00 62 06", st:"absent", until:"12 oct."},
-  {n:"Florian Lemaître", s:"PROP", t:"01 99 00 62 07", st:"dispo"},
-  {n:"Priscilla Noirot", s:"PROP", t:"01 99 00 62 08", st:"hors"},
-  {n:"Jérôme Baudry", s:"PROP", t:"01 99 00 62 09", st:"dispo"},
-  {n:"Awa Konaté", s:"PROP", t:"01 99 00 62 10", st:"absent", until:"9 oct."},
   {n:"Béatrice Collet", s:"SALLES", t:"01 99 00 72 01", st:"hors"},
   {n:"Hugo Marchand", s:"SALLES", t:"01 99 00 72 02", st:"dispo"},
   {n:"Patrick Delmas", s:"SALLES", t:"01 99 00 72 03", st:"dispo"},
   {n:"Charlène Joly", s:"SALLES", t:"01 99 00 72 04", st:"hors"},
   {n:"Ismaël Touré", s:"SALLES", t:"01 99 00 72 05", st:"dispo"},
-  {n:"Delphine Arnaud", s:"SALLES", t:"01 99 00 72 06", st:"absent", until:"12 oct."},
-  {n:"Maxime Pichon", s:"SALLES", t:"01 99 00 72 07", st:"dispo"},
-  {n:"Laetitia Gomes", s:"SALLES", t:"01 99 00 72 08", st:"hors"},
-  {n:"Rémi Courtois", s:"SALLES", t:"01 99 00 72 09", st:"dispo"},
-  {n:"Salomé Duval", s:"SALLES", t:"01 99 00 72 10", st:"absent", until:"9 oct."},
   {n:"Stéphane Dubois", s:"INFRA", t:"01 99 00 82 01", st:"dispo"},
   {n:"Anaïs Perrin", s:"INFRA", t:"01 99 00 82 02", st:"absent", until:"9 oct."},
   {n:"Rachid Meziane", s:"INFRA", t:"01 99 00 82 03", st:"dispo"},
   {n:"Kévin Alves", s:"INFRA", t:"01 99 00 82 04", st:"dispo"},
   {n:"Agnès Moulin", s:"INFRA", t:"01 99 00 82 05", st:"hors"},
-  {n:"Tarik Belkacem", s:"INFRA", t:"01 99 00 82 06", st:"dispo"},
-  {n:"Muriel Vincent", s:"INFRA", t:"01 99 00 82 07", st:"absent", until:"12 oct."},
-  {n:"Jonathan Lopes", s:"INFRA", t:"01 99 00 82 08", st:"dispo"},
-  {n:"Estelle Brun", s:"INFRA", t:"01 99 00 82 09", st:"hors"},
-  {n:"Cyril Hamon", s:"INFRA", t:"01 99 00 82 10", st:"dispo"},
   {n:"Hélène Garnier", s:"MJC", t:"01 99 00 92 01", st:"dispo"},
   {n:"Antoine Blanc", s:"MJC", t:"01 99 00 92 02", st:"absent", until:"13 oct."},
   {n:"Sylvain Pelletier", s:"MJC", t:"01 99 00 92 03", st:"dispo"},
   {n:"Zohra Benali", s:"MJC", t:"01 99 00 92 04", st:"hors"},
   {n:"Arnaud Guérin", s:"MJC", t:"01 99 00 92 05", st:"dispo"},
-  {n:"Catherine Mallet", s:"MJC", t:"01 99 00 92 06", st:"absent", until:"12 oct."},
-  {n:"Lionel Da Silva", s:"MJC", t:"01 99 00 92 07", st:"dispo"},
-  {n:"Marianne Faivre", s:"MJC", t:"01 99 00 92 08", st:"hors"},
-  {n:"Hakim Cherif", s:"MJC", t:"01 99 00 92 09", st:"dispo"},
-  {n:"Judith Aubry", s:"MJC", t:"01 99 00 92 10", st:"absent", until:"9 oct."},
   {n:"Carole Mercier", s:"DH", t:"01 99 00 02 01", st:"hors"},
   {n:"David Lemaire", s:"DH", t:"01 99 00 02 02", st:"dispo"},
   {n:"Christophe Blin", s:"DH", t:"01 99 00 02 03", st:"dispo"},
   {n:"Amandine Rolland", s:"DH", t:"01 99 00 02 04", st:"hors"},
-  {n:"Moussa Keita", s:"DH", t:"01 99 00 02 05", st:"dispo"},
-  {n:"Stéphanie Roussel", s:"DH", t:"01 99 00 02 06", st:"absent", until:"12 oct."},
-  {n:"Rodolphe Lefort", s:"DH", t:"01 99 00 02 07", st:"dispo"},
-  {n:"Nawel Mansouri", s:"DH", t:"01 99 00 02 08", st:"hors"},
-  {n:"Guillaume Tanguy", s:"DH", t:"01 99 00 02 09", st:"dispo"},
-  {n:"Fanny Prévost", s:"DH", t:"01 99 00 02 10", st:"absent", until:"9 oct."}
+  {n:"Moussa Keita", s:"DH", t:"01 99 00 02 05", st:"dispo"}
 ];
 
 /* Arbre : un noeud = {q, type:"select"|"yesno", options:[{label, next | result}]}
@@ -420,6 +298,5 @@ $("reset").addEventListener("click", () => { answers = []; shownCount = 1; rende
 
 render();
 </script>
-<!-- ============ SNIPPET CHATBOT — non utilisé sur cette page ============ -->
 </body>
 </html>
