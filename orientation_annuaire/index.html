@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ville de Gennevilliers - Orientation des appels DMRU</title>
+<style>
+  :root{
+    --bg:#f5f4f0; --card:#ffffff; --card2:#ece9e2; --line:#e3dfd6;
+    --banner:#ffffff; --locale:#ffd205; --footer:#ffffff;
+    --txt:#000000; --muted:#4a4a4a; --accent:#ffd205;
+    --ok:#1e7a33; --pending:#8a5d00;
+    --footer-txt:#000000; --footer-muted:#4a4a4a; --footer-line:#e2e6ea;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;overflow-x:hidden;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--txt)}
+  header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:14px 24px;border-bottom:1px solid var(--footer-line);background:var(--footer)}
+  .brand{display:flex;align-items:center;gap:10px}
+  .logo{height:38px;max-width:150px;object-fit:contain}
+  nav{display:flex;flex-wrap:wrap;justify-content:center}
+  nav a{color:var(--footer-muted);text-decoration:none;margin:0 10px;font-size:14px;padding-bottom:2px}
+  nav a:hover{color:var(--footer-txt)}
+  nav a.active{font-weight:700;color:var(--footer-txt);border-bottom:2px solid var(--accent)}
+  .user{display:flex;align-items:center;gap:10px;color:var(--footer-txt)}
+  .avatar{width:34px;height:34px;border-radius:50%;background:#eef1f5;color:#1a1f26;border:1px solid #dce1e7;display:grid;place-items:center;font-size:13px;font-weight:700;flex:none}
+  main{max-width:1040px;margin:0 auto;padding:28px 24px}
+  h1{font-size:26px;margin:0 0 4px}
+  h1 .name{background:linear-gradient(transparent 62%,var(--accent) 62%)}
+  .sub{color:var(--muted);margin:0 0 20px;font-size:14px}
+  .demo-note{color:var(--muted);font-size:14px;font-style:italic;margin:0 0 18px;line-height:1.6}
+
+  .questions{margin-bottom:20px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+  .card h2{font-size:16px;margin:0 0 14px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+
+  /* ---- Questions ---- */
+  .step{display:flex;gap:14px;padding:14px 0;border-top:1px solid var(--line)}
+  .step:first-of-type{border-top:none;padding-top:0}
+  .step.enter{animation:in .25s ease-out}
+  @keyframes in{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+  .num{width:30px;height:30px;border-radius:50%;background:var(--accent);color:#000;font-weight:700;font-size:14px;display:grid;place-items:center;flex:none}
+  .step .body{flex:1;min-width:0}
+  .step label.q{display:block;font-weight:600;font-size:15px;margin-bottom:10px}
+  select{width:100%;background:var(--card);color:var(--txt);border:1.5px solid #bdb8ab;border-radius:8px;padding:10px 12px;font-size:14px;cursor:pointer}
+  select:focus,.tick input:focus-visible+span{outline:2px solid #000;outline-offset:2px}
+  .ticks{display:flex;gap:12px;flex-wrap:wrap}
+  .tick{display:flex;align-items:center;gap:10px;border:1.5px solid #bdb8ab;border-radius:8px;padding:10px 18px;cursor:pointer;font-size:14px;font-weight:600;user-select:none}
+  .tick input{position:absolute;opacity:0;pointer-events:none}
+  .tick .box{width:20px;height:20px;border:2px solid #000;border-radius:4px;display:grid;place-items:center;flex:none;background:#fff}
+  .tick input:checked+.box{background:var(--accent)}
+  .tick input:checked+.box::after{content:"";width:5px;height:10px;border:solid #000;border-width:0 2px 2px 0;transform:rotate(45deg) translate(-1px,-1px)}
+  .tick:has(input:checked){border-color:#000;background:#fffbe0}
+
+  .btn{background:var(--accent);color:#000;border:none;border-radius:8px;padding:9px 16px;font-size:13px;font-weight:700;cursor:pointer}
+  .btn:hover{filter:brightness(.95)}
+  .btn.ghost{background:#fff;border:1.5px solid #000}
+  .btn:disabled{background:var(--card2);color:#8a8578;cursor:not-allowed;filter:none}
+
+  /* ---- Resultats ---- */
+  .result-title{margin-bottom:6px}
+  .note{background:#fffbe0;border-left:4px solid var(--accent);border-radius:6px;padding:10px 14px;font-size:14px;line-height:1.5;margin:0 0 16px}
+  .placeholder{color:var(--muted);font-style:italic;font-size:14px;margin:0}
+  .table-wrap{overflow-x:auto}
+  table{width:100%;border-collapse:collapse;font-size:14px;min-width:640px}
+  th{text-align:left;font-size:12px;color:var(--muted);font-weight:600;padding:8px 10px;border-bottom:2px solid var(--line)}
+  td{padding:12px 10px;border-bottom:1px solid var(--line);vertical-align:middle}
+  tr:last-child td{border-bottom:none}
+  td .svc{display:block;font-size:12px;color:var(--muted)}
+  td.tel{font-variant-numeric:tabular-nums;white-space:nowrap;font-weight:600}
+  .status{font-size:12px;padding:3px 10px;border-radius:20px;font-weight:600;white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
+  .status::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}
+  .status.dispo{background:rgba(46,160,67,.15);color:var(--ok)}
+  .status.hors{background:#e8e6e0;color:#555}
+  .status.absent{background:rgba(210,153,34,.18);color:var(--pending)}
+
+  .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#000;color:#fff;padding:12px 20px;border-radius:10px;font-size:14px;box-shadow:0 6px 20px rgba(0,0,0,.25);opacity:0;pointer-events:none;transition:opacity .2s;max-width:90vw;text-align:center;z-index:10}
+  .toast.show{opacity:1}
+
+  .locale-bar{background:var(--locale);border-top:1px solid var(--line);padding:16px 24px;display:flex;align-items:center;justify-content:flex-end;gap:16px;margin-top:40px}
+  .locale-bar select{width:auto;background:var(--card2);color:var(--txt);border:1px solid var(--line)}
+  footer.site{background:var(--footer);color:var(--footer-txt)}
+  footer.site .inner{max-width:1040px;margin:0 auto;padding:30px 24px;display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center}
+  footer.site a{color:var(--footer-muted);text-decoration:none;font-size:13px}
+  footer.site a:hover{color:var(--footer-txt)}
+  footer.site .copy{color:var(--footer-muted);font-size:13px;margin-left:auto}
+  @media(max-width:600px){footer.site .copy{margin-left:0;width:100%}}
+  @media(max-width:520px){
+    header{padding:12px 16px}
+    main{padding:20px 16px}
+    h1{font-size:22px}
+    .user span:last-child{display:none}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="brand"><img class="logo" src="https://alter-c3.com/wp-content/uploads/2023/01/logo_gennevilliers_noir.png" alt="Ville de Gennevilliers"></div>
+  <nav>
+    <a href="#" class="active">Orientation des appels</a><a href="#">Annuaire des services</a><a href="#">Historique</a><a href="#">Aide</a>
+  </nav>
+  <div class="user"><span class="avatar">AT</span><span>Andréas Trupin</span></div>
+</header>
+
+<main>
+  <p class="demo-note">Ceci est un site de démonstration conçu par l'équipe Presales de Diabolocom afin de présenter une aide à l'orientation des appels. Les noms, numéros et statuts affichés sont fictifs.</p>
+  <h1>Orientation des appels <span class="name">DMRU</span></h1>
+  <p class="sub">Direction Municipale de la Relation Usager : posez les questions à l'appelant pour identifier le bon interlocuteur.</p>
+
+  <section class="card questions" aria-labelledby="t-questions">
+    <h2 id="t-questions">Questions à poser à l'appelant <button class="btn ghost" id="reset" type="button">Réinitialiser</button></h2>
+    <div id="steps"></div>
+  </section>
+
+  <section class="card" aria-labelledby="t-result" aria-live="polite">
+    <h2 id="t-result" class="result-title">Interlocuteurs recommandés</h2>
+    <div id="result"></div>
+  </section>
+</main>
+
+<div class="locale-bar">
+  <select aria-label="Langue">
+    <option selected>France</option>
+  </select>
+</div>
+
+<footer class="site">
+  <div class="inner">
+    <a href="#">Plan du site</a>
+    <a href="#">Accessibilité</a>
+    <a href="#">Données personnelles</a>
+    <a href="#">Mentions légales</a>
+    <a href="#">Contact</a>
+    <span class="copy">&copy; Diabolocom, 2026</span>
+  </div>
+</footer>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+/* =====================================================================
+   DONNEES — services, personnes (fictives) et arbre de questions
+   ===================================================================== */
+const SERVICES = {
+  SAC:    {sigle:"SAC",  nom:"Service des Affaires Civiles"},
+  SADP:   {sigle:"SADP", nom:"Service Accueil Démarches et Prestations"},
+  CCAS:   {sigle:"CCAS", nom:"Centre Communal d'Action Sociale"},
+  GCR:    {sigle:"GCR",  nom:"Service Gestion des Comptes Résidents"},
+  URB:    {sigle:"",     nom:"Urbanisme"},
+  PROP:   {sigle:"",     nom:"Gennevilliers et Propreté"},
+  SALLES: {sigle:"",     nom:"Salles festives"},
+  INFRA:  {sigle:"",     nom:"Infrastructures"},
+  MJC:    {sigle:"MJC",  nom:"Maison de la Justice et du Citoyen"},
+  DH:     {sigle:"DH",   nom:"Service Logement"}
+};
+/* status : dispo | hors | absent (until = date de retour) — numéros de la plage fictive 01 99 00 xx xx */
+const PEOPLE = [
+  {n:"Amélie Rousseau", s:"SAC", t:"01 99 00 12 01", st:"dispo"},
+  {n:"Karim Benali", s:"SAC", t:"01 99 00 12 02", st:"hors"},
+  {n:"Sophie Lambert", s:"SAC", t:"01 99 00 12 03", st:"absent", until:"9 oct."},
+  {n:"Mathilde Chevalier", s:"SAC", t:"01 99 00 12 04", st:"dispo"},
+  {n:"Nicolas Perrot", s:"SAC", t:"01 99 00 12 05", st:"hors"},
+  {n:"Aïcha Bouzid", s:"SAC", t:"01 99 00 12 06", st:"dispo"},
+  {n:"Bruno Faure", s:"SAC", t:"01 99 00 12 07", st:"absent", until:"12 oct."},
+  {n:"Camille Lacroix", s:"SAC", t:"01 99 00 12 08", st:"dispo"},
+  {n:"Samuel Weber", s:"SAC", t:"01 99 00 12 09", st:"hors"},
+  {n:"Élodie Navarro", s:"SAC", t:"01 99 00 12 10", st:"dispo"},
+  {n:"Julien Moreau", s:"SADP", t:"01 99 00 22 01", st:"dispo"},
+  {n:"Nadia Haddad", s:"SADP", t:"01 99 00 22 02", st:"dispo"},
+  {n:"Thomas Girard", s:"SADP", t:"01 99 00 22 03", st:"absent", until:"12 oct."},
+  {n:"Laure Bertrand", s:"SADP", t:"01 99 00 22 04", st:"dispo"},
+  {n:"Mehdi Kaci", s:"SADP", t:"01 99 00 22 05", st:"hors"},
+  {n:"Pauline Roche", s:"SADP", t:"01 99 00 22 06", st:"dispo"},
+  {n:"Cédric Morel", s:"SADP", t:"01 99 00 22 07", st:"absent", until:"12 oct."},
+  {n:"Inès Barbier", s:"SADP", t:"01 99 00 22 08", st:"dispo"},
+  {n:"Paul Giraud", s:"SADP", t:"01 99 00 22 09", st:"hors"},
+  {n:"Sonia Lemoine", s:"SADP", t:"01 99 00 22 10", st:"dispo"},
+  {n:"Claire Fontaine", s:"CCAS", t:"01 99 00 32 01", st:"hors"},
+  {n:"Mamadou Diallo", s:"CCAS", t:"01 99 00 32 02", st:"dispo"},
+  {n:"Isabelle Roux", s:"CCAS", t:"01 99 00 32 03", st:"absent", until:"8 oct."},
+  {n:"Valérie Dupuis", s:"CCAS", t:"01 99 00 32 04", st:"dispo"},
+  {n:"Omar Sylla", s:"CCAS", t:"01 99 00 32 05", st:"hors"},
+  {n:"Julie Clément", s:"CCAS", t:"01 99 00 32 06", st:"dispo"},
+  {n:"Franck Renard", s:"CCAS", t:"01 99 00 32 07", st:"absent", until:"12 oct."},
+  {n:"Marion Tessier", s:"CCAS", t:"01 99 00 32 08", st:"dispo"},
+  {n:"Yacine Amrani", s:"CCAS", t:"01 99 00 32 09", st:"hors"},
+  {n:"Nathalie Boyer", s:"CCAS", t:"01 99 00 32 10", st:"dispo"},
+  {n:"Pierre Lefèvre", s:"GCR", t:"01 99 00 42 01", st:"dispo"},
+  {n:"Léa Martin", s:"GCR", t:"01 99 00 42 02", st:"hors"},
+  {n:"Gaëlle Monnier", s:"GCR", t:"01 99 00 42 03", st:"dispo"},
+  {n:"Lucas Berger", s:"GCR", t:"01 99 00 42 04", st:"hors"},
+  {n:"Aurélie Colas", s:"GCR", t:"01 99 00 42 05", st:"dispo"},
+  {n:"Sébastien Huet", s:"GCR", t:"01 99 00 42 06", st:"absent", until:"12 oct."},
+  {n:"Dalila Ferhat", s:"GCR", t:"01 99 00 42 07", st:"dispo"},
+  {n:"Mathieu Rey", s:"GCR", t:"01 99 00 42 08", st:"hors"},
+  {n:"Chloé Vidal", s:"GCR", t:"01 99 00 42 09", st:"dispo"},
+  {n:"Benoît Marais", s:"GCR", t:"01 99 00 42 10", st:"absent", until:"9 oct."},
+  {n:"Olivier Vasseur", s:"URB", t:"01 99 00 52 01", st:"absent", until:"15 oct."},
+  {n:"Sandrine Petit", s:"URB", t:"01 99 00 52 02", st:"dispo"},
+  {n:"Vincent Aubert", s:"URB", t:"01 99 00 52 03", st:"dispo"},
+  {n:"Leïla Chaoui", s:"URB", t:"01 99 00 52 04", st:"hors"},
+  {n:"Damien Fournier", s:"URB", t:"01 99 00 52 05", st:"dispo"},
+  {n:"Marine Lopez", s:"URB", t:"01 99 00 52 06", st:"absent", until:"12 oct."},
+  {n:"Alexandre Noël", s:"URB", t:"01 99 00 52 07", st:"dispo"},
+  {n:"Sabrina Henry", s:"URB", t:"01 99 00 52 08", st:"hors"},
+  {n:"Grégory Pires", s:"URB", t:"01 99 00 52 09", st:"dispo"},
+  {n:"Anne-Sophie Carré", s:"URB", t:"01 99 00 52 10", st:"absent", until:"9 oct."},
+  {n:"Yann Le Gall", s:"PROP", t:"01 99 00 62 01", st:"dispo"},
+  {n:"Fatou Camara", s:"PROP", t:"01 99 00 62 02", st:"hors"},
+  {n:"Bastien Roy", s:"PROP", t:"01 99 00 62 03", st:"dispo"},
+  {n:"Mélanie Guillot", s:"PROP", t:"01 99 00 62 04", st:"hors"},
+  {n:"Idriss Traoré", s:"PROP", t:"01 99 00 62 05", st:"dispo"},
+  {n:"Cécile Marchand", s:"PROP", t:"01 99 00 62 06", st:"absent", until:"12 oct."},
+  {n:"Florian Lemaître", s:"PROP", t:"01 99 00 62 07", st:"dispo"},
+  {n:"Priscilla Noirot", s:"PROP", t:"01 99 00 62 08", st:"hors"},
+  {n:"Jérôme Baudry", s:"PROP", t:"01 99 00 62 09", st:"dispo"},
+  {n:"Awa Konaté", s:"PROP", t:"01 99 00 62 10", st:"absent", until:"9 oct."},
+  {n:"Béatrice Collet", s:"SALLES", t:"01 99 00 72 01", st:"hors"},
+  {n:"Hugo Marchand", s:"SALLES", t:"01 99 00 72 02", st:"dispo"},
+  {n:"Patrick Delmas", s:"SALLES", t:"01 99 00 72 03", st:"dispo"},
+  {n:"Charlène Joly", s:"SALLES", t:"01 99 00 72 04", st:"hors"},
+  {n:"Ismaël Touré", s:"SALLES", t:"01 99 00 72 05", st:"dispo"},
+  {n:"Delphine Arnaud", s:"SALLES", t:"01 99 00 72 06", st:"absent", until:"12 oct."},
+  {n:"Maxime Pichon", s:"SALLES", t:"01 99 00 72 07", st:"dispo"},
+  {n:"Laetitia Gomes", s:"SALLES", t:"01 99 00 72 08", st:"hors"},
+  {n:"Rémi Courtois", s:"SALLES", t:"01 99 00 72 09", st:"dispo"},
+  {n:"Salomé Duval", s:"SALLES", t:"01 99 00 72 10", st:"absent", until:"9 oct."},
+  {n:"Stéphane Dubois", s:"INFRA", t:"01 99 00 82 01", st:"dispo"},
+  {n:"Anaïs Perrin", s:"INFRA", t:"01 99 00 82 02", st:"absent", until:"9 oct."},
+  {n:"Rachid Meziane", s:"INFRA", t:"01 99 00 82 03", st:"dispo"},
+  {n:"Kévin Alves", s:"INFRA", t:"01 99 00 82 04", st:"dispo"},
+  {n:"Agnès Moulin", s:"INFRA", t:"01 99 00 82 05", st:"hors"},
+  {n:"Tarik Belkacem", s:"INFRA", t:"01 99 00 82 06", st:"dispo"},
+  {n:"Muriel Vincent", s:"INFRA", t:"01 99 00 82 07", st:"absent", until:"12 oct."},
+  {n:"Jonathan Lopes", s:"INFRA", t:"01 99 00 82 08", st:"dispo"},
+  {n:"Estelle Brun", s:"INFRA", t:"01 99 00 82 09", st:"hors"},
+  {n:"Cyril Hamon", s:"INFRA", t:"01 99 00 82 10", st:"dispo"},
+  {n:"Hélène Garnier", s:"MJC", t:"01 99 00 92 01", st:"dispo"},
+  {n:"Antoine Blanc", s:"MJC", t:"01 99 00 92 02", st:"absent", until:"13 oct."},
+  {n:"Sylvain Pelletier", s:"MJC", t:"01 99 00 92 03", st:"dispo"},
+  {n:"Zohra Benali", s:"MJC", t:"01 99 00 92 04", st:"hors"},
+  {n:"Arnaud Guérin", s:"MJC", t:"01 99 00 92 05", st:"dispo"},
+  {n:"Catherine Mallet", s:"MJC", t:"01 99 00 92 06", st:"absent", until:"12 oct."},
+  {n:"Lionel Da Silva", s:"MJC", t:"01 99 00 92 07", st:"dispo"},
+  {n:"Marianne Faivre", s:"MJC", t:"01 99 00 92 08", st:"hors"},
+  {n:"Hakim Cherif", s:"MJC", t:"01 99 00 92 09", st:"dispo"},
+  {n:"Judith Aubry", s:"MJC", t:"01 99 00 92 10", st:"absent", until:"9 oct."},
+  {n:"Carole Mercier", s:"DH", t:"01 99 00 02 01", st:"hors"},
+  {n:"David Lemaire", s:"DH", t:"01 99 00 02 02", st:"dispo"},
+  {n:"Christophe Blin", s:"DH", t:"01 99 00 02 03", st:"dispo"},
+  {n:"Amandine Rolland", s:"DH", t:"01 99 00 02 04", st:"hors"},
+  {n:"Moussa Keita", s:"DH", t:"01 99 00 02 05", st:"dispo"},
+  {n:"Stéphanie Roussel", s:"DH", t:"01 99 00 02 06", st:"absent", until:"12 oct."},
+  {n:"Rodolphe Lefort", s:"DH", t:"01 99 00 02 07", st:"dispo"},
+  {n:"Nawel Mansouri", s:"DH", t:"01 99 00 02 08", st:"hors"},
+  {n:"Guillaume Tanguy", s:"DH", t:"01 99 00 02 09", st:"dispo"},
+  {n:"Fanny Prévost", s:"DH", t:"01 99 00 02 10", st:"absent", until:"9 oct."}
+];
+
+/* Arbre : un noeud = {q, type:"select"|"yesno", options:[{label, next | result}]}
+   Une feuille (result) = {services:[ids], note} */
+const R = (services, note) => ({result:{services, note}});
+const oui = r => Object.assign({label:"Oui"}, r), non = r => Object.assign({label:"Non"}, r);
+const opts = (labels, next) => labels.map(label => ({label, next}));
+
+const Q3_civ = {q:"Un rendez-vous ou un dossier est-il déjà en cours ?", type:"yesno", options:[
+  oui(R(["SAC"], "Suivi de dossier : demander la référence puis transférer à un agent du SAC.")),
+  non(R(["SAC"], "Nouvelle demande : le SAC précisera les pièces à fournir et proposera un rendez-vous."))]};
+const Q3_fam = {q:"Le foyer a-t-il déjà un dossier (compte famille) ?", type:"yesno", options:[
+  oui(R(["SADP"], "Vérifier l'identité du responsable du foyer puis transférer pour le suivi.")),
+  non(R(["SADP"], "Création de dossier : le SADP indiquera les démarches et les pièces à fournir."))]};
+const Q3_urg = {q:"La situation est-elle urgente (sans ressources, personne en danger) ?", type:"yesno", options:[
+  oui(R(["CCAS"], "Urgence : demander le responsable de permanence du CCAS et ne pas faire attendre l'appelant.")),
+  non(R(["CCAS"], "Orienter vers un agent du CCAS pour une évaluation de la situation."))]};
+const Q3_mjc = {q:"L'appelant a-t-il déjà été reçu à la Maison de la Justice et du Citoyen ?", type:"yesno", options:[
+  oui(R(["MJC"], "Transférer à l'agent qui suit déjà le dossier.")),
+  non(R(["MJC"], "Première prise de contact : la MJC présentera les permanences et la médiation."))]};
+const Q3_prop = {q:"Le signalement est-il à traiter rapidement (dépôt sauvage, danger) ?", type:"yesno", options:[
+  oui(R(["PROP"], "Relever l'adresse précise et transférer pour une prise en charge rapide.")),
+  non(R(["PROP"], "Demande d'information ou signalement courant : transférer à Gennevilliers et Propreté."))]};
+const Q3_voirie = {q:"Y a-t-il un danger immédiat pour les personnes ?", type:"yesno", options:[
+  oui(R(["INFRA"], "Danger immédiat : transférer en priorité et rester en ligne. Si risque vital, inviter l'appelant à contacter les secours (112).")),
+  non(R(["INFRA"], "Demande d'intervention : relever l'adresse et la nature du problème avant le transfert."))]};
+const Q3_urb = {q:"Un dossier (permis, déclaration préalable…) est-il déjà déposé ?", type:"yesno", options:[
+  oui(R(["URB"], "Suivi de dossier : demander le numéro de dossier puis transférer à l'Urbanisme.")),
+  non(R(["URB"], "Renseignement réglementaire ou autorisation à déposer : transférer à l'Urbanisme."))]};
+const Q3_salle = {q:"La date de l'événement est-elle déjà arrêtée ?", type:"yesno", options:[
+  oui(R(["SALLES"], "Noter la date et le nombre de personnes, puis transférer pour vérifier les disponibilités.")),
+  non(R(["SALLES"], "Informations sur les équipements et les conditions de réservation."))]};
+const Q3_int = {q:"L'appelant est-il bien un agent de la Ville ?", type:"yesno", options:[
+  oui(R(["GCR"], "Appel interne : transférer au service Gestion des Comptes Résidents.")),
+  non(R([], "Ce n'est pas un appel interne : reprendre l'arbre à la première question."))]};
+
+const TREE = {q:"Quel est le sujet principal de l'appel ?", type:"select", options:[
+  {label:"Papiers d'identité, état civil, élections", next:{q:"Quelle démarche l'appelant souhaite-t-il effectuer ?", type:"select",
+    options:opts(["Carte nationale d'identité","Passeport","Acte d'état civil (naissance, mariage, décès)","Élections et listes électorales"], Q3_civ)}},
+  {label:"Enfance, loisirs et séjours", next:{q:"Quelle prestation est concernée ?", type:"select",
+    options:opts(["Périscolaire et restauration","Activités sportives et culturelles","Séjours et vacances"], Q3_fam)}},
+  {label:"Aide sociale et accompagnement", next:{q:"Quel est le besoin de l'appelant ?", type:"select", options:[
+    {label:"Aide financière ou aide sociale", next:Q3_urg},
+    {label:"Accompagnement d'une personne âgée ou en situation de handicap", next:Q3_urg},
+    {label:"Conseil juridique ou médiation", next:Q3_mjc}]}},
+  {label:"Logement", next:{q:"Une demande de logement social a-t-elle déjà été déposée ?", type:"yesno", options:[
+    oui({next:{q:"Quel est l'objet de l'appel ?", type:"select", options:[
+      {label:"Connaître l'avancement du dossier", ...R(["DH"], "Demander le numéro unique ou le nom du demandeur, puis transférer au Service Logement.")},
+      {label:"Signaler un changement de situation", ...R(["DH"], "Changement de famille, de revenus ou d'adresse : transférer au Service Logement pour mise à jour.")},
+      {label:"Renouveler la demande", ...R(["DH"], "Transférer au Service Logement pour le renouvellement.")}]}}),
+    non({next:{q:"Quel est l'objet de l'appel ?", type:"select", options:[
+      {label:"Première demande de logement social", ...R(["DH"], "Le Service Logement expliquera la démarche et les pièces à fournir.")},
+      {label:"Informations sur les conditions d'accès", ...R(["DH"], "Renseignement général : transférer au Service Logement.")}]}})]}},
+  {label:"Cadre de vie et espace public", next:{q:"Quel est le sujet précis ?", type:"select", options:[
+    {label:"Propreté et signalements", next:Q3_prop},
+    {label:"Voirie, bâtiments, interventions techniques", next:Q3_voirie},
+    {label:"Urbanisme et autorisations", next:Q3_urb},
+    {label:"Réservation d'une salle festive", next:Q3_salle}]}},
+  {label:"Accès au droit et médiation", next:{q:"Quel est le besoin de l'appelant ?", type:"select",
+    options:opts(["Permanence juridique (avocat, notaire, conciliateur)","Médiation (voisinage, conflit)","Information sur ses droits"], Q3_mjc)}},
+  {label:"Appel interne (ressources humaines)", next:{q:"Quel est le sujet de la demande ?", type:"select",
+    options:opts(["Paie, congés et absences","Carrière, recrutement et contrat","Autre demande RH"], Q3_int)}}
+]};
+
+/* =====================================================================
+   LOGIQUE
+   ===================================================================== */
+let answers = [];            // index de l'option choisie à chaque niveau
+let shownCount = 1;          // pour animer seulement la question qui vient d'apparaître
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+function walk(){
+  const path = []; let node = TREE;
+  for(let i = 0; node && i <= answers.length; i++){
+    path.push({node, chosen: answers[i]});
+    const opt = node.options[answers[i]];
+    if(!opt){ node = null; break; }
+    if(opt.result){ return {path, result: opt.result, label: opt.label}; }
+    node = opt.next;
+  }
+  return {path, result: null};
+}
+
+function render(){
+  const {path, result} = walk();
+  const steps = $("steps");
+  steps.innerHTML = "";
+  path.forEach((p, i) => {
+    const div = document.createElement("div");
+    div.className = "step" + (i === path.length - 1 && path.length > shownCount ? " enter" : "");
+    let ctrl;
+    if(p.node.type === "select"){
+      ctrl = `<select id="q${i}" data-level="${i}"><option value="">Choisir une réponse…</option>` +
+        p.node.options.map((o, k) => `<option value="${k}"${p.chosen === k ? " selected" : ""}>${esc(o.label)}</option>`).join("") + `</select>`;
+    } else {
+      ctrl = `<div class="ticks">` + p.node.options.map((o, k) =>
+        `<label class="tick"><input type="checkbox" data-level="${i}" data-k="${k}"${p.chosen === k ? " checked" : ""}><span class="box"></span>${esc(o.label)}</label>`).join("") + `</div>`;
+    }
+    div.innerHTML = `<span class="num">${i + 1}</span><div class="body"><label class="q" for="q${i}">${esc(p.node.q)}</label>${ctrl}</div>`;
+    steps.appendChild(div);
+  });
+  shownCount = path.length;
+
+  renderResult(result);
+}
+
+function renderResult(result){
+  const box = $("result");
+  if(!result){
+    box.innerHTML = `<p class="placeholder">Répondez aux questions pour afficher les interlocuteurs à qui transférer l'appel.</p>`;
+    return;
+  }
+  let html = `<p class="note"><strong>Consigne :</strong> ${esc(result.note)}</p>`;
+  if(!result.services.length){ box.innerHTML = html; return; }
+
+  const order = {dispo:0, hors:1, absent:2};
+  const rows = PEOPLE.filter(p => result.services.includes(p.s))
+    .sort((a, b) => order[a.st] - order[b.st]);
+  html += `<div class="table-wrap"><table><thead><tr><th>Personne</th><th>Service</th><th>Téléphone</th><th>Statut</th><th></th></tr></thead><tbody>` +
+    rows.map(p => {
+      const s = SERVICES[p.s];
+      const label = p.st === "dispo" ? "Disponible" : p.st === "hors" ? "Hors ligne" : `Absent jusqu'au ${esc(p.until)}`;
+      return `<tr><td><strong>${esc(p.n)}</strong></td>` +
+        `<td>${s.sigle ? esc(s.sigle) : esc(s.nom)}<span class="svc">${s.sigle ? esc(s.nom) : ""}</span></td>` +
+        `<td class="tel">${esc(p.t)}</td><td><span class="status ${p.st}">${label}</span></td>` +
+        `<td><button class="btn" type="button" data-name="${esc(p.n)}" data-tel="${esc(p.t)}"${p.st === "dispo" ? "" : " disabled"}>Transférer</button></td></tr>`;
+    }).join("") + `</tbody></table></div>`;
+  box.innerHTML = html;
+}
+
+function toast(msg){
+  const t = $("toast"); t.textContent = msg; t.classList.add("show");
+  clearTimeout(toast.tm); toast.tm = setTimeout(() => t.classList.remove("show"), 3500);
+}
+
+$("steps").addEventListener("change", e => {
+  const el = e.target, level = +el.dataset.level;
+  if(el.tagName === "SELECT"){
+    answers = answers.slice(0, level);
+    if(el.value !== "") answers[level] = +el.value;
+  } else {
+    answers = answers.slice(0, level);
+    if(el.checked) answers[level] = +el.dataset.k;
+  }
+  render();
+});
+$("result").addEventListener("click", e => {
+  const b = e.target.closest("button[data-name]");
+  if(b) toast(`Transfert de l'appel vers ${b.dataset.name} (${b.dataset.tel}) en cours…`);
+});
+$("reset").addEventListener("click", () => { answers = []; shownCount = 1; render(); });
+
+render();
+</script>
+<!-- ============ SNIPPET CHATBOT — non utilisé sur cette page ============ -->
+</body>
+</html>
