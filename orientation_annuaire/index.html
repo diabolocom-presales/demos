@@ -35,7 +35,7 @@
   .tick input:checked+.box{background:var(--accent)}
   .tick input:checked+.box::after{content:"";width:4px;height:9px;border:solid #000;border-width:0 2px 2px 0;transform:rotate(45deg) translate(-1px,-1px)}
   .tick:has(input:checked){border-color:#000;background:#fffbe0}
-  .btn{background:var(--accent);color:#000;border:none;border-radius:8px;padding:5px 11px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}
+  .btn{background:var(--accent);color:#000;border:none;border-radius:8px;padding:5px 11px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;min-width:72px}
   .btn:hover{filter:brightness(.95)}
   .btn.ghost{background:#fff;border:1.5px solid #000;padding:3px 9px;font-size:11px}
   .btn:disabled{background:var(--card2);color:#8a8578;cursor:not-allowed;filter:none}
@@ -294,7 +294,7 @@ function renderDirectory(path, result){
     return `<tr><td><strong>${esc(p.n)}</strong></td>` +
       `<td title="${esc(s.nom)}">${s.sigle ? esc(s.sigle) : esc(s.nom)}</td>` +
       `<td class="tel">${esc(p.t)}</td><td><span class="status ${p.st}">${label}</span></td>` +
-      `<td><button class="btn" type="button" data-name="${esc(p.n)}" data-tel="${esc(p.t)}"${p.st === "dispo" ? "" : " disabled"}>Transférer</button></td></tr>`;
+      `<td><button class="btn" type="button" data-name="${esc(p.n)}" data-tel="${esc(p.t)}">Copier</button></td></tr>`;
   }).join("") : `<tr class="empty-row"><td colspan="5">Aucun interlocuteur pour cette réponse.</td></tr>`;
   box.innerHTML = `<div class="table-wrap"><table><thead><tr><th>Personne</th><th>Service</th><th>Téléphone</th><th>Statut</th><th></th></tr></thead><tbody>${body}</tbody></table></div>`;
 }
@@ -315,9 +315,29 @@ $("steps").addEventListener("change", e => {
   }
   render();
 });
+/* Copie du numéro : API clipboard, avec repli execCommand (iframes sans autorisation clipboard-write) */
+function copyText(text){
+  const fallback = () => {
+    const ta = document.createElement("textarea");
+    ta.value = text; ta.setAttribute("readonly", ""); ta.style.cssText = "position:fixed;top:0;left:0;opacity:0";
+    document.body.appendChild(ta); ta.select();
+    let ok = false; try { ok = document.execCommand("copy"); } catch(_) {}
+    ta.remove(); return ok;
+  };
+  if(navigator.clipboard && window.isSecureContext){
+    return navigator.clipboard.writeText(text).then(() => true, () => fallback());
+  }
+  return Promise.resolve(fallback());
+}
 $("result").addEventListener("click", e => {
-  const b = e.target.closest("button[data-name]");
-  if(b) toast(`Transfert de l'appel vers ${b.dataset.name} (${b.dataset.tel}) en cours…`);
+  const b = e.target.closest("button[data-tel]");
+  if(!b) return;
+  copyText(b.dataset.tel).then(ok => {
+    if(!ok){ toast(`Copie impossible : ${b.dataset.tel}`); return; }
+    const prev = b.textContent; b.textContent = "Copié ✓";
+    clearTimeout(b._tm); b._tm = setTimeout(() => { b.textContent = prev; }, 1500);
+    toast(`Numéro copié : ${b.dataset.tel} (${b.dataset.name})`);
+  });
 });
 $("reset").addEventListener("click", () => { answers = []; shownCount = 1; render(); });
 
