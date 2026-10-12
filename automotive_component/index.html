@@ -18,10 +18,14 @@
     --ok-bg:rgba(46,160,67,.15); --ok-txt:#1f7a35; --pending-bg:rgba(210,153,34,.18); --pending-txt:#8a5d00;
     --tag1:#0a5cb8; --tag2:#2ea043; --tag3:#e08a00;
     --ok:#2ea043; --pending:#d29922;
+    --topbar:#006aab; --topbar-txt:#ffffff;
     --footer-txt:#0a3d7a; --footer-muted:#5a6672; --footer-line:#e2e6ea;
   }
   *{box-sizing:border-box}
   body{margin:0;overflow-x:hidden;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:#1a1f26}
+  .topbar{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;padding:8px 24px;background:var(--topbar);color:var(--topbar-txt);font-size:13px}
+  .topbar .mid{text-align:center;font-weight:600}
+  @media(max-width:760px){.topbar{grid-template-columns:1fr;text-align:center}}
   header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:14px 24px;border-bottom:1px solid var(--footer-line);background:var(--footer)}
   .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;color:var(--footer-txt)}
   .logo{height:38px;max-width:150px;object-fit:contain}
@@ -114,6 +118,11 @@
 </head>
 <body>
 <!-- ============ BANDEAU 1/10 : HEADER (logo + nom client, menu, utilisateur) ============ -->
+<div class="topbar">
+  <span>Telephone : +44 (0)1942 269 837</span>
+  <span class="mid">Free UK Delivery on Orders Over &pound;50 &amp; Low Cost International Delivery</span>
+  <span></span>
+</div>
 <header>
   <div class="brand"><img class="logo" src="https://www.simplybearings.co.uk/cdn/shop/files/sb-logo.svg?v=1765793211&width=200" alt="Simply Bearings"></div>
   <nav>
