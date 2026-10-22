@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>La France Mutualiste - Mon espace épargnant</title>
+<style>
+  /* =====================================================================
+     THEME — seules ces variables changent d'un client a l'autre.
+     --accent : couleur principale du client (liens, hover, mots en bleu)
+     --tag1/2/3 : pastilles de categorie dans le bandeau BLOCS N°1
+     ===================================================================== */
+  :root{
+    --bg:#f7fafb; --card:#ffffff; --card2:#e3eef2; --line:#17aae3; --row-line:#e3eef2;
+    --banner:#f3f6f7; --footer:#022531;
+    --txt:#022531; --muted:#5a6672; --accent:#043d4f;
+    --tag1:#043d4f; --tag2:#17aae3; --tag3:#2e8b6e;
+    --ok:#2ea043; --pending:#d29922;
+    --ok-bg:rgba(46,160,67,.15); --ok-txt:#1f7a35; --pending-bg:rgba(210,153,34,.18); --pending-txt:#8a5d00;
+    --icon-filter:none; --icon-filter-hover:invert(1) brightness(2);
+    --footer-txt:#ffffff; --footer-muted:#cdd4db; --footer-line:#022531;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;overflow-x:hidden;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:#1a1f26}
+  header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:14px 24px;border-bottom:1px solid var(--footer-line);background:var(--footer)}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;color:var(--footer-txt)}
+  .logo{height:38px;max-width:150px;object-fit:contain}
+  nav{display:flex;flex-wrap:wrap;justify-content:center}
+  nav a{color:var(--footer-muted);text-decoration:none;margin:0 10px;font-size:14px;padding-bottom:2px}
+  nav a:hover{color:var(--footer-txt)}
+  nav a.active{font-weight:700;color:var(--footer-txt);border-bottom:2px solid var(--accent)}
+  .user{display:flex;align-items:center;gap:10px;color:var(--footer-txt)}
+  .avatar{width:34px;height:34px;border-radius:50%;background:#eef1f5;color:#1a1f26;border:1px solid #dce1e7;display:grid;place-items:center;font-size:13px;font-weight:700;flex:none}
+  main{max-width:1040px;margin:0 auto;padding:28px 24px}
+  h1{font-size:26px;margin:0 0 4px}
+  h1 .name{color:var(--accent)}
+  .sub{color:#5a6672;margin:0 0 20px;font-size:14px}
+  .toggle{background:none;border:1px solid #cfd6dd;color:#5a6672;padding:6px 12px;border-radius:8px;font-size:13px;cursor:pointer}
+  .grid{display:grid;grid-template-columns:1.75fr 1fr;gap:20px;margin:35px 0 0.5cm;align-items:stretch}
+  @media(max-width:760px){.grid{grid-template-columns:1fr}}
+  .col-left{display:flex;flex-direction:column;gap:20px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 18px;color:var(--txt)}
+  .card h2{font-size:16px;margin:0 0 8px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+  .card h2 a{font-size:13px;color:var(--accent);text-decoration:none}
+  .row{display:flex;align-items:center;gap:12px;padding:7px 0;border-bottom:1px solid var(--row-line)}
+  .row:last-child{border-bottom:none}
+  .tag{width:40px;height:40px;border-radius:8px;display:grid;place-items:center;font-size:12px;font-weight:700;color:#fff;flex:none}
+  .tag.t1{background:var(--tag1)} .tag.t2{background:var(--tag2)} .tag.t3{background:var(--tag3)}
+  .row .info{flex:1;min-width:0}
+  .row .info b{display:block;font-size:14px}
+  .row .info span{font-size:12px;color:var(--muted)}
+  .status{font-size:12px;padding:3px 8px;border-radius:20px;font-weight:600;white-space:nowrap;flex:none}
+  .status.ok{background:var(--ok-bg);color:var(--ok-txt)}
+  .status.pending{background:var(--pending-bg);color:var(--pending-txt)}
+  .amount{font-weight:700;font-size:15px;min-width:60px;text-align:right;flex:none}
+ 
+  .demo-note{text-align:left;color:#5a6672;font-size:14px;font-style:italic;margin:0 0 18px;white-space:nowrap;line-height:1.6}
+  .section-title{font-size:26px;font-weight:700;margin:0 0 14px;text-align:left;color:#1a1f26}
+  .section-title.spaced{margin-top:1.5cm}
+  .section-title .name{color:var(--accent)}
+  .demo-img{display:block;max-width:100%;width:640px;margin:0 auto 0.5cm;border-radius:12px}
+ 
+  .nav-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:0 0 32px}
+  @media(max-width:600px){.nav-grid{grid-template-columns:repeat(2,1fr)}}
+  .nav-tile{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:14px;text-align:center;color:var(--txt);text-decoration:none;transition:transform .1s,background .1s}
+  .nav-tile:hover{transform:translateY(-2px);background:var(--accent);color:#fff}
+  .nav-tile img{width:34px;height:34px;object-fit:contain;filter:var(--icon-filter)}
+  .nav-tile:hover img{filter:var(--icon-filter-hover)}
+  .nav-tile span{display:block;margin-top:8px;font-size:11px;font-weight:600}
+  .promo{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;color:var(--txt);display:flex;flex-direction:column;height:100%}
+  .promo h3{margin:0 0 6px;font-size:15px}
+  .promo p{margin:0 0 14px;color:var(--muted);font-size:13px}
+  .promo img{width:100%;border-radius:10px;display:block;flex:1 1 0;height:0;min-height:0;object-fit:cover}
+  .progress{height:8px;background:var(--card2);border-radius:20px;overflow:hidden;margin:12px 0 6px}
+  .progress i{display:block;height:100%;width:55%;background:var(--accent)}
+  .achieve b{font-size:22px}
+  .achieve span{color:var(--muted);font-size:13px}
+ 
+  /* ---- Bandeau assistance pleine largeur ---- */
+  .support-banner{background:var(--banner);border-top:1px solid #cfd6dd;border-bottom:1px solid #cfd6dd;padding:32px 24px;margin:40px 0;
+    width:100vw;position:relative;left:50%;right:50%;margin-left:-50vw;margin-right:-50vw}
+  .support-banner p{max-width:900px;margin:0 auto;color:#1a1f26;line-height:2;font-size:14px;text-align:center}
+  .support-banner strong{color:#000}
+ 
+  /* ---- Rubriques d'assistance ---- */
+  .help-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:16px 0}
+  .help-grid-3{grid-template-columns:repeat(3,1fr);margin-bottom:40px}
+  @media(max-width:760px){.help-grid,.help-grid-3{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:420px){.help-grid,.help-grid-3{grid-template-columns:1fr}}
+  .help-tile{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:21px 14px;text-align:center;color:var(--txt);text-decoration:none;transition:transform .1s,background .1s;display:flex;flex-direction:column;align-items:center;gap:11px}
+  .help-tile:hover{transform:translateY(-2px);background:var(--accent);color:#fff}
+  .help-tile img{width:42px;height:42px;object-fit:contain;filter:var(--icon-filter)}
+  .help-tile:hover img{filter:var(--icon-filter-hover)}
+  .help-tile span{font-size:12px;font-weight:600}
+ 
+  /* ---- Bandeau langue pleine largeur, collé au footer ---- */
+  .locale-bar{background:var(--card);border-top:1px solid var(--line);padding:16px 24px;display:flex;align-items:center;justify-content:flex-end;gap:16px;margin-top:40px}
+  .locale-bar img{height:34px;max-width:130px;object-fit:contain}
+  .locale-bar select{background:var(--card2);color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:8px 12px;font-size:14px;cursor:pointer}
+ 
+  footer.site{background:var(--footer);color:var(--footer-txt)}
+  footer.site .inner{max-width:1040px;margin:0 auto;padding:30px 24px;display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center}
+  footer.site a{color:var(--footer-muted);text-decoration:none;font-size:13px}
+  footer.site a:hover{color:var(--footer-txt)}
+  footer.site .copy{color:var(--footer-muted);font-size:13px;margin-left:auto}
+  @media(max-width:600px){footer.site .copy{margin-left:0;width:100%}}
+  @media(max-width:520px){
+    header{padding:12px 16px}
+    main{padding:20px 16px}
+    h1{font-size:22px}
+    .user span:last-child{display:none}
+  }
+</style>
+</head>
+<body>
+<!-- ============ BANDEAU 1/10 : HEADER (logo + nom client, menu, utilisateur) ============ -->
+<header>
+  <div class="brand"><img class="logo" src="https://www.malakoffhumanis.com/sites/smile/files/styles/header_image/public/images/logo%20LFM%20%281%29.png.webp?itok=liBF-FLj" alt="La France Mutualiste"></div>
+  <nav>
+    <a href="#" class="active">Mon espace</a><a href="#">Mes contrats</a><a href="#">Épargne retraite</a><a href="#">Assurance vie</a><a href="#">Mes documents</a><a href="#">Aide</a>
+  </nav>
+  <div class="user"><span class="avatar">LD</span><span>Louis Dubois</span></div>
+</header>
+ 
+<main>
+  <!-- ============ BANDEAU 2/10 : ALERTE DEMO DIABOLOCOM — NE JAMAIS SUPPRIMER ============ -->
+  <p class="demo-note">Ceci est un site de démonstration conçu par l'équipe Presales de Diabolocom afin de tester les fonctionnalités du Chatbot.</p>
+  <!-- ============ BANDEAU 3/10 : SALUTATION (titre + sous-titre + bouton) ============ -->
+  <h1>Bonjour <span class="name">Louis</span></h1>
+  <p class="sub">Voici un aperçu de votre épargne au 22 octobre 2026.</p>
+  <button class="toggle" onclick="document.querySelectorAll('.amount').forEach(e=>e.style.visibility=e.style.visibility==='hidden'?'visible':'hidden')">Masquer les montants</button>
+ 
+  <!-- ============ BANDEAU 4/10 : BLOCS N°1 (3 blocs : liste principale, encart promo, compteur) ============ -->
+  <div class="grid">
+    <div class="col-left">
+    <div class="card">
+      <h2>Mes contrats et opérations <a href="#">Tout voir &rarr;</a></h2>
+      <div class="row">
+        <div class="tag t1">PER</div>
+        <div class="info"><b>Plan d'Épargne Retraite individuel</b><span>Épargne retraite &middot; Contrat n° PER-204871</span></div>
+        <span class="status ok">Actif</span>
+        <div class="amount">18&nbsp;450&nbsp;&euro;</div>
+      </div>
+      <div class="row">
+        <div class="tag t2">AV</div>
+        <div class="info"><b>Contrat d'assurance vie</b><span>Assurance vie &middot; Contrat n° AV-118342</span></div>
+        <span class="status ok">Actif</span>
+        <div class="amount">32&nbsp;780&nbsp;&euro;</div>
+      </div>
+      <div class="row">
+        <div class="tag t3">VL</div>
+        <div class="info"><b>Versement libre sur le PER</b><span>Opération &middot; Demandée le 18 octobre 2026</span></div>
+        <span class="status pending">En cours de traitement</span>
+        <div class="amount">1&nbsp;500&nbsp;&euro;</div>
+      </div>
+    </div>
+ 
+    <div class="card">
+      <h2>Mon objectif d'épargne</h2>
+      <div class="achieve"><b>51&nbsp;230&nbsp;&euro;</b> <span>/ 93&nbsp;000&nbsp;&euro; visés pour la retraite</span></div>
+      <div class="progress"><i></i></div>
+      <span style="font-size:13px;color:var(--muted)">55 % de l'objectif atteint</span>
+    </div>
+    </div>
+ 
+    <div class="promo">
+      <h3>Moins d'impôts, plus de retraite</h3>
+      <p>Vos versements sur le PER peuvent être déduits de votre revenu imposable, dans certaines limites.</p>
+      <img src="https://www.la-france-mutualiste.fr/sites/default/files/2026-10/Group%2035547.png" alt="Moins d'impôts, plus de retraite">
+    </div>
+  </div>
+ 
+  <!-- ============ BANDEAU 5/10 : IMAGE (titre + visuel pleine largeur) ============ -->
+  <h2 class="section-title spaced">Votre épargne peut aussi avoir de l’<span class="name">impact</span></h2>
+  <img class="demo-img" src="https://www.la-france-mutualiste.fr/sites/default/files/styles/full_width_background_image/public/2026-09/Visuel%20-%20e%CC%81pargne%20qui%20a%20du%20sens%20-%20HP%20-%20V1%20%283%29.jpg?itok=S5GFzvD8" alt="Votre épargne peut aussi avoir de l’impact">
+ 
+  <!-- ============ BANDEAU 6/10 : BLOCS N°2 (titre + 4 tuiles de services) ============ -->
+  <h2 class="section-title spaced">Mes <span class="name">services</span></h2>
+  <div class="nav-grid">
+    <a class="nav-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/512/117/117641.png" alt=""><span>Faire un versement</span></a>
+    <a class="nav-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/256/17/17004.png" alt=""><span>Mon profil</span></a>
+    <a class="nav-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/256/26/26589.png" alt=""><span>Mes opérations</span></a>
+    <a class="nav-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/512/10042/10042848.png" alt=""><span>FAQ</span></a>
+  </div>
+ 
+  <!-- Bandeau d'assistance pleine largeur, texte centré -->
+  <!-- ============ BANDEAU 7/10 : TEXTE DESCRIPTIF (paragraphe gris pleine largeur) ============ -->
+  <div class="support-banner">
+    <p>Une question sur votre épargne retraite, un versement ou la désignation de vos bénéficiaires ? Nos conseillers sont là pour vous accompagner à chaque étape de votre projet. Avant de nous contacter, pensez à consulter notre <strong>Foire aux questions</strong> ci-dessous : versements, rachats, fiscalité et sortie du PER y sont expliqués simplement. Vous ne trouvez pas votre réponse ? Cliquez sur «&nbsp;Nous contacter&nbsp;» et précisez le numéro du contrat concerné. Pour une demande de rachat ou de modification de bénéficiaire, pensez à joindre une pièce d'identité en cours de validité. Vous pouvez à tout moment ajuster vos versements programmés ou votre répartition entre supports depuis votre espace. Nos conseillers vous répondent du lundi au vendredi, généralement sous 48 heures ouvrées. Pour faire le point sur votre stratégie d'épargne, vous pouvez aussi prendre rendez-vous avec un conseiller.</p>
+  </div>
+ 
+  <!-- ============ BANDEAU 8/10 : BLOCS N°3 (titre + 4 + 3 tuiles d'assistance) ============ -->
+  <h2 class="section-title">Si vous avez besoin d'<span class="name">aide</span></h2>
+  <!-- Rubriques : rangée de 4 -->
+  <div class="help-grid">
+    <a class="help-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/512/4659/4659011.png" alt=""><span>Versements et rachats</span></a>
+    <a class="help-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/512/686/686589.png" alt=""><span>Bénéficiaires</span></a>
+    <a class="help-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/512/3092/3092920.png" alt=""><span>Fiscalité de l'épargne</span></a>
+    <a class="help-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/512/75/75668.png" alt=""><span>Sortie du PER à la retraite</span></a>
+  </div>
+  <!-- Rubriques : rangée de 3 élargie -->
+  <div class="help-grid help-grid-3">
+    <a class="help-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/512/545/545676.png" alt=""><span>Documents et attestations</span></a>
+    <a class="help-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/512/1034/1034153.png" alt=""><span>Nous contacter</span></a>
+    <a class="help-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/512/348/348488.png" alt=""><span>Autres rubriques d'assistance</span></a>
+  </div>
+</main>
+ 
+<!-- ============ BANDEAU 9/10 : FOOTER 1 (logo client + pays / langue) ============ -->
+<div class="locale-bar">
+  <select aria-label="Langue">
+    <option selected>France</option>
+  </select>
+</div>
+ 
+<!-- ============ BANDEAU 10/10 : FOOTER 2 (menu legal + copyright Diabolocom) ============ -->
+<footer class="site">
+  <div class="inner">
+    <a href="#">Qui sommes-nous</a>
+    <a href="#">Réclamations</a>
+    <a href="#">Données personnelles</a>
+    <a href="#">Mentions légales</a>
+    <a href="#">Cookies</a>
+    <a href="#">Contact</a>
+    <span class="copy">&copy; Diabolocom, 2026</span>
+  </div>
+</footer>
+<!-- ============ SNIPPET CHATBOT — coller ici le script de demo, ne rien mettre apres ============ -->
+</body>
+</html>
