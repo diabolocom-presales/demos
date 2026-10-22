@@ -11,7 +11,7 @@
      --tag1/2/3 : pastilles de categorie dans le bandeau BLOCS N°1
      ===================================================================== */
   :root{
-    --bg:#f7fafb; --card:#ffffff; --card2:#e3eef2; --line:#17aae3; --row-line:#e3eef2;
+    --bg:#eef3f5; --card:#ffffff; --card2:#e3eef2; --line:transparent; --row-line:#e3eef2;
     --banner:#f3f6f7; --footer:#022531;
     --txt:#022531; --muted:#5a6672; --accent:#043d4f;
     --tag1:#043d4f; --tag2:#17aae3; --tag3:#2e8b6e;
@@ -54,6 +54,9 @@
   .status.pending{background:var(--pending-bg);color:var(--pending-txt)}
   .amount{font-weight:700;font-size:15px;min-width:60px;text-align:right;flex:none}
  
+  .demo-row{display:flex;align-items:center;gap:18px;margin:0 0 18px}
+  .demo-row .logo{flex:none}
+  .demo-row .demo-note{margin:0}
   .demo-note{text-align:left;color:#5a6672;font-size:14px;font-style:italic;margin:0 0 18px;white-space:nowrap;line-height:1.6}
   .section-title{font-size:26px;font-weight:700;margin:0 0 14px;text-align:left;color:#1a1f26}
   .section-title.spaced{margin-top:1.5cm}
@@ -115,18 +118,19 @@
 <body>
 <!-- ============ BANDEAU 1/10 : HEADER (logo + nom client, menu, utilisateur) ============ -->
 <header>
-  <div class="brand"><img class="logo" src="https://www.malakoffhumanis.com/sites/smile/files/styles/header_image/public/images/logo%20LFM%20%281%29.png.webp?itok=liBF-FLj" alt="La France Mutualiste"></div>
+  <div class="brand"></div>
   <nav>
     <a href="#" class="active">Mon espace</a><a href="#">Mes contrats</a><a href="#">Épargne retraite</a><a href="#">Assurance vie</a><a href="#">Mes documents</a><a href="#">Aide</a>
   </nav>
-  <div class="user"><span class="avatar">LD</span><span>Louis Dubois</span></div>
+  <div class="user"><span class="avatar">AT</span><span>Andréas Trupin</span></div>
 </header>
  
 <main>
   <!-- ============ BANDEAU 2/10 : ALERTE DEMO DIABOLOCOM — NE JAMAIS SUPPRIMER ============ -->
-  <p class="demo-note">Ceci est un site de démonstration conçu par l'équipe Presales de Diabolocom afin de tester les fonctionnalités du Chatbot.</p>
+  <div class="demo-row"><img class="logo" src="https://www.malakoffhumanis.com/sites/smile/files/styles/header_image/public/images/logo%20LFM%20%281%29.png.webp?itok=liBF-FLj" alt="La France Mutualiste">
+  <p class="demo-note">Ceci est un site de démonstration conçu par l'équipe Presales de Diabolocom afin de tester les fonctionnalités du Chatbot.</p></div>
   <!-- ============ BANDEAU 3/10 : SALUTATION (titre + sous-titre + bouton) ============ -->
-  <h1>Bonjour <span class="name">Louis</span></h1>
+  <h1>Bonjour <span class="name">Andréas</span></h1>
   <p class="sub">Voici un aperçu de votre épargne au 22 octobre 2026.</p>
   <button class="toggle" onclick="document.querySelectorAll('.amount').forEach(e=>e.style.visibility=e.style.visibility==='hidden'?'visible':'hidden')">Masquer les montants</button>
  
@@ -226,5 +230,6 @@
   </div>
 </footer>
 <!-- ============ SNIPPET CHATBOT — coller ici le script de demo, ne rien mettre apres ============ -->
+<script src="https://fr2.chat.diabolocom.com/01a1627d-b8dd-70a6-96e1-016ec1924f28/config.js"></script>
 </body>
 </html>
