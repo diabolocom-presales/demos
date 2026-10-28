@@ -11,9 +11,9 @@
      --tag1/2/3 : pastilles de categorie dans le bandeau BLOCS N°1
      ===================================================================== */
   :root{
-    --bg:#f7fafa; --card:#1c1c23; --card2:#2c2c36; --line:#34343f;
+    --bg:#f7fafa; --card:#ffffff; --card2:#eef2f3; --line:#d5d9de;
     --banner:#ffffff; --footer:#ffffff;
-    --txt:#f4f6f6; --muted:#b5bcc4; --accent:#0bd1d1;
+    --txt:#1a1f26; --muted:#5a6672; --accent:#0bd1d1;
     --tag1:#089c9c; --tag2:#6c5ce7; --tag3:#e8912a;
     --ok:#2ea043; --pending:#d29922;
     --footer-txt:#1c1c23; --footer-muted:#5a6672; --footer-line:#e2e6ea;
@@ -48,8 +48,8 @@
   .row .info b{display:block;font-size:14px}
   .row .info span{font-size:12px;color:var(--muted)}
   .status{font-size:12px;padding:3px 8px;border-radius:20px;font-weight:600;white-space:nowrap;flex:none}
-  .status.ok{background:rgba(46,160,67,.2);color:#5fd07a}
-  .status.pending{background:rgba(210,153,34,.2);color:#e3b64a}
+  .status.ok{background:rgba(46,160,67,.2);color:#1e7a35}
+  .status.pending{background:rgba(210,153,34,.2);color:#8a5f00}
   .amount{font-weight:700;font-size:15px;min-width:60px;text-align:right;flex:none}
  
   .demo-note{text-align:left;color:#5a6672;font-size:14px;font-style:italic;margin:0 0 18px;white-space:nowrap;line-height:1.6}
@@ -61,8 +61,8 @@
   .nav-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:0 0 32px}
   @media(max-width:600px){.nav-grid{grid-template-columns:repeat(2,1fr)}}
   .nav-tile{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:14px;text-align:center;color:var(--txt);text-decoration:none;transition:transform .1s,background .1s}
-  .nav-tile:hover{transform:translateY(-2px);background:var(--accent);color:#fff}
-  .nav-tile img{width:34px;height:34px;object-fit:contain;filter:invert(1) brightness(1.6)}
+  .nav-tile:hover{transform:translateY(-2px);background:var(--accent);color:#0b1f1f}
+  .nav-tile img{width:34px;height:34px;object-fit:contain;filter:none}
   .nav-tile span{display:block;margin-top:8px;font-size:11px;font-weight:600}
   .promo{background:linear-gradient(135deg,var(--card),var(--card2));border:1px solid var(--line);border-radius:14px;padding:20px;color:var(--txt);display:flex;flex-direction:column;height:100%}
   .promo h3{margin:0 0 6px;font-size:15px}
@@ -85,8 +85,8 @@
   @media(max-width:760px){.help-grid,.help-grid-3{grid-template-columns:repeat(2,1fr)}}
   @media(max-width:420px){.help-grid,.help-grid-3{grid-template-columns:1fr}}
   .help-tile{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:21px 14px;text-align:center;color:var(--txt);text-decoration:none;transition:transform .1s,background .1s;display:flex;flex-direction:column;align-items:center;gap:11px}
-  .help-tile:hover{transform:translateY(-2px);background:var(--accent);color:#fff}
-  .help-tile img{width:42px;height:42px;object-fit:contain;filter:invert(1) brightness(1.6)}
+  .help-tile:hover{transform:translateY(-2px);background:var(--accent);color:#0b1f1f}
+  .help-tile img{width:42px;height:42px;object-fit:contain;filter:none}
   .help-tile span{font-size:12px;font-weight:600}
  
   /* ---- Bandeau langue pleine largeur, collé au footer ---- */
