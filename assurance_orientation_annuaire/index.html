@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Orientation des appels Assurance</title>
+<style>
+  :root{
+    --bg:#f5f4f0; --card:#ffffff; --card2:#ece9e2; --line:#e3dfd6;
+    --txt:#000000; --muted:#4a4a4a; --accent:#7fd6c8;
+    --ok:#1e7a33; --pending:#8a5d00;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{display:flex;flex-direction:column;margin:0;overflow-x:hidden;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--txt);padding:8px}
+  .layout{flex:1;min-height:0;display:grid;grid-template-columns:minmax(250px,.6fr) 1.4fr;gap:10px;align-items:stretch}
+  @media(max-width:820px){html,body{height:auto}.layout{flex:none;grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px;min-height:0;overflow:auto}
+  .card h2{font-size:15px;margin:0 0 6px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+
+  /* ---- Questions ---- */
+  .step{display:flex;gap:10px;padding:7px 0;border-top:1px solid var(--line)}
+  .step:first-of-type{border-top:none;padding-top:2px}
+  .step.enter{animation:in .25s ease-out}
+  @keyframes in{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+  .num{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#000;font-weight:700;font-size:13px;display:grid;place-items:center;flex:none}
+  .step .body{flex:1;min-width:0}
+  .step label.q{display:block;font-weight:600;font-size:13px;line-height:1.25;margin-bottom:5px}
+  select{width:100%;background:var(--card);color:var(--txt);border:1.5px solid #bdb8ab;border-radius:8px;padding:6px 8px;font-size:12.5px;cursor:pointer}
+  select:focus,.tick input:focus-visible+span{outline:2px solid #000;outline-offset:2px}
+  .ticks{display:flex;gap:10px;flex-wrap:wrap}
+  .tick{display:flex;align-items:center;gap:8px;border:1.5px solid #bdb8ab;border-radius:8px;padding:5px 12px;cursor:pointer;font-size:12.5px;font-weight:600;user-select:none}
+  .tick input{position:absolute;opacity:0;pointer-events:none}
+  .tick .box{width:17px;height:17px;border:2px solid #000;border-radius:4px;display:grid;place-items:center;flex:none;background:#fff}
+  .tick input:checked+.box{background:var(--accent)}
+  .tick input:checked+.box::after{content:"";width:4px;height:9px;border:solid #000;border-width:0 2px 2px 0;transform:rotate(45deg) translate(-1px,-1px)}
+  .tick:has(input:checked){border-color:#000;background:#e9f8f5}
+  .btn{background:var(--accent);color:#000;border:none;border-radius:8px;padding:5px 11px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;min-width:72px}
+  .btn:hover{filter:brightness(.95)}
+  .btn.ghost{background:#fff;border:1.5px solid #000;padding:3px 9px;font-size:11px}
+  .btn:disabled{background:var(--card2);color:#8a8578;cursor:not-allowed;filter:none}
+
+  /* ---- Annuaire ---- */
+  .head{display:flex;align-items:baseline;gap:4px 12px;flex-wrap:wrap;padding:0 4px 6px}
+  h1{font-size:18px;margin:0}
+  h1 .name{background:linear-gradient(transparent 62%,var(--accent) 62%)}
+  .sub{color:var(--muted);margin:0;font-size:12px}
+  .count{font-size:12px;font-weight:600;color:var(--muted)}
+  #consigne .note{margin:8px 0 0}
+  th{position:sticky;top:0;background:var(--card);z-index:1}
+  .empty-row td{color:var(--muted);font-style:italic}
+  .note{background:#e9f8f5;border-left:4px solid var(--accent);border-radius:6px;padding:6px 10px;font-size:12.5px;line-height:1.35;margin:0 0 6px}
+  .placeholder{color:var(--muted);font-style:italic;font-size:13px;margin:0}
+  .table-wrap{overflow:visible}
+  table{width:100%;border-collapse:collapse;font-size:12.5px}
+  th{text-align:left;font-size:11px;color:var(--muted);font-weight:600;padding:4px 6px;border-bottom:2px solid var(--line)}
+  td{padding:4px 6px;border-bottom:1px solid var(--line);vertical-align:middle;white-space:nowrap}
+  tr:last-child td{border-bottom:none}
+  td .svc{display:block;font-size:11px;color:var(--muted);line-height:1.2}
+  td.tel{font-variant-numeric:tabular-nums;white-space:nowrap;font-weight:600;font-size:12px}
+  .status{font-size:11.5px;padding:2px 8px;border-radius:20px;font-weight:600;display:inline-flex;align-items:center;gap:6px}
+  .status::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor;flex:none}
+  td:nth-child(4){white-space:normal;min-width:110px}
+  .status.dispo{background:rgba(46,160,67,.15);color:var(--ok)}
+  .status.hors{background:#e8e6e0;color:#555}
+  .status.absent{background:rgba(210,153,34,.18);color:var(--pending)}
+
+  .toast{position:fixed;left:50%;bottom:12px;transform:translateX(-50%);background:#000;color:#fff;padding:10px 16px;border-radius:10px;font-size:13px;box-shadow:0 6px 20px rgba(0,0,0,.25);opacity:0;pointer-events:none;transition:opacity .2s;max-width:90vw;text-align:center;z-index:10}
+  .toast.show{opacity:1}
+</style>
+</head>
+<body>
+<div class="head">
+  <h1>Orientation des appels <span class="name">Assurance</span></h1>
+  <p class="sub">Centre de relation client – Assurance de biens et de personnes</p>
+</div>
+<div class="layout">
+  <section class="card" aria-labelledby="t-questions">
+    <h2 id="t-questions">Questions à poser à l'appelant <button class="btn ghost" id="reset" type="button">Réinitialiser</button></h2>
+    <div id="steps"></div>
+    <div id="consigne" aria-live="polite"></div>
+  </section>
+
+  <section class="card" aria-labelledby="t-result" aria-live="polite">
+    <h2 id="t-result">Annuaire <span class="count" id="count"></span></h2>
+    <div id="result"></div>
+  </section>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+/* =====================================================================
+   DONNEES — services, personnes (fictives) et arbre de questions
+   ===================================================================== */
+const SERVICES = {
+  CB:  {sigle:"",  nom:"Conseil Assurances de biens"},
+  CP:  {sigle:"",  nom:"Conseil Assurances de personnes"},
+  SIN: {sigle:"",  nom:"Sinistres Auto & Habitation"},
+  PRE: {sigle:"",  nom:"Prestations Santé & Prévoyance"},
+  ASS: {sigle:"",  nom:"Assistance 24/7"},
+  CTR: {sigle:"",  nom:"Gestion des contrats"},
+  PAR: {sigle:"",  nom:"Relations partenaires & experts"}
+};
+/* status : dispo | hors | absent (until = date de retour) — numéros de la plage fictive 01 99 00 xx xx */
+const PEOPLE = [
+  {n:"Camille Durand", s:"CB", t:"01 99 00 12 01", st:"dispo"},
+  {n:"Karim Benali", s:"CB", t:"01 99 00 12 02", st:"dispo"},
+  {n:"Sophie Lambert", s:"CB", t:"01 99 00 12 03", st:"absent", until:"6 nov."},
+  {n:"Mathilde Chevalier", s:"CB", t:"01 99 00 12 04", st:"hors"},
+  {n:"Nicolas Perrot", s:"CB", t:"01 99 00 12 05", st:"dispo"},
+  {n:"Julien Moreau", s:"CP", t:"01 99 00 22 01", st:"dispo"},
+  {n:"Nadia Haddad", s:"CP", t:"01 99 00 22 02", st:"hors"},
+  {n:"Thomas Girard", s:"CP", t:"01 99 00 22 03", st:"absent", until:"4 nov."},
+  {n:"Laure Bertrand", s:"CP", t:"01 99 00 22 04", st:"dispo"},
+  {n:"Mehdi Kaci", s:"CP", t:"01 99 00 22 05", st:"dispo"},
+  {n:"Claire Fontaine", s:"SIN", t:"01 99 00 32 01", st:"dispo"},
+  {n:"Mamadou Diallo", s:"SIN", t:"01 99 00 32 02", st:"dispo"},
+  {n:"Isabelle Roux", s:"SIN", t:"01 99 00 32 03", st:"absent", until:"3 nov."},
+  {n:"Valérie Dupuis", s:"SIN", t:"01 99 00 32 04", st:"hors"},
+  {n:"Omar Sylla", s:"SIN", t:"01 99 00 32 05", st:"dispo"},
+  {n:"Pierre Lefèvre", s:"PRE", t:"01 99 00 42 01", st:"dispo"},
+  {n:"Léa Martin", s:"PRE", t:"01 99 00 42 02", st:"dispo"},
+  {n:"Gaëlle Monnier", s:"PRE", t:"01 99 00 42 03", st:"hors"},
+  {n:"Lucas Berger", s:"PRE", t:"01 99 00 42 04", st:"dispo"},
+  {n:"Aurélie Colas", s:"PRE", t:"01 99 00 42 05", st:"absent", until:"9 nov."},
+  {n:"Élodie Vasseur", s:"ASS", t:"01 99 00 52 01", st:"dispo"},
+  {n:"Sandrine Petit", s:"ASS", t:"01 99 00 52 02", st:"dispo"},
+  {n:"Vincent Aubert", s:"ASS", t:"01 99 00 52 03", st:"dispo"},
+  {n:"Leïla Chaoui", s:"ASS", t:"01 99 00 52 04", st:"dispo"},
+  {n:"Damien Fournier", s:"ASS", t:"01 99 00 52 05", st:"hors"},
+  {n:"Yann Le Gall", s:"CTR", t:"01 99 00 62 01", st:"dispo"},
+  {n:"Fatou Camara", s:"CTR", t:"01 99 00 62 02", st:"dispo"},
+  {n:"Bastien Roy", s:"CTR", t:"01 99 00 62 03", st:"hors"},
+  {n:"Mélanie Guillot", s:"CTR", t:"01 99 00 62 04", st:"absent", until:"2 nov."},
+  {n:"Idriss Traoré", s:"CTR", t:"01 99 00 62 05", st:"dispo"},
+  {n:"Stéphane Dubois", s:"PAR", t:"01 99 00 82 01", st:"dispo"},
+  {n:"Anaïs Perrin", s:"PAR", t:"01 99 00 82 02", st:"absent", until:"5 nov."},
+  {n:"Rachid Meziane", s:"PAR", t:"01 99 00 82 03", st:"dispo"},
+  {n:"Kévin Alves", s:"PAR", t:"01 99 00 82 04", st:"hors"},
+  {n:"Agnès Moulin", s:"PAR", t:"01 99 00 82 05", st:"dispo"}
+];
+
+/* Arbre : un noeud = {q, type:"select"|"yesno", options:[{label, next | result}]}
+   Une feuille (result) = {services:[ids], note} */
+const R = (services, note) => ({result:{services, note}});
+const oui = r => Object.assign({label:"Oui"}, r), non = r => Object.assign({label:"Non"}, r);
+const opts = (labels, next) => labels.map(label => ({label, next}));
+
+/* --- Renseignements produit --- */
+const Q3_cb = {q:"L'appelant est-il déjà client ?", type:"yesno", options:[
+  oui(R(["CB"], "Client existant : vérifier l'identité, rappeler les contrats détenus puis transférer au Conseil Assurances de biens pour une extension ou un nouveau devis.")),
+  non(R(["CB"], "Prospect : relever le besoin (bien à assurer, valeur, usage) puis transférer pour un devis."))]};
+const Q3_cp = {q:"L'appelant souhaite-t-il un devis ou seulement des informations ?", type:"yesno", options:[
+  oui(R(["CP"], "Devis : relever l'âge, la situation familiale et le besoin de couverture, puis transférer au Conseil Assurances de personnes.")),
+  non(R(["CP"], "Renseignement général sur les garanties et les délais de carence : transférer au Conseil Assurances de personnes."))]};
+
+/* --- Déclaration de sinistre --- */
+const Q3_auto = {q:"Y a-t-il des blessés ou le véhicule est-il immobilisé sur la route ?", type:"yesno", options:[
+  oui(R(["ASS","SIN"], "Blessé : inviter l'appelant à appeler le 15 ou le 112 en priorité. Véhicule immobilisé : transférer à l'Assistance 24/7 (dépannage), puis ouvrir le dossier avec Sinistres Auto & Habitation.")),
+  non(R(["SIN"], "Relever la date, le lieu, les circonstances et les tiers impliqués, puis transférer à Sinistres Auto & Habitation pour l'ouverture du dossier."))]};
+const Q3_hab = {q:"Le logement est-il inhabitable ou le dégât en cours (fuite, incendie) ?", type:"yesno", options:[
+  oui(R(["ASS","SIN"], "Urgence : transférer à l'Assistance 24/7 (mise en sécurité, relogement) ; en cas d'incendie ou de danger, inviter à appeler le 18 ou le 112. Ouvrir ensuite le dossier avec Sinistres Auto & Habitation.")),
+  non(R(["SIN"], "Relever la nature du dégât et les biens touchés (photos à conserver), puis transférer à Sinistres Auto & Habitation."))]};
+const Q3_sante = {q:"Une hospitalisation ou des soins sont-ils déjà en cours ?", type:"yesno", options:[
+  oui(R(["PRE"], "Demander le numéro d'adhérent puis transférer aux Prestations pour une prise en charge ou une demande d'accord préalable.")),
+  non(R(["PRE"], "Remboursement ou déclaration : transférer aux Prestations Santé & Prévoyance pour constituer le dossier."))]};
+const Q3_deces = {q:"L'appelant est-il un proche ou un bénéficiaire du contrat ?", type:"yesno", options:[
+  oui(R(["PRE"], "Appel sensible : écoute et empathie, relever le nom de l'assuré puis transférer aux Prestations Santé & Prévoyance sans faire répéter la situation.")),
+  non(R(["PRE"], "Assuré ou représentant : vérifier l'identité puis transférer aux Prestations Santé & Prévoyance."))]};
+
+/* --- Suivi de dossier --- */
+const Q3_suivi = {q:"Un expert ou un réparateur a-t-il déjà été mandaté ?", type:"yesno", options:[
+  oui(R(["SIN","PAR"], "Relever le numéro de dossier puis transférer au gestionnaire ; pour le rapport d'expertise, orienter vers Relations partenaires & experts.")),
+  non(R(["SIN"], "Demander le numéro de dossier et la date de déclaration, puis transférer au gestionnaire sinistre."))]};
+
+const Q3_ctr = {q:"La demande est-elle urgente (résiliation, échéance, prélèvement rejeté) ?", type:"yesno", options:[
+  oui(R(["CTR"], "Demande urgente : vérifier l'identité puis transférer immédiatement à la Gestion des contrats.")),
+  non(R(["CTR"], "Modification courante (adresse, RIB, bénéficiaire) : transférer à la Gestion des contrats."))]};
+const Q3_par = {q:"L'appelant est-il un partenaire référencé (garage, expert, médecin) ?", type:"yesno", options:[
+  oui(R(["PAR"], "Partenaire : demander le numéro de dossier ou de convention puis transférer à Relations partenaires & experts.")),
+  non(R([], "Ce n'est pas un partenaire : reprendre l'arbre à la première question."))]};
+
+const TREE = {q:"Quel est le motif principal de l'appel ?", type:"select", options:[
+  {label:"Informations sur un produit d'assurance de biens", next:{q:"Quel bien l'appelant souhaite-t-il assurer ?", type:"select",
+    options:opts(["Automobile","Habitation (propriétaire ou locataire)","Deux-roues, bateau, autre véhicule","Objets de valeur, responsabilité civile"], Q3_cb)}},
+  {label:"Informations sur un produit d'assurance de personnes", next:{q:"Quel type de couverture est concerné ?", type:"select",
+    options:opts(["Complémentaire santé","Prévoyance (arrêt de travail, invalidité, décès)","Assurance vie et épargne","Protection de la famille (obsèques, dépendance)"], Q3_cp)}},
+  {label:"Déclarer un sinistre", next:{q:"Quel est le type de sinistre ?", type:"select", options:[
+    {label:"Accident, vol ou bris de glace (auto)", next:Q3_auto},
+    {label:"Dégât des eaux, incendie, vol ou tempête (habitation)", next:Q3_hab},
+    {label:"Hospitalisation ou soins (santé)", next:Q3_sante},
+    {label:"Arrêt de travail, invalidité ou décès (prévoyance)", next:Q3_deces}]}},
+  {label:"Suivre un sinistre ou un dossier en cours", next:{q:"Quel est le type de dossier ?", type:"select",
+    options:opts(["Sinistre auto","Sinistre habitation","Remboursement ou prestation santé"], Q3_suivi)}},
+  {label:"Mon contrat ou mes cotisations", next:{q:"Quelle est la demande ?", type:"select",
+    options:opts(["Modifier mes informations ou mon contrat","Cotisation, échéancier ou prélèvement","Résilier ou renouveler","Attestation d'assurance"], Q3_ctr)}},
+  {label:"Appel d'un partenaire (garage, expert, professionnel de santé)", next:{q:"Quel est l'objet de l'appel ?", type:"select",
+    options:opts(["Devis ou facture de réparation","Rapport d'expertise","Tiers payant ou prise en charge"], Q3_par)}}
+]};
+
+/* =====================================================================
+   LOGIQUE
+   ===================================================================== */
+let answers = [];            // index de l'option choisie à chaque niveau
+let shownCount = 1;          // pour animer seulement la question qui vient d'apparaître
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+function walk(){
+  const path = []; let node = TREE;
+  for(let i = 0; node && i <= answers.length; i++){
+    path.push({node, chosen: answers[i]});
+    const opt = node.options[answers[i]];
+    if(!opt){ node = null; break; }
+    if(opt.result){ return {path, result: opt.result, label: opt.label}; }
+    node = opt.next;
+  }
+  return {path, result: null};
+}
+
+function render(){
+  const {path, result} = walk();
+  const steps = $("steps");
+  steps.innerHTML = "";
+  path.forEach((p, i) => {
+    const div = document.createElement("div");
+    div.className = "step" + (i === path.length - 1 && path.length > shownCount ? " enter" : "");
+    let ctrl;
+    if(p.node.type === "select"){
+      ctrl = `<select id="q${i}" data-level="${i}"><option value="">Choisir une réponse…</option>` +
+        p.node.options.map((o, k) => `<option value="${k}"${p.chosen === k ? " selected" : ""}>${esc(o.label)}</option>`).join("") + `</select>`;
+    } else {
+      ctrl = `<div class="ticks">` + p.node.options.map((o, k) =>
+        `<label class="tick"><input type="checkbox" data-level="${i}" data-k="${k}"${p.chosen === k ? " checked" : ""}><span class="box"></span>${esc(o.label)}</label>`).join("") + `</div>`;
+    }
+    div.innerHTML = `<span class="num">${i + 1}</span><div class="body"><label class="q" for="q${i}">${esc(p.node.q)}</label>${ctrl}</div>`;
+    steps.appendChild(div);
+  });
+  shownCount = path.length;
+
+  renderDirectory(path, result);
+}
+
+function leafServices(opt){
+  if(opt.result) return opt.result.services;
+  const out = [];
+  opt.next.options.forEach(o => leafServices(o).forEach(s => { if(!out.includes(s)) out.push(s); }));
+  return out;
+}
+
+/* Par défaut : tout l'annuaire. Chaque réponse restreint aux services encore possibles. */
+function renderDirectory(path, result){
+  const answered = path.filter(p => p.chosen !== undefined);
+  let allowed = null;                       // null = tout l'annuaire
+  if(answered.length){
+    const last = answered[answered.length - 1];
+    allowed = leafServices(last.node.options[last.chosen]);
+  }
+  const rank = Object.keys(SERVICES);
+  const order = {dispo:0, hors:1, absent:2};
+  const rows = PEOPLE.filter(p => !allowed || allowed.includes(p.s))
+    .sort((a, b) => rank.indexOf(a.s) - rank.indexOf(b.s) || order[a.st] - order[b.st]);
+
+  $("count").textContent = `${rows.length} contact${rows.length > 1 ? "s" : ""}`;
+  $("consigne").innerHTML = result ? `<p class="note"><strong>Consigne :</strong> ${esc(result.note)}</p>` : "";
+
+  const box = $("result");
+  const body = rows.length ? rows.map(p => {
+    const s = SERVICES[p.s];
+    const label = p.st === "dispo" ? "Disponible" : p.st === "hors" ? "Hors ligne" : `Absent jusqu'au ${esc(p.until)}`;
+    return `<tr><td><strong>${esc(p.n)}</strong></td>` +
+      `<td title="${esc(s.nom)}">${s.sigle ? esc(s.sigle) : esc(s.nom)}</td>` +
+      `<td class="tel">${esc(p.t)}</td><td><span class="status ${p.st}">${label}</span></td>` +
+      `<td><button class="btn" type="button" data-name="${esc(p.n)}" data-tel="${esc(p.t)}">Copier</button></td></tr>`;
+  }).join("") : `<tr class="empty-row"><td colspan="5">Aucun interlocuteur pour cette réponse.</td></tr>`;
+  box.innerHTML = `<div class="table-wrap"><table><thead><tr><th>Personne</th><th>Service</th><th>Téléphone</th><th>Statut</th><th></th></tr></thead><tbody>${body}</tbody></table></div>`;
+}
+
+function toast(msg){
+  const t = $("toast"); t.textContent = msg; t.classList.add("show");
+  clearTimeout(toast.tm); toast.tm = setTimeout(() => t.classList.remove("show"), 3500);
+}
+
+$("steps").addEventListener("change", e => {
+  const el = e.target, level = +el.dataset.level;
+  if(el.tagName === "SELECT"){
+    answers = answers.slice(0, level);
+    if(el.value !== "") answers[level] = +el.value;
+  } else {
+    answers = answers.slice(0, level);
+    if(el.checked) answers[level] = +el.dataset.k;
+  }
+  render();
+});
+/* Copie du numéro : API clipboard, avec repli execCommand (iframes sans autorisation clipboard-write) */
+function copyText(text){
+  const fallback = () => {
+    const ta = document.createElement("textarea");
+    ta.value = text; ta.setAttribute("readonly", ""); ta.style.cssText = "position:fixed;top:0;left:0;opacity:0";
+    document.body.appendChild(ta); ta.select();
+    let ok = false; try { ok = document.execCommand("copy"); } catch(_) {}
+    ta.remove(); return ok;
+  };
+  if(navigator.clipboard && window.isSecureContext){
+    return navigator.clipboard.writeText(text).then(() => true, () => fallback());
+  }
+  return Promise.resolve(fallback());
+}
+$("result").addEventListener("click", e => {
+  const b = e.target.closest("button[data-tel]");
+  if(!b) return;
+  copyText(b.dataset.tel).then(ok => {
+    if(!ok){ toast(`Copie impossible : ${b.dataset.tel}`); return; }
+    const prev = b.textContent; b.textContent = "Copié ✓";
+    clearTimeout(b._tm); b._tm = setTimeout(() => { b.textContent = prev; }, 1500);
+    toast(`Numéro copié : ${b.dataset.tel} (${b.dataset.name})`);
+  });
+});
+$("reset").addEventListener("click", () => { answers = []; shownCount = 1; render(); });
+
+render();
+</script>
+</body>
+</html>
