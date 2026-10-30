@@ -7,7 +7,7 @@
 <style>
   :root{
     --bg:#f5f4f0; --card:#ffffff; --card2:#ece9e2; --line:#e3dfd6;
-    --txt:#000000; --muted:#4a4a4a; --accent:#7fd6c8;
+    --txt:#000000; --muted:#4a4a4a; --accent:#ea5b44;
     --ok:#1e7a33; --pending:#8a5d00;
   }
   *{box-sizing:border-box}
@@ -34,7 +34,7 @@
   .tick .box{width:17px;height:17px;border:2px solid #000;border-radius:4px;display:grid;place-items:center;flex:none;background:#fff}
   .tick input:checked+.box{background:var(--accent)}
   .tick input:checked+.box::after{content:"";width:4px;height:9px;border:solid #000;border-width:0 2px 2px 0;transform:rotate(45deg) translate(-1px,-1px)}
-  .tick:has(input:checked){border-color:#000;background:#e9f8f5}
+  .tick:has(input:checked){border-color:#000;background:#fdeeea}
   .btn{background:var(--accent);color:#000;border:none;border-radius:8px;padding:5px 11px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;min-width:72px}
   .btn:hover{filter:brightness(.95)}
   .btn.ghost{background:#fff;border:1.5px solid #000;padding:3px 9px;font-size:11px}
@@ -49,7 +49,7 @@
   #consigne .note{margin:8px 0 0}
   th{position:sticky;top:0;background:var(--card);z-index:1}
   .empty-row td{color:var(--muted);font-style:italic}
-  .note{background:#e9f8f5;border-left:4px solid var(--accent);border-radius:6px;padding:6px 10px;font-size:12.5px;line-height:1.35;margin:0 0 6px}
+  .note{background:#fdeeea;border-left:4px solid var(--accent);border-radius:6px;padding:6px 10px;font-size:12.5px;line-height:1.35;margin:0 0 6px}
   .placeholder{color:var(--muted);font-style:italic;font-size:13px;margin:0}
   .table-wrap{overflow:visible}
   table{width:100%;border-collapse:collapse;font-size:12.5px}
