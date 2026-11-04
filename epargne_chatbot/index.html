@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>La France Mutualiste - Mon espace épargnant</title>
+<title>Finaxy - Mon espace client</title>
 <style>
   /* =====================================================================
      THEME — seules ces variables changent d'un client a l'autre.
@@ -11,14 +11,12 @@
      --tag1/2/3 : pastilles de categorie dans le bandeau BLOCS N°1
      ===================================================================== */
   :root{
-    --bg:#eef3f5; --card:#ffffff; --card2:#e3eef2; --line:transparent; --row-line:#e3eef2;
-    --banner:#f3f6f7; --footer:#022531;
-    --txt:#022531; --muted:#5a6672; --accent:#043d4f;
-    --tag1:#043d4f; --tag2:#17aae3; --tag3:#2e8b6e;
+    --bg:#ffffff; --card:#191853; --card2:#2a2a6e; --line:#33338a;
+    --banner:#f4f1eb; --footer:#191853;
+    --txt:#f4f1eb; --muted:#c3c2e0; --accent:#191853; --accent-on-dark:#f4f1eb;
+    --tag1:#5b7cfa; --tag2:#2ea58c; --tag3:#c9953a;
     --ok:#2ea043; --pending:#d29922;
-    --ok-bg:rgba(46,160,67,.15); --ok-txt:#1f7a35; --pending-bg:rgba(210,153,34,.18); --pending-txt:#8a5d00;
-    --icon-filter:none; --icon-filter-hover:invert(1) brightness(2);
-    --footer-txt:#ffffff; --footer-muted:#cdd4db; --footer-line:#022531;
+    --footer-txt:#ffffff; --footer-muted:#d4d3ea; --footer-line:#191853;
   }
   *{box-sizing:border-box}
   body{margin:0;overflow-x:hidden;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:#1a1f26}
@@ -41,8 +39,8 @@
   .col-left{display:flex;flex-direction:column;gap:20px}
   .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 18px;color:var(--txt)}
   .card h2{font-size:16px;margin:0 0 8px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
-  .card h2 a{font-size:13px;color:var(--accent);text-decoration:none}
-  .row{display:flex;align-items:center;gap:12px;padding:7px 0;border-bottom:1px solid var(--row-line)}
+  .card h2 a{font-size:13px;color:var(--accent-on-dark);text-decoration:none}
+  .row{display:flex;align-items:center;gap:12px;padding:7px 0;border-bottom:1px solid var(--line)}
   .row:last-child{border-bottom:none}
   .tag{width:40px;height:40px;border-radius:8px;display:grid;place-items:center;font-size:12px;font-weight:700;color:#fff;flex:none}
   .tag.t1{background:var(--tag1)} .tag.t2{background:var(--tag2)} .tag.t3{background:var(--tag3)}
@@ -50,13 +48,10 @@
   .row .info b{display:block;font-size:14px}
   .row .info span{font-size:12px;color:var(--muted)}
   .status{font-size:12px;padding:3px 8px;border-radius:20px;font-weight:600;white-space:nowrap;flex:none}
-  .status.ok{background:var(--ok-bg);color:var(--ok-txt)}
-  .status.pending{background:var(--pending-bg);color:var(--pending-txt)}
+  .status.ok{background:rgba(46,160,67,.2);color:#5fd07a}
+  .status.pending{background:rgba(210,153,34,.2);color:#e3b64a}
   .amount{font-weight:700;font-size:15px;min-width:60px;text-align:right;flex:none}
  
-  .demo-row{display:flex;align-items:center;gap:18px;margin:0 0 18px}
-  .demo-row .logo{flex:none}
-  .demo-row .demo-note{margin:0}
   .demo-note{text-align:left;color:#5a6672;font-size:14px;font-style:italic;margin:0 0 18px;white-space:nowrap;line-height:1.6}
   .section-title{font-size:26px;font-weight:700;margin:0 0 14px;text-align:left;color:#1a1f26}
   .section-title.spaced{margin-top:1.5cm}
@@ -66,16 +61,17 @@
   .nav-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:0 0 32px}
   @media(max-width:600px){.nav-grid{grid-template-columns:repeat(2,1fr)}}
   .nav-tile{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:14px;text-align:center;color:var(--txt);text-decoration:none;transition:transform .1s,background .1s}
-  .nav-tile:hover{transform:translateY(-2px);background:var(--accent);color:#fff}
-  .nav-tile img{width:34px;height:34px;object-fit:contain;filter:var(--icon-filter)}
-  .nav-tile:hover img{filter:var(--icon-filter-hover)}
+  .nav-tile:hover{transform:scale(1.04)}
+  .nav-tile img{width:34px;height:34px;object-fit:contain;filter:invert(1) brightness(1.6)}
   .nav-tile span{display:block;margin-top:8px;font-size:11px;font-weight:600}
+  .card,.promo{transition:transform .15s}
+  .card:hover,.promo:hover{transform:scale(1.01)}
   .promo{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;color:var(--txt);display:flex;flex-direction:column;height:100%}
   .promo h3{margin:0 0 6px;font-size:15px}
   .promo p{margin:0 0 14px;color:var(--muted);font-size:13px}
   .promo img{width:100%;border-radius:10px;display:block;flex:1 1 0;height:0;min-height:0;object-fit:cover}
   .progress{height:8px;background:var(--card2);border-radius:20px;overflow:hidden;margin:12px 0 6px}
-  .progress i{display:block;height:100%;width:55%;background:var(--accent)}
+  .progress i{display:block;height:100%;width:55%;background:var(--accent-on-dark)}
   .achieve b{font-size:22px}
   .achieve span{color:var(--muted);font-size:13px}
  
@@ -91,9 +87,8 @@
   @media(max-width:760px){.help-grid,.help-grid-3{grid-template-columns:repeat(2,1fr)}}
   @media(max-width:420px){.help-grid,.help-grid-3{grid-template-columns:1fr}}
   .help-tile{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:21px 14px;text-align:center;color:var(--txt);text-decoration:none;transition:transform .1s,background .1s;display:flex;flex-direction:column;align-items:center;gap:11px}
-  .help-tile:hover{transform:translateY(-2px);background:var(--accent);color:#fff}
-  .help-tile img{width:42px;height:42px;object-fit:contain;filter:var(--icon-filter)}
-  .help-tile:hover img{filter:var(--icon-filter-hover)}
+  .help-tile:hover{transform:scale(1.04)}
+  .help-tile img{width:42px;height:42px;object-fit:contain;filter:invert(1) brightness(1.6)}
   .help-tile span{font-size:12px;font-weight:600}
  
   /* ---- Bandeau langue pleine largeur, collé au footer ---- */
@@ -118,93 +113,92 @@
 <body>
 <!-- ============ BANDEAU 1/10 : HEADER (logo + nom client, menu, utilisateur) ============ -->
 <header>
-  <div class="brand"></div>
+  <div class="brand"><img class="logo" src="https://www.finaxy.com/wp-content/uploads/2026/09/media_2026_08_logo-finaxy-baseline-mini-nacre.svg" alt="Finaxy"></div>
   <nav>
-    <a href="#" class="active">Mon espace</a><a href="#">Mes contrats</a><a href="#">Épargne retraite</a><a href="#">Assurance vie</a><a href="#">Mes documents</a><a href="#">Aide</a>
+    <a href="#" class="active">Mon espace</a><a href="#">Mes contrats</a><a href="#">Mes remboursements</a><a href="#">Mes documents</a><a href="#">Aide</a>
   </nav>
   <div class="user"><span class="avatar">AT</span><span>Andréas Trupin</span></div>
 </header>
  
 <main>
   <!-- ============ BANDEAU 2/10 : ALERTE DEMO DIABOLOCOM — NE JAMAIS SUPPRIMER ============ -->
-  <div class="demo-row"><img class="logo" src="https://www.malakoffhumanis.com/sites/smile/files/styles/header_image/public/images/logo%20LFM%20%281%29.png.webp?itok=liBF-FLj" alt="La France Mutualiste">
-  <p class="demo-note">Ceci est un site de démonstration conçu par l'équipe Presales de Diabolocom afin de tester les fonctionnalités du Chatbot.</p></div>
+  <p class="demo-note">Ceci est un site de démonstration conçu par l'équipe Presales de Diabolocom afin de tester les fonctionnalités du Chatbot.</p>
   <!-- ============ BANDEAU 3/10 : SALUTATION (titre + sous-titre + bouton) ============ -->
   <h1>Bonjour <span class="name">Andréas</span></h1>
-  <p class="sub">Voici un aperçu de votre épargne au 22 octobre 2026.</p>
+  <p class="sub">Voici un aperçu de vos contrats d'assurance au 4 novembre 2026.</p>
   <button class="toggle" onclick="document.querySelectorAll('.amount').forEach(e=>e.style.visibility=e.style.visibility==='hidden'?'visible':'hidden')">Masquer les montants</button>
  
   <!-- ============ BANDEAU 4/10 : BLOCS N°1 (3 blocs : liste principale, encart promo, compteur) ============ -->
   <div class="grid">
     <div class="col-left">
     <div class="card">
-      <h2>Mes contrats et opérations <a href="#">Tout voir &rarr;</a></h2>
+      <h2>Mes contrats d'assurance <a href="#">Tout voir &rarr;</a></h2>
       <div class="row">
-        <div class="tag t1">PER</div>
-        <div class="info"><b>Plan d'Épargne Retraite individuel</b><span>Épargne retraite &middot; Contrat n° PER-204871</span></div>
+        <div class="tag t1">SA</div>
+        <div class="info"><b>Complémentaire santé</b><span>Santé &middot; Contrat n° FX-204871</span></div>
         <span class="status ok">Actif</span>
-        <div class="amount">18&nbsp;450&nbsp;&euro;</div>
+        <div class="amount">64&nbsp;&euro;/mois</div>
       </div>
       <div class="row">
-        <div class="tag t2">AV</div>
-        <div class="info"><b>Contrat d'assurance vie</b><span>Assurance vie &middot; Contrat n° AV-118342</span></div>
+        <div class="tag t2">HA</div>
+        <div class="info"><b>Assurance habitation</b><span>Habitation &middot; Contrat n° FX-118342</span></div>
         <span class="status ok">Actif</span>
-        <div class="amount">32&nbsp;780&nbsp;&euro;</div>
+        <div class="amount">22&nbsp;&euro;/mois</div>
       </div>
       <div class="row">
-        <div class="tag t3">VL</div>
-        <div class="info"><b>Versement libre sur le PER</b><span>Opération &middot; Demandée le 18 octobre 2026</span></div>
-        <span class="status pending">En cours de traitement</span>
-        <div class="amount">1&nbsp;500&nbsp;&euro;</div>
+        <div class="tag t3">PR</div>
+        <div class="info"><b>Prévoyance</b><span>Prévoyance &middot; Demande de souscription</span></div>
+        <span class="status pending">En cours d'étude</span>
+        <div class="amount">&ndash;</div>
       </div>
     </div>
  
     <div class="card">
-      <h2>Mon objectif d'épargne</h2>
-      <div class="achieve"><b>51&nbsp;230&nbsp;&euro;</b> <span>/ 93&nbsp;000&nbsp;&euro; visés pour la retraite</span></div>
-      <div class="progress"><i></i></div>
-      <span style="font-size:13px;color:var(--muted)">55 % de l'objectif atteint</span>
+      <h2>Ma demande de souscription</h2>
+      <div class="achieve"><b>4</b> <span>/ 6 pièces transmises</span></div>
+      <div class="progress"><i style="width:66%"></i></div>
+      <span style="font-size:13px;color:var(--muted)">Il vous reste 2 pièces à transmettre pour finaliser votre dossier</span>
     </div>
     </div>
  
     <div class="promo">
-      <h3>Moins d'impôts, plus de retraite</h3>
-      <p>Vos versements sur le PER peuvent être déduits de votre revenu imposable, dans certaines limites.</p>
-      <img src="https://www.la-france-mutualiste.fr/sites/default/files/2026-10/Group%2035547.png" alt="Moins d'impôts, plus de retraite">
+      <h3>Notre actualité</h3>
+      <p>Découvrez la nouvelle identité de Finaxy et les dernières nouvelles de votre courtier.</p>
+      <img src="https://www.finaxy.com/wp-content/uploads/2026/09/article-nouvelle-identite-920x598.jpg" alt="Notre actualité">
     </div>
   </div>
  
   <!-- ============ BANDEAU 5/10 : IMAGE (titre + visuel pleine largeur) ============ -->
-  <h2 class="section-title spaced">Votre épargne peut aussi avoir de l’<span class="name">impact</span></h2>
-  <img class="demo-img" src="https://www.la-france-mutualiste.fr/sites/default/files/styles/full_width_background_image/public/2026-09/Visuel%20-%20e%CC%81pargne%20qui%20a%20du%20sens%20-%20HP%20-%20V1%20%283%29.jpg?itok=S5GFzvD8" alt="Votre épargne peut aussi avoir de l’impact">
+  <h2 class="section-title spaced">Notre politique <span class="name">RH</span></h2>
+  <img class="demo-img" src="https://www.finaxy.com/wp-content/uploads/2026/10/bandeau-page-RH.jpg.webp" alt="Notre politique RH">
  
   <!-- ============ BANDEAU 6/10 : BLOCS N°2 (titre + 4 tuiles de services) ============ -->
   <h2 class="section-title spaced">Mes <span class="name">services</span></h2>
   <div class="nav-grid">
-    <a class="nav-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/512/117/117641.png" alt=""><span>Faire un versement</span></a>
+    <a class="nav-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/512/117/117641.png" alt=""><span>Mes contrats</span></a>
     <a class="nav-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/256/17/17004.png" alt=""><span>Mon profil</span></a>
-    <a class="nav-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/256/26/26589.png" alt=""><span>Mes opérations</span></a>
+    <a class="nav-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/256/26/26589.png" alt=""><span>Mes démarches</span></a>
     <a class="nav-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/512/10042/10042848.png" alt=""><span>FAQ</span></a>
   </div>
  
   <!-- Bandeau d'assistance pleine largeur, texte centré -->
   <!-- ============ BANDEAU 7/10 : TEXTE DESCRIPTIF (paragraphe gris pleine largeur) ============ -->
   <div class="support-banner">
-    <p>Une question sur votre épargne retraite, un versement ou la désignation de vos bénéficiaires ? Nos conseillers sont là pour vous accompagner à chaque étape de votre projet. Avant de nous contacter, pensez à consulter notre <strong>Foire aux questions</strong> ci-dessous : versements, rachats, fiscalité et sortie du PER y sont expliqués simplement. Vous ne trouvez pas votre réponse ? Cliquez sur «&nbsp;Nous contacter&nbsp;» et précisez le numéro du contrat concerné. Pour une demande de rachat ou de modification de bénéficiaire, pensez à joindre une pièce d'identité en cours de validité. Vous pouvez à tout moment ajuster vos versements programmés ou votre répartition entre supports depuis votre espace. Nos conseillers vous répondent du lundi au vendredi, généralement sous 48 heures ouvrées. Pour faire le point sur votre stratégie d'épargne, vous pouvez aussi prendre rendez-vous avec un conseiller.</p>
+    <p>Une question sur un contrat, un remboursement ou une déclaration de sinistre ? Votre courtier Finaxy est à vos côtés pour vous conseiller et vous accompagner dans toutes vos démarches d'assurance. Avant de nous contacter, pensez à consulter notre <strong>Foire aux questions</strong> ci-dessous : garanties, cotisations, remboursements et changements de situation y sont expliqués simplement. Vous ne trouvez pas votre réponse ? Cliquez sur «&nbsp;Nous contacter&nbsp;» en précisant le numéro du contrat concerné. Pour déclarer un sinistre, pensez à préparer les photos et les justificatifs utiles à l'instruction de votre dossier. Vous pouvez à tout moment retrouver vos attestations et vos documents depuis votre espace. Nos conseillers vous répondent du lundi au vendredi, généralement sous 48 heures ouvrées. Pour faire le point sur vos garanties, vous pouvez aussi demander un rendez-vous avec votre conseiller.</p>
   </div>
  
   <!-- ============ BANDEAU 8/10 : BLOCS N°3 (titre + 4 + 3 tuiles d'assistance) ============ -->
   <h2 class="section-title">Si vous avez besoin d'<span class="name">aide</span></h2>
   <!-- Rubriques : rangée de 4 -->
   <div class="help-grid">
-    <a class="help-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/512/4659/4659011.png" alt=""><span>Versements et rachats</span></a>
-    <a class="help-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/512/686/686589.png" alt=""><span>Bénéficiaires</span></a>
-    <a class="help-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/512/3092/3092920.png" alt=""><span>Fiscalité de l'épargne</span></a>
-    <a class="help-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/512/75/75668.png" alt=""><span>Sortie du PER à la retraite</span></a>
+    <a class="help-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/512/4659/4659011.png" alt=""><span>Mes cotisations</span></a>
+    <a class="help-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/512/686/686589.png" alt=""><span>Mes remboursements</span></a>
+    <a class="help-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/512/3092/3092920.png" alt=""><span>Déclarer un sinistre</span></a>
+    <a class="help-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/512/75/75668.png" alt=""><span>Modifier mon contrat</span></a>
   </div>
   <!-- Rubriques : rangée de 3 élargie -->
   <div class="help-grid help-grid-3">
-    <a class="help-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/512/545/545676.png" alt=""><span>Documents et attestations</span></a>
+    <a class="help-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/512/545/545676.png" alt=""><span>Attestations et documents</span></a>
     <a class="help-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/512/1034/1034153.png" alt=""><span>Nous contacter</span></a>
     <a class="help-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/512/348/348488.png" alt=""><span>Autres rubriques d'assistance</span></a>
   </div>
@@ -221,15 +215,14 @@
 <footer class="site">
   <div class="inner">
     <a href="#">Qui sommes-nous</a>
+    <a href="#">Nos expertises</a>
+    <a href="#">Carrières</a>
     <a href="#">Réclamations</a>
     <a href="#">Données personnelles</a>
     <a href="#">Mentions légales</a>
-    <a href="#">Cookies</a>
-    <a href="#">Contact</a>
     <span class="copy">&copy; Diabolocom, 2026</span>
   </div>
 </footer>
 <!-- ============ SNIPPET CHATBOT — coller ici le script de demo, ne rien mettre apres ============ -->
-<script src="https://fr2.chat.diabolocom.com/01a1627d-b8dd-70a6-96e1-016ec1924f28/config.js"></script>
 </body>
 </html>
