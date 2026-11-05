@@ -93,6 +93,34 @@
   <div style="background:#ffffff;border:1px dashed #b9a6cf;border-radius:4px;padding:7px 10px;">« Merci <i>[Prénom]</i> ! Pour résumer : <i>[projet, école pressentie, prochaine étape]</i>. Je reste disponible si vous avez d'autres questions. À très bientôt sur OMNES Education 🎓 »</div>
 </div>
 
+<!-- 6. AIDE À LA DISCUSSION (interactif) -->
+<div style="border-left:4px solid #5d0282;background:#f5f4f6;border-radius:0 6px 6px 0;padding:12px 14px;margin-bottom:12px;">
+  <div style="color:#5d0282;font-weight:bold;font-size:14px;margin-bottom:6px;">6 · Aide à la discussion</div>
+  <div style="margin-bottom:8px;color:#463362;">Cliquez sur le sujet évoqué par le candidat pour afficher une réponse suggérée :</div>
+  <div id="aide-choix" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;">
+    <button type="button" data-k="admission" style="cursor:pointer;background:#ffffff;color:#5d0282;border:1px solid #5d0282;border-radius:4px;padding:7px 10px;font:inherit;font-weight:bold;">🎓 Admission</button>
+    <button type="button" data-k="alternance" style="cursor:pointer;background:#ffffff;color:#5d0282;border:1px solid #5d0282;border-radius:4px;padding:7px 10px;font:inherit;font-weight:bold;">🤝 Alternance</button>
+    <button type="button" data-k="financement" style="cursor:pointer;background:#ffffff;color:#5d0282;border:1px solid #5d0282;border-radius:4px;padding:7px 10px;font:inherit;font-weight:bold;">💶 Financement</button>
+    <button type="button" data-k="international" style="cursor:pointer;background:#ffffff;color:#5d0282;border:1px solid #5d0282;border-radius:4px;padding:7px 10px;font:inherit;font-weight:bold;">🌍 Campus à l'étranger</button>
+    <button type="button" data-k="rdv" style="cursor:pointer;background:#ffffff;color:#5d0282;border:1px solid #5d0282;border-radius:4px;padding:7px 10px;font:inherit;font-weight:bold;">📞 Prendre rendez-vous</button>
+  </div>
+  <div id="aide-texte" style="background:#ffffff;border:1px dashed #b9a6cf;border-radius:4px;padding:8px 10px;color:#6b5a80;">Aucun sujet sélectionné.</div>
+  <button type="button" id="aide-copier" style="cursor:pointer;background:#ffffff;color:#5d0282;border:1px solid #5d0282;border-radius:4px;padding:7px 10px;font:inherit;font-weight:bold;margin-top:8px;display:none;">📋 Copier la réponse</button>
+</div>
+
+<!-- 7. AIDE ANNUAIRE (interactif) -->
+<div style="border-left:4px solid #5d0282;background:#f5f4f6;border-radius:0 6px 6px 0;padding:12px 14px;margin-bottom:12px;">
+  <div style="color:#5d0282;font-weight:bold;font-size:14px;margin-bottom:6px;">7 · Aide annuaire : vers qui transférer ?</div>
+  <div style="margin-bottom:8px;color:#463362;">Répondez aux questions pour obtenir le numéro du service à contacter :</div>
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="font-size:13px;">
+    <tr><td style="padding:3px 8px 3px 0;width:34%;"><b>Profil</b></td><td style="padding:3px 0;"><select id="ann-profil" style="width:100%;padding:7px 8px;border:1px solid #b9a6cf;border-radius:4px;font:inherit;background:#ffffff;color:#2b2233;"><option value="">Choisir…</option><option value="candidat">Candidat</option><option value="etudiant">Étudiant</option><option value="parent">Parent</option></select></td></tr>
+    <tr><td style="padding:3px 8px 3px 0;"><b>Sujet</b></td><td style="padding:3px 0;"><select id="ann-sujet" style="width:100%;padding:7px 8px;border:1px solid #b9a6cf;border-radius:4px;font:inherit;background:#ffffff;color:#2b2233;"><option value="">Choisir…</option><option value="admissions">Admissions</option><option value="financement">Financement</option><option value="alternance">Alternance</option><option value="scolarite">Scolarité</option></select></td></tr>
+    <tr><td style="padding:3px 8px 3px 0;"><b>Campus</b></td><td style="padding:3px 0;"><select id="ann-campus" style="width:100%;padding:7px 8px;border:1px solid #b9a6cf;border-radius:4px;font:inherit;background:#ffffff;color:#2b2233;"><option value="">Choisir…</option><option value="paris">Paris</option><option value="lyon">Lyon</option><option value="bordeaux">Bordeaux</option><option value="international">International</option></select></td></tr>
+  </table>
+  <div id="ann-res" style="margin-top:10px;background:#ffffff;border:1px dashed #b9a6cf;border-radius:4px;padding:10px;color:#6b5a80;">Répondez aux 3 questions pour afficher le numéro.</div>
+  <div style="margin-top:6px;font-size:12px;color:#6b5a80;">⚠️ Numéros fictifs, pour la démonstration.</div>
+</div>
+
 <!-- 6. À ÉVITER -->
 <div style="background:#463362;border-radius:6px;padding:12px 14px;margin-bottom:12px;color:#ffffff;">
   <div style="font-weight:bold;font-size:14px;margin-bottom:6px;">🚫 À ne pas faire</div>
@@ -102,6 +130,50 @@
 </div>
 
 </div>
+<script>
+(function(){
+var R={
+admission:"« Pour candidater, vous pouvez déposer votre dossier en ligne. Pouvez-vous m'indiquer votre niveau actuel et le domaine visé ? Je vous orienterai vers l'école et le programme les plus adaptés. »",
+alternance:"« Plusieurs de nos formations sont accessibles en alternance. Souhaitez-vous que je vous présente le fonctionnement et les écoles concernées ? Je peux aussi vous mettre en relation avec Sup Career Alternance. »",
+financement:"« Il existe plusieurs solutions pour financer ses études : alternance, prêt étudiant avec nos banques partenaires… Je vous envoie la page de présentation. Pour les montants exacts, je les vérifie auprès du service concerné. »",
+international:"« Nous avons des campus à l'étranger (Barcelone, Londres, Genève…). Quelle destination vous intéresse, et pour quelle rentrée ? Je vérifie la disponibilité du programme avant de vous le confirmer. »",
+rdv:"« Souhaitez-vous qu'on fasse le point par téléphone sur votre projet ? Quels créneaux vous conviendraient cette semaine ? »"};
+var cur="";
+var box=document.getElementById("aide-texte"),cp=document.getElementById("aide-copier");
+function copy(txt,b,lab){
+  function ok(){var o=b.textContent;b.textContent="✅ Copié";setTimeout(function(){b.textContent=lab||o;},1500);}
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(ok,function(){fb();});}else{fb();}
+  function fb(){var a=document.createElement("textarea");a.value=txt;document.body.appendChild(a);a.select();try{document.execCommand("copy");ok();}catch(e){}document.body.removeChild(a);}
+}
+document.querySelectorAll("#aide-choix button").forEach(function(b){
+  b.addEventListener("click",function(){
+    document.querySelectorAll("#aide-choix button").forEach(function(x){x.style.background="#ffffff";x.style.color="#5d0282";});
+    b.style.background="#5d0282";b.style.color="#ffffff";
+    cur=R[b.dataset.k];box.style.color="#2b2233";box.textContent=cur;cp.style.display="inline-block";
+  });
+});
+cp.addEventListener("click",function(){copy(cur,cp,"📋 Copier la réponse");});
 
+var N={
+admissions:{paris:"01 99 00 10 01",lyon:"01 99 00 10 02",bordeaux:"01 99 00 10 03",international:"01 99 00 10 04"},
+financement:{paris:"01 99 00 20 01",lyon:"01 99 00 20 01",bordeaux:"01 99 00 20 01",international:"01 99 00 20 02"},
+alternance:{paris:"01 99 00 30 01",lyon:"01 99 00 30 01",bordeaux:"01 99 00 30 01",international:"01 99 00 30 02"},
+scolarite:{paris:"01 99 00 40 01",lyon:"01 99 00 40 02",bordeaux:"01 99 00 40 03",international:"01 99 00 40 04"}};
+var S={admissions:"Service Admissions",financement:"Service Financement",alternance:"Sup Career Alternance",scolarite:"Scolarité"};
+var P=document.getElementById("ann-profil"),U=document.getElementById("ann-sujet"),C=document.getElementById("ann-campus"),res=document.getElementById("ann-res");
+function maj(){
+  if(!P.value||!U.value||!C.value){res.style.color="#6b5a80";res.textContent="Répondez aux 3 questions pour afficher le numéro.";return;}
+  var n=N[U.value][C.value];
+  res.style.color="#2b2233";res.innerHTML="";
+  var l=document.createElement("div");l.innerHTML="Transférer vers : <b>"+S[U.value]+" · "+C.options[C.selectedIndex].text+"</b>";
+  var v=document.createElement("div");v.style.cssText="font-size:20px;font-weight:bold;color:#5d0282;margin:6px 0;";v.textContent=n;
+  var b=document.createElement("button");b.type="button";b.textContent="📋 Copier le numéro";
+  b.style.cssText="cursor:pointer;background:#5d0282;color:#ffffff;border:0;border-radius:4px;padding:8px 12px;font:inherit;font-weight:bold;";
+  b.addEventListener("click",function(){copy(n,b,"📋 Copier le numéro");});
+  res.appendChild(l);res.appendChild(v);res.appendChild(b);
+}
+[P,U,C].forEach(function(s){s.addEventListener("change",maj);});
+})();
+</script>
 </body>
 </html>
