@@ -102,6 +102,14 @@ select{padding:4px 6px;border:1px solid var(--ink);background:#fff;color:var(--i
   td:nth-child(3){font-size:.8rem;opacity:.85}
   .dont ul{grid-template-columns:minmax(0,1fr)}
 }
+html,body{max-width:100%;overflow-x:hidden}
+.wrap,.grid,.card,.head,.dont,.note,.tpl,table,td,li,p,div{min-width:0;max-width:100%}
+.card,.tpl,td,li,p,.note,#out,.num,h1,h2{word-wrap:break-word;overflow-wrap:break-word;word-break:break-word}
+@media(max-width:900px){
+  .grid{display:flex;flex-direction:column;gap:var(--gap)}
+  .grid>*{width:100%}
+  select,.btn{max-width:100%}
+}
 </style>
 </head>
 <body>
