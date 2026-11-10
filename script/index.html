@@ -88,7 +88,20 @@ select{padding:4px 6px;border:1px solid var(--ink);background:#fff;color:var(--i
 .dont ul{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:0 14px}
 .dont li::before{content:"✕";background:none;color:var(--accent);width:auto;height:auto;top:2px;font-size:.8rem;font-weight:700}
 .foot{text-align:center;font-size:.72rem;opacity:.7;padding:2px}
-@media(max-width:900px){.grid{grid-template-columns:1fr}.sep{display:none}}
+.card,.head,.dont,.note{min-width:0;overflow-wrap:anywhere}
+@media(max-width:900px){.grid{grid-template-columns:minmax(0,1fr)}.sep{display:none}}
+@media(max-width:900px){
+  body{font-size:13px}
+  .brand{flex-wrap:wrap;gap:6px}.sep{display:none}
+  .kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%}.kpi{min-width:0}
+  table,thead,tbody,tr,th,td{display:block;width:100%}
+  tr:first-child{display:none}
+  tr{border-bottom:1px solid var(--line);padding:3px 0}
+  td{border:0;padding:1px 4px}
+  td:nth-child(1)::before{content:"Besoin : ";font-weight:700}
+  td:nth-child(3){font-size:.8rem;opacity:.85}
+  .dont ul{grid-template-columns:minmax(0,1fr)}
+}
 </style>
 </head>
 <body>
