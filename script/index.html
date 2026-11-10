@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Script conseiller - MyUnisoft</title>
+<style>
+/* ===== THEME : seul bloc à modifier pour changer de charte ===== */
+:root{
+  --ink:#000000;      /* texte + blocs noirs */
+  --on-ink:#ffffff;   /* écriture sur blocs noirs */
+  --accent:#0bd1d1;   /* couleur d'accent */
+  --bg:#f7fafa;       /* fond de page */
+  --line:#d5e3e3;     /* filets discrets */
+  --r:5px;            /* rayon max des bords */
+  --gap:5px;          /* espacement standard */
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{font-size:14px}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.4;padding:var(--gap)}
+.wrap{display:flex;flex-direction:column;gap:var(--gap);width:100%}
+
+/* ---------- Header ---------- */
+.head{background:var(--ink);color:var(--on-ink);border-radius:var(--r);padding:10px 12px;display:flex;flex-wrap:wrap;gap:10px 20px;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:12px}
+.brand img{height:30px;width:auto;display:block}
+.brand .wm{font-weight:800;font-size:1.5rem;letter-spacing:-.5px}
+.brand .wm b{color:var(--accent)}
+.brand h1{font-size:1rem;font-weight:700;line-height:1.2}
+.brand p{font-size:.8rem;opacity:.75}
+.sep{width:1px;align-self:stretch;background:#ffffff40}
+.kpis{display:flex;gap:5px;flex-wrap:wrap}
+.kpi{border:1px solid #ffffff40;border-radius:var(--r);padding:3px 9px;text-align:center;min-width:92px}
+.kpi b{display:block;font-size:1.1rem;color:var(--accent);line-height:1.2}
+.kpi span{font-size:.7rem;opacity:.8}
+
+/* ---------- Blocs ---------- */
+.note{background:var(--accent);color:var(--ink);border-radius:var(--r);padding:6px 10px;font-weight:600;font-size:.88rem}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap)}
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:8px 10px}
+.card.dark{background:var(--ink);color:var(--on-ink);border-color:var(--ink)}
+.card h2{display:flex;align-items:center;gap:8px;font-size:1rem;margin-bottom:6px}
+.card h2 i{font-style:normal;background:var(--ink);color:var(--accent);border-radius:var(--r);min-width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;font-size:.8rem}
+.card.dark h2 i{background:var(--accent);color:var(--ink)}
+.card h3{font-size:.82rem;text-transform:uppercase;letter-spacing:.4px;margin:6px 0 3px;border-bottom:2px solid var(--accent);display:inline-block}
+.card.dark h3{color:var(--on-ink)}
+.full{grid-column:1/-1}
+ul{list-style:none}
+li{padding:2px 0 2px 14px;position:relative}
+li::before{content:"";position:absolute;left:0;top:.65em;width:6px;height:6px;background:var(--accent);border-radius:1px}
+.card.dark li::before{background:var(--accent)}
+
+/* modèles de réponse (cliquables = copie) */
+.tpl{border:1px dashed #000;border-radius:var(--r);padding:6px 8px;margin:3px 0;cursor:pointer;font-size:.9rem;background:var(--bg);position:relative}
+.tpl:hover{background:#e6fbfb;border-style:solid}
+.tpl small{display:block;font-weight:700;font-size:.7rem;text-transform:uppercase;margin-bottom:1px}
+.tpl.copied::after{content:"Copié ✓";position:absolute;right:6px;top:4px;background:var(--ink);color:var(--accent);padding:0 6px;border-radius:var(--r);font-size:.7rem;font-weight:700}
+
+/* tableau */
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+th{background:var(--ink);color:var(--on-ink);text-align:left;padding:4px 8px}
+th:first-child{border-radius:var(--r) 0 0 0}th:last-child{border-radius:0 var(--r) 0 0}
+td{padding:4px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:hover td{background:#f0fcfc}
+td b{border-bottom:2px solid var(--accent)}
+
+/* boutons */
+.btns{display:flex;flex-wrap:wrap;gap:var(--gap);margin:4px 0}
+button,select{font:inherit;border-radius:var(--r);cursor:pointer}
+.btn{background:var(--ink);color:var(--on-ink);border:1px solid var(--ink);padding:4px 10px;font-weight:600}
+.btn:hover{border-color:var(--accent)}
+.btn.on{background:var(--accent);color:var(--ink);border-color:var(--accent)}
+.btn.ghost{background:#fff;color:var(--ink)}
+#out{min-height:60px;background:var(--bg);border:1px solid var(--line);border-radius:var(--r);padding:6px 8px;margin:4px 0;font-size:.9rem;white-space:pre-line}
+#out.empty{opacity:.55;font-style:italic}
+
+/* annuaire */
+.fld{display:flex;flex-direction:column;gap:2px;margin:4px 0}
+.fld label{font-size:.75rem;font-weight:700;text-transform:uppercase}
+select{padding:4px 6px;border:1px solid var(--ink);background:#fff;color:var(--ink)}
+.num{background:var(--ink);color:var(--on-ink);border-radius:var(--r);padding:6px 10px;margin-top:5px;font-size:.9rem}
+.num b{color:var(--accent);font-size:1.15rem;display:block}
+.num.empty{background:var(--bg);color:var(--ink);border:1px dashed #000;opacity:.7}
+
+/* à ne pas faire */
+.dont{background:var(--ink);color:var(--on-ink);border-radius:var(--r);padding:8px 10px}
+.dont h2{font-size:1rem;margin-bottom:4px;color:var(--accent)}
+.dont ul{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:0 14px}
+.dont li::before{content:"✕";background:none;color:var(--accent);width:auto;height:auto;top:2px;font-size:.8rem;font-weight:700}
+.foot{text-align:center;font-size:.72rem;opacity:.7;padding:2px}
+@media(max-width:900px){.grid{grid-template-columns:1fr}.sep{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ===== BANDEAU 1 : EN-TÊTE ===== -->
+<header class="head">
+  <div class="brand">
+    <!-- LOGO : coller l'URL du logo MyUnisoft dans src ; à défaut le texte s'affiche -->
+    <img id="logo" src="" alt="MyUnisoft" style="display:none">
+    <span class="wm" id="wm">My<b>Unisoft</b></span>
+    <div class="sep"></div>
+    <div>
+      <h1>Script conseiller · canaux écrits</h1>
+      <p>Cabinets d'expertise comptable &amp; clients TPE/PME</p>
+    </div>
+  </div>
+  <div class="kpis">
+    <div class="kpi"><b>1 000+</b><span>cabinets clients</span></div>
+    <div class="kpi"><b>~250 000</b><span>dossiers gérés</span></div>
+    <div class="kpi"><b>100+</b><span>API disponibles</span></div>
+    <div class="kpi"><b>95 %</b><span>satisfaction</span></div>
+  </div>
+</header>
+
+<div class="note">Note privée : consultez les notes du bot avant de reposer des questions au client (profil, besoin, module concerné).</div>
+
+<div class="grid">
+
+<!-- ===== BANDEAU 2 : ACCUEILLIR ===== -->
+<section class="card">
+  <h2><i>1</i>Accueillir</h2>
+  <div class="tpl" data-copy="Bonjour, merci de contacter MyUnisoft. Je suis [Prénom], conseiller. Je vois que vous nous écrivez au sujet de [sujet] : je prends le relais. Pouvez-vous me préciser si vous êtes expert-comptable, collaborateur de cabinet ou dirigeant d'entreprise ?"><small>Message d'accueil · cliquer pour copier</small>Bonjour, merci de contacter MyUnisoft. Je suis [Prénom], conseiller. Je vois que vous nous écrivez au sujet de [sujet] : je prends le relais. Pouvez-vous me préciser si vous êtes expert-comptable, collaborateur de cabinet ou dirigeant d'entreprise ?</div>
+</section>
+
+<!-- ===== BANDEAU 3 : COMPRENDRE LE BESOIN ===== -->
+<section class="card">
+  <h2><i>2</i>Comprendre le besoin</h2>
+  <ul>
+    <li><b>Profil</b> : cabinet (expert-comptable, collaborateur) ou client TPE/PME</li>
+    <li><b>Taille du cabinet</b> : nombre de collaborateurs et de dossiers</li>
+    <li><b>Outil actuel</b> : logiciel de production, de gestion interne, de facturation</li>
+    <li><b>Besoin principal</b> : production, pilotage, gestion du cabinet, facture électronique</li>
+    <li><b>Échéance</b> : réforme de la facturation électronique, bascule souhaitée</li>
+    <li><b>Interlocuteur</b> : décideur ou utilisateur, rendez-vous à proposer</li>
+  </ul>
+  <h3>Cibles</h3>
+  <p>Cabinets d'expertise comptable · commissaires aux comptes · TPE/PME accompagnées par leur cabinet</p>
+</section>
+
+<!-- ===== BANDEAU 5 : FACTURE ÉLECTRONIQUE ===== -->
+<section class="card dark">
+  <h2><i>3</i>Facture électronique</h2>
+  <ul>
+    <li>Plateforme Agréée (PA) intégrée à la solution du cabinet</li>
+    <li>Factures de vente validées remontées en écritures dans la production</li>
+    <li>Transmission automatique, sans manipulation supplémentaire</li>
+    <li>Compatibilité native avec jefacture.com</li>
+    <li>Tarifs sur devis : proposer un rendez-vous avec un conseiller</li>
+  </ul>
+  <h3>Livre blanc</h3>
+  <p>Proposer le livre blanc « La facture électronique » à envoyer par e-mail après accord du client.</p>
+</section>
+
+<!-- ===== BANDEAU 4 : ORIENTER VERS LES PRODUITS ===== -->
+<section class="card full">
+  <h2><i>4</i>Orienter vers les produits</h2>
+  <table>
+    <tr><th>Besoin exprimé</th><th>Solution MyUnisoft</th><th>À retenir</th></tr>
+    <tr><td>Production comptable et fiscale, saisie automatisée, déclarations</td><td><b>MyU Production Comptable et Fiscale</b></td><td>Plateforme collaborative cabinet/client, données partagées en temps réel, 100 % souveraine</td></tr>
+    <tr><td>Organisation du cabinet, temps, missions, rentabilité</td><td><b>MyU Gestion interne</b></td><td>Portefeuille clients, suivi des missions et obligations, facturation synchronisée à la compta</td></tr>
+    <tr><td>Prévisions, budgets, accompagnement des dirigeants</td><td><b>MyU Pilotage financier (Predict)</b></td><td>Prévisionnel personnalisé assisté par IA, connecté à MyUnisoft</td></tr>
+    <tr><td>Tableaux de bord, comparaison de portefeuille</td><td><b>MyU Dataviz</b></td><td>Dashboards Power BI, comparaisons par code NAF</td></tr>
+    <tr><td>Devis, factures, encaissements pour les TPE/PME</td><td><b>MyU Gestion</b> (Start, Business, Performance)</td><td>Factur-X, suivi des paiements, compte pro ; Business : multi-utilisateurs ; Performance : CRM intégré</td></tr>
+    <tr><td>Facture électronique obligatoire</td><td><b>Plateforme Agréée MyUnisoft</b></td><td>Intégrée nativement à la production, compatible jefacture.com</td></tr>
+    <tr><td>Prise en main, formation</td><td><b>MyUnisoft Academy</b></td><td>Formations (Qualiopi) et Customer Success Manager dédié</td></tr>
+  </table>
+</section>
+
+<!-- ===== BANDEAU 6 : RÉPONSES RAPIDES ===== -->
+<section class="card">
+  <h2><i>5</i>Réponses rapides</h2>
+  <div class="tpl" data-copy="Je vérifie cela auprès de l'équipe concernée et je reviens vers vous dans quelques instants."><small>Mise en attente</small>Je vérifie cela auprès de l'équipe concernée et je reviens vers vous dans quelques instants.</div>
+  <div class="tpl" data-copy="Je ne dispose pas de cette information à cet instant. Je préfère ne pas vous donner une réponse approximative : je la vérifie et je reviens vers vous."><small>Information indisponible</small>Je ne dispose pas de cette information à cet instant. Je préfère ne pas vous donner une réponse approximative : je la vérifie et je reviens vers vous.</div>
+  <div class="tpl" data-copy="Souhaitez-vous que l'on poursuive par téléphone ? Un conseiller peut vous rappeler à l'horaire de votre choix, du lundi au vendredi."><small>Proposer un appel</small>Souhaitez-vous que l'on poursuive par téléphone ? Un conseiller peut vous rappeler à l'horaire de votre choix, du lundi au vendredi.</div>
+  <div class="tpl" data-copy="Merci pour votre échange. Je reste disponible si besoin, et votre Customer Success Manager peut également vous accompagner. Belle journée !"><small>Clôture</small>Merci pour votre échange. Je reste disponible si besoin, et votre Customer Success Manager peut également vous accompagner. Belle journée !</div>
+</section>
+
+<!-- ===== BANDEAU 7 : AIDE À LA DISCUSSION ===== -->
+<section class="card">
+  <h2><i>6</i>Aide à la discussion</h2>
+  <div class="btns" id="topics"></div>
+  <div id="out" class="empty">Aucun sujet sélectionné.</div>
+  <button class="btn" id="copyOut">Copier le texte</button>
+</section>
+
+<!-- ===== BANDEAU 8 : AIDE ANNUAIRE ===== -->
+<section class="card">
+  <h2><i>7</i>Aide annuaire</h2>
+  <div class="fld"><label for="s1">Profil</label>
+    <select id="s1"><option value="">— choisir —</option><option>Expert-comptable</option><option>Collaborateur de cabinet</option><option>Dirigeant TPE/PME</option></select></div>
+  <div class="fld"><label for="s2">Sujet</label>
+    <select id="s2"><option value="">— choisir —</option><option>Support technique</option><option>Offre commerciale</option><option>Facture électronique</option><option>Formation (Academy)</option></select></div>
+  <div class="fld"><label for="s3">Interlocuteur</label>
+    <select id="s3"><option value="">— choisir —</option><option>Customer Success Manager</option><option>Équipe commerciale</option><option>Support en ligne</option></select></div>
+  <div class="num empty" id="num">Renseignez les trois champs pour afficher le numéro.</div>
+  <p style="font-size:.72rem;opacity:.7;margin-top:3px">Numéros fictifs, uniquement pour la démonstration.</p>
+</section>
+
+</div>
+
+<!-- ===== BANDEAU 9 : À NE PAS FAIRE ===== -->
+<section class="dont">
+  <h2>À ne pas faire</h2>
+  <ul>
+    <li>Promettre une fonctionnalité, une date de livraison ou un tarif non confirmés</li>
+    <li>Annoncer un prix : les tarifs sont sur devis, orienter vers un conseiller</li>
+    <li>Donner un avis juridique ou fiscal à la place de l'expert-comptable</li>
+    <li>Demander par écrit un mot de passe, un RIB, un numéro de sécurité sociale ou une pièce d'identité</li>
+  </ul>
+</section>
+
+<div class="foot">Page de démonstration · équipe Presales Diabolocom · © Diabolocom</div>
+</div>
+
+<!-- SNIPPET CHATBOT : coller ici le code d'intégration, ne rien modifier au-dessus -->
+
+<script>
+/* ===== CONFIG : logo ===== */
+const LOGO_URL = ""; // ex : "https://.../logo-myunisoft.png" ; vide = logo texte
+const logo=document.getElementById('logo'), wm=document.getElementById('wm');
+if(LOGO_URL){logo.src=LOGO_URL;logo.style.display='block';wm.style.display='none';
+  logo.onerror=()=>{logo.style.display='none';wm.style.display=''};}
+
+/* copie des modèles */
+function copy(t,el){navigator.clipboard&&navigator.clipboard.writeText(t).catch(()=>{});
+  if(el){el.classList.add('copied');setTimeout(()=>el.classList.remove('copied'),1200);}}
+document.querySelectorAll('.tpl').forEach(e=>e.onclick=()=>copy(e.dataset.copy,e));
+
+/* sujets */
+const TOPICS={
+ "Production comptable":"MyU Production Comptable et Fiscale : plateforme collaborative où le cabinet et ses clients TPE/PME accèdent aux mêmes données en temps réel. Saisie transformée en écritures automatiques, déclarations fiscales, GED.",
+ "Gestion du cabinet":"MyU Gestion interne : portefeuille clients, suivi des missions et des obligations, analyse de rentabilité, facturation synchronisée avec la comptabilité.",
+ "Pilotage financier":"MyU Pilotage financier (Predict) : prévisions et budgets personnalisés générés en quelques minutes grâce à l'IA, pour accompagner les dirigeants. MyU Dataviz complète avec des tableaux de bord.",
+ "Facture électronique":"Plateforme Agréée MyUnisoft, intégrée nativement : les factures sont transmises automatiquement et remontent en écritures dans la production. Compatible jefacture.com. Tarifs sur devis.",
+ "Souveraineté":"Plateforme hébergée en France, équipes de développement en France, aucune dépendance à un fournisseur non européen. Données certifiées par les experts-comptables.",
+ "Formation & rendez-vous":"MyUnisoft Academy (organisme certifié Qualiopi) et Customer Success Manager dédié. Proposer un rendez-vous ou un rappel téléphonique."
+};
+const tb=document.getElementById('topics'),out=document.getElementById('out');
+Object.keys(TOPICS).forEach(k=>{const b=document.createElement('button');b.className='btn ghost';b.textContent=k;
+ b.onclick=()=>{tb.querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+  out.textContent=TOPICS[k];out.classList.remove('empty');};tb.appendChild(b);});
+document.getElementById('copyOut').onclick=()=>{if(!out.classList.contains('empty'))copy(out.textContent)};
+
+/* annuaire fictif */
+const num=document.getElementById('num'),sel=['s1','s2','s3'].map(i=>document.getElementById(i));
+function upd(){const v=sel.map(s=>s.value);
+ if(v.every(Boolean)){const h=[...v.join('')].reduce((a,c)=>(a*31+c.charCodeAt(0))%90,0)+10;
+  num.className='num';num.innerHTML=v[2]+' · '+v[1]+'<b>01 00 00 00 '+h+'</b>';}
+ else{num.className='num empty';num.textContent='Renseignez les trois champs pour afficher le numéro.';}}
+sel.forEach(s=>s.onchange=upd);
+</script>
+</body>
+</html>
