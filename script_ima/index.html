@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Script conseiller - IMA</title>
+<style>
+/* ===== THEME : seul bloc à modifier pour changer de charte ===== */
+:root{
+  --ink:#1d1d1b;      /* texte + blocs foncés */
+  --on-ink:#ffffff;   /* écriture sur blocs noirs */
+  --accent:#e30613;   /* couleur d'accent */
+  --on-accent:#ffffff;/* écriture sur l'accent */
+  --tint:#fdecec;     /* survol des modèles et lignes */
+  --wa:#25d366;       /* repère WhatsApp */
+  --bg:#f7f5f5;       /* fond de page */
+  --line:#e6dede;     /* filets discrets */
+  --r:5px;            /* rayon max des bords */
+  --gap:5px;          /* espacement standard */
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{font-size:14px}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.4;padding:var(--gap)}
+.wrap{display:flex;flex-direction:column;gap:var(--gap);width:100%}
+
+/* ---------- Header ---------- */
+.head{background:var(--ink);color:var(--on-ink);border-radius:var(--r);padding:10px 12px;display:flex;flex-wrap:wrap;gap:10px 20px;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:12px}
+.brand img{height:30px;width:auto;display:block}
+.brand .wm{font-weight:800;font-size:1.5rem;letter-spacing:-.5px}
+.brand .wm{color:var(--accent)}
+.brand h1{font-size:1rem;font-weight:700;line-height:1.2}
+.brand p{font-size:.8rem;opacity:.75}
+.sep{width:1px;align-self:stretch;background:#ffffff40}
+.kpis{display:flex;gap:5px;flex-wrap:wrap}
+.kpi{border:1px solid #ffffff40;border-radius:var(--r);padding:3px 9px;text-align:center;min-width:92px}
+.kpi b{display:block;font-size:1.1rem;color:#ffffff;line-height:1.2}
+.kpi span{font-size:.7rem;opacity:.8}
+
+/* ---------- Blocs ---------- */
+.note{background:var(--accent);color:var(--on-accent);border-radius:var(--r);padding:6px 10px;font-weight:600;font-size:.88rem}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap)}
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:8px 10px}
+.card.dark{background:var(--ink);color:var(--on-ink);border-color:var(--ink)}
+.card h2{display:flex;align-items:center;gap:8px;font-size:1rem;margin-bottom:6px}
+.card h2 i{font-style:normal;background:var(--ink);color:var(--accent);border-radius:var(--r);min-width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;font-size:.8rem}
+.card.dark h2 i{background:var(--accent);color:var(--on-accent)}
+.card h3{font-size:.82rem;text-transform:uppercase;letter-spacing:.4px;margin:6px 0 3px;border-bottom:2px solid var(--accent);display:inline-block}
+.card.dark h3{color:var(--on-ink)}
+.full{grid-column:1/-1}
+ul{list-style:none}
+li{padding:2px 0 2px 14px;position:relative}
+li::before{content:"";position:absolute;left:0;top:.65em;width:6px;height:6px;background:var(--accent);border-radius:1px}
+.card.dark li::before{background:var(--accent)}
+
+/* modèles de réponse (cliquables = copie) */
+.tpl{border:1px dashed #000;border-radius:var(--r);padding:6px 8px;margin:3px 0;cursor:pointer;font-size:.9rem;background:var(--bg);position:relative}
+.tpl:hover{background:var(--tint);border-style:solid}
+.tpl small{display:block;font-weight:700;font-size:.7rem;text-transform:uppercase;margin-bottom:1px}
+.tpl.copied::after{content:"Copié ✓";position:absolute;right:6px;top:4px;background:var(--ink);color:var(--accent);padding:0 6px;border-radius:var(--r);font-size:.7rem;font-weight:700}
+
+/* tableau */
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+th{background:var(--ink);color:var(--on-ink);text-align:left;padding:4px 8px}
+th:first-child{border-radius:var(--r) 0 0 0}th:last-child{border-radius:0 var(--r) 0 0}
+td{padding:4px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:hover td{background:var(--tint)}
+td b{border-bottom:2px solid var(--accent)}
+
+/* boutons */
+.btns{display:flex;flex-wrap:wrap;gap:var(--gap);margin:4px 0}
+button,select{font:inherit;border-radius:var(--r);cursor:pointer}
+.btn{background:var(--ink);color:var(--on-ink);border:1px solid var(--ink);padding:4px 10px;font-weight:600}
+.btn:hover{border-color:var(--accent)}
+.btn.on{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.btn.ghost{background:#fff;color:var(--ink)}
+#out{min-height:60px;background:var(--bg);border:1px solid var(--line);border-radius:var(--r);padding:6px 8px;margin:4px 0;font-size:.9rem;white-space:pre-line}
+#out.empty{opacity:.55;font-style:italic}
+
+/* annuaire */
+.fld{display:flex;flex-direction:column;gap:2px;margin:4px 0}
+.fld label{font-size:.75rem;font-weight:700;text-transform:uppercase}
+select{padding:4px 6px;border:1px solid var(--ink);background:#fff;color:var(--ink)}
+.num{background:var(--ink);color:var(--on-ink);border-radius:var(--r);padding:6px 10px;margin-top:5px;font-size:.9rem}
+.num b{color:var(--accent);font-size:1.15rem;display:block}
+.num.empty{background:var(--bg);color:var(--ink);border:1px dashed #000;opacity:.7}
+
+/* à ne pas faire */
+.dont{background:var(--ink);color:var(--on-ink);border-radius:var(--r);padding:8px 10px}
+.dont h2{font-size:1rem;margin-bottom:4px;color:var(--accent)}
+.dont ul{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:0 14px}
+.dont li::before{content:"✕";background:none;color:var(--accent);width:auto;height:auto;top:2px;font-size:.8rem;font-weight:700}
+.foot{text-align:center;font-size:.72rem;opacity:.7;padding:2px}
+.card,.head,.dont,.note{min-width:0;overflow-wrap:anywhere}
+@media(max-width:900px){.grid{grid-template-columns:minmax(0,1fr)}.sep{display:none}}
+@media(max-width:900px){
+  body{font-size:13px}
+  .brand{flex-wrap:wrap;gap:6px}.sep{display:none}
+  .kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%}.kpi{min-width:0}
+  table,thead,tbody,tr,th,td{display:block;width:100%}
+  tr:first-child{display:none}
+  tr{border-bottom:1px solid var(--line);padding:3px 0}
+  td{border:0;padding:1px 4px}
+  td:nth-child(1)::before{content:"Besoin : ";font-weight:700}
+  td:nth-child(3){font-size:.8rem;opacity:.85}
+  .dont ul{grid-template-columns:minmax(0,1fr)}
+}
+html,body{max-width:100%;overflow-x:hidden}
+.wrap,.grid,.card,.head,.dont,.note,.tpl,table,td,li,p,div{min-width:0;max-width:100%}
+.card,.tpl,td,li,p,.note,#out,.num,h1,h2{word-wrap:break-word;overflow-wrap:break-word;word-break:break-word}
+@media(max-width:900px){
+  .grid{display:flex;flex-direction:column;gap:var(--gap)}
+  .grid>*{width:100%}
+  select,.btn{max-width:100%}
+}
+
+/* ---------- Ajouts IMA : canal WhatsApp ---------- */
+.tpl{white-space:pre-line}
+.tpl small{white-space:normal}
+.vars{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--gap)}
+.vars input{font:inherit;padding:4px 6px;border:1px solid var(--ink);border-radius:var(--r);width:100%}
+.wa{display:inline-block;background:var(--wa);color:#fff;border-radius:var(--r);padding:0 6px;font-size:.72rem;font-weight:700;vertical-align:middle}
+.btn.ghost.on{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.tabs{display:flex;flex-wrap:wrap;gap:var(--gap);margin:2px 0 6px}
+.tplgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:0 var(--gap)}
+.num .btn{margin-top:5px;background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+@media(max-width:900px){.vars{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ===== BANDEAU 1 : EN-TÊTE ===== -->
+<header class="head">
+  <div class="brand">
+    <!-- LOGO : renseigner LOGO_URL dans le script en bas de page ; à défaut le texte s'affiche -->
+    <img id="logo" src="" alt="IMA" style="display:none">
+    <span class="wm" id="wm">IMA</span>
+    <div class="sep"></div>
+    <div>
+      <h1>Script conseiller · WhatsApp <span class="wa">WA</span></h1>
+      <p>Assistance pour le compte des assureurs, mutuelles et grands groupes</p>
+    </div>
+  </div>
+  <div class="kpis">
+    <div class="kpi"><b>Mobilité</b><span>dépannage, voyage</span></div>
+    <div class="kpi"><b>Habitat</b><span>urgences, télésurveillance</span></div>
+    <div class="kpi"><b>Santé</b><span>& bien-vivre</span></div>
+    <div class="kpi"><b>Juridique</b><span>info & protection</span></div>
+  </div>
+</header>
+
+<div class="note">Note privée : lisez le résumé du bot (contrat, assureur, motif, localisation) avant de répondre. Ne reposez pas les mêmes questions. Marque blanche : présentez-vous au nom de l'assureur indiqué dans la note.</div>
+
+<!-- ===== BANDEAU 2 : VARIABLES (remplissage à la volée) ===== -->
+<section class="card">
+  <h2><i>⚙</i>Personnaliser les messages</h2>
+  <div class="vars">
+    <div class="fld"><label for="v-prenom">Prénom bénéficiaire</label><input id="v-prenom" placeholder="[Prénom]"></div>
+    <div class="fld"><label for="v-conseiller">Votre prénom</label><input id="v-conseiller" placeholder="[Conseiller]"></div>
+    <div class="fld"><label for="v-assureur">Assureur / marque</label><input id="v-assureur" placeholder="[Assureur]"></div>
+    <div class="fld"><label for="v-dossier">N° de dossier</label><input id="v-dossier" placeholder="[N° dossier]"></div>
+  </div>
+  <p style="font-size:.75rem;opacity:.75;margin-top:4px">Les champs remplis remplacent les crochets dans tous les messages, à l'écran comme à la copie. Un clic sur un message le copie, prêt à coller dans WhatsApp (*gras* et emojis compris).</p>
+</section>
+
+<div class="grid">
+
+<!-- ===== BANDEAU 3 : ACCUEILLIR ===== -->
+<section class="card">
+  <h2><i>1</i>Accueillir</h2>
+  <div class="tpl" data-copy="Bonjour [Prénom] 👋&#10;Je suis [Conseiller], conseiller assistance pour *[Assureur]*. J'ai bien reçu votre message, je prends le relais.&#10;Votre dossier : *[N° dossier]*"><small>Accueil standard</small></div>
+  <div class="tpl" data-copy="Bonjour [Prénom], je suis [Conseiller] de l'assistance *[Assureur]*.&#10;Avant tout : *êtes-vous en sécurité ?* Y a-t-il des personnes blessées ?&#10;En cas de danger immédiat, appelez le *112*."><small>Accueil situation d'urgence</small></div>
+</section>
+
+<!-- ===== BANDEAU 4 : QUALIFIER ===== -->
+<section class="card">
+  <h2><i>2</i>Qualifier la demande</h2>
+  <ul>
+    <li><b>Sécurité</b> : personnes en danger, blessées, lieu sécurisé</li>
+    <li><b>Contrat</b> : assureur ou mutuelle, n° de contrat / d'adhérent</li>
+    <li><b>Domaine</b> : mobilité, habitat, santé, juridique</li>
+    <li><b>Localisation</b> : adresse ou position partagée</li>
+    <li><b>Éléments</b> : photos, immatriculation, description</li>
+  </ul>
+  <div class="tpl" data-copy="📍 Pour envoyer un intervenant au bon endroit, pouvez-vous partager votre *position* ?&#10;Dans WhatsApp : 📎 &gt; *Localisation* &gt; *Envoyer ma position actuelle*."><small>Demander la localisation</small></div>
+  <div class="tpl" data-copy="📸 Pouvez-vous m'envoyer une ou deux *photos* de la situation (véhicule, dégât, compteur…) ? Cela nous aide à envoyer le bon intervenant."><small>Demander des photos</small></div>
+</section>
+
+<!-- ===== BANDEAU 5 : SÉCURITÉ D'ABORD ===== -->
+<section class="card dark">
+  <h2><i>3</i>Sécurité d'abord</h2>
+  <ul>
+    <li>Danger immédiat : orienter vers le <b>112</b> (ou 15, 17, 18) avant toute autre question</li>
+    <li>Sur la route : gilet, triangle, attendre derrière la glissière</li>
+    <li>Fuite de gaz : quitter le logement, ne rien allumer, appeler les secours</li>
+    <li>Personne vulnérable isolée : basculer vers un appel téléphonique</li>
+  </ul>
+  <h3>Bascule téléphone</h3>
+  <p>Si la situation est grave ou confuse, proposer un rappel immédiat plutôt que de poursuivre par écrit.</p>
+</section>
+
+<!-- ===== BANDEAU 6 : RÉPONSES PAR DOMAINE ===== -->
+<section class="card full">
+  <h2><i>4</i>Réponses par domaine <span class="wa">cliquer pour copier</span></h2>
+  <div class="tabs" id="domTabs"></div>
+  <div class="tplgrid" id="domTpl"></div>
+</section>
+
+<!-- ===== BANDEAU 7 : RÉPONSES RAPIDES ===== -->
+<section class="card">
+  <h2><i>5</i>Réponses rapides</h2>
+  <div class="tpl" data-copy="Merci [Prénom], je vérifie cela et je reviens vers vous dans quelques minutes ⏳"><small>Mise en attente</small></div>
+  <div class="tpl" data-copy="Je préfère vérifier vos garanties avant de vous confirmer la prise en charge. Je reviens vers vous très vite."><small>Prise en charge à confirmer</small></div>
+  <div class="tpl" data-copy="📞 Souhaitez-vous qu'un conseiller vous appelle ? Indiquez-moi le numéro à joindre et le moment qui vous convient."><small>Proposer un appel</small></div>
+  <div class="tpl" data-copy="Votre demande est enregistrée sous le n° *[N° dossier]* ✅&#10;Vous pouvez répondre à tout moment dans cette conversation. Bonne journée [Prénom] !"><small>Clôture</small></div>
+</section>
+
+<!-- ===== BANDEAU 8 : AIDE À LA DISCUSSION ===== -->
+<section class="card">
+  <h2><i>6</i>Aide à la discussion</h2>
+  <div class="btns" id="topics"></div>
+  <div id="out" class="empty">Aucune situation sélectionnée.</div>
+  <button class="btn" id="copyOut">Copier le texte</button>
+</section>
+
+<!-- ===== BANDEAU 9 : AIDE ANNUAIRE ===== -->
+<section class="card">
+  <h2><i>7</i>Aide annuaire</h2>
+  <div class="fld"><label for="s1">Domaine</label>
+    <select id="s1"><option value="">— choisir —</option><option>Mobilité</option><option>Habitat</option><option>Santé et bien-vivre</option><option>Juridique</option></select></div>
+  <div class="fld"><label for="s2">Urgence</label>
+    <select id="s2"><option value="">— choisir —</option><option>Intervention immédiate</option><option>Sous 24 h</option><option>Information / suivi</option></select></div>
+  <div class="fld"><label for="s3">Interlocuteur</label>
+    <select id="s3"><option value="">— choisir —</option><option>Plateau d'assistance</option><option>Gestionnaire de dossier</option><option>Équipe médicale</option><option>Juriste</option></select></div>
+  <div class="num empty" id="num">Renseignez les trois champs pour afficher le numéro.</div>
+  <p style="font-size:.72rem;opacity:.7;margin-top:3px">Numéros fictifs, uniquement pour la démonstration.</p>
+</section>
+
+</div>
+
+<!-- ===== BANDEAU 10 : À NE PAS FAIRE ===== -->
+<section class="dont">
+  <h2>À ne pas faire</h2>
+  <ul>
+    <li>Confirmer une prise en charge ou un remboursement avant vérification des garanties</li>
+    <li>Annoncer une heure d'arrivée précise non confirmée par l'intervenant</li>
+    <li>Donner un avis médical ou un diagnostic : orienter vers l'équipe médicale</li>
+    <li>Donner un conseil juridique définitif : orienter vers un juriste</li>
+    <li>Demander par WhatsApp un code de carte bancaire, un mot de passe ou un n° de sécurité sociale</li>
+    <li>Citer IMA quand le contrat est en marque blanche : parler au nom de l'assureur</li>
+  </ul>
+</section>
+
+<div class="foot">Page de démonstration · équipe Presales Diabolocom · © Diabolocom</div>
+</div>
+
+<!-- SNIPPET CHATBOT : coller ici le code d'intégration, ne rien modifier au-dessus -->
+
+<script>
+/* ===== CONFIG : logo ===== */
+const LOGO_URL = ""; // ex : "https://.../logo-ima.png" ; vide = logo texte
+const logo=document.getElementById('logo'), wm=document.getElementById('wm');
+if(LOGO_URL){logo.src=LOGO_URL;logo.style.display='block';wm.style.display='none';
+  logo.onerror=()=>{logo.style.display='none';wm.style.display=''};}
+
+/* variables remplacées à la copie */
+const VARS={"[Prénom]":"v-prenom","[Conseiller]":"v-conseiller","[Assureur]":"v-assureur","[N° dossier]":"v-dossier"};
+function fill(t){for(const k in VARS){const v=document.getElementById(VARS[k]).value.trim();if(v)t=t.split(k).join(v);}return t;}
+
+/* copie (avec repli si le presse-papiers est indisponible) */
+function copy(t,el){t=fill(t);
+  const done=()=>{if(el){el.classList.add('copied');setTimeout(()=>el.classList.remove('copied'),1200);}};
+  const fb=()=>{const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();
+    try{document.execCommand('copy');done();}catch(e){}a.remove();};
+  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(done,fb);else fb();}
+function bindTpl(e){e._t=document.createTextNode(fill(e.dataset.copy));e.appendChild(e._t);e.onclick=()=>copy(e.dataset.copy,e);}
+/* mise à jour à la volée des textes affichés */
+function refresh(){document.querySelectorAll('.tpl').forEach(e=>{if(e._t)e._t.nodeValue=fill(e.dataset.copy);});
+  const o=document.getElementById('out');if(o&&o.dataset.raw)o.textContent=fill(o.dataset.raw);}
+Object.values(VARS).forEach(i=>document.getElementById(i).addEventListener('input',refresh));
+document.querySelectorAll('.tpl').forEach(bindTpl);
+
+/* réponses par domaine */
+const DOMAINS={
+ "🚗 Mobilité":{
+  "Dépannage en route":"🚗 Un dépanneur est en cours de missionnement pour votre véhicule.\nMerci de rester en sécurité derrière la glissière, gilet enfilé.\nJe vous envoie ses coordonnées dès qu'il est confirmé.",
+  "Remorquage":"Votre véhicule va être remorqué vers le garage le plus proche ou celui de votre choix, selon votre contrat.\nAvez-vous un garage habituel ?",
+  "Véhicule de remplacement":"Je vérifie si votre contrat *[Assureur]* prévoit un véhicule de remplacement et pour quelle durée. Je reviens vers vous rapidement.",
+  "Assistance voyage":"✈️ Nous prenons en charge votre demande d'assistance à l'étranger.\nPouvez-vous m'indiquer le pays, la ville et le nombre de personnes concernées ?",
+  "Rapatriement":"Notre équipe médicale va prendre contact avec l'établissement de soins pour évaluer la situation. Les modalités du retour sont décidées par nos médecins."},
+ "🏠 Habitat":{
+  "Dégât des eaux":"💧 Si possible, coupez l'arrivée d'eau générale (souvent près du compteur).\nEnvoyez-moi une photo de la fuite : je missionne un plombier.",
+  "Serrurerie":"🔑 Je missionne un serrurier à votre adresse. Pensez à garder un justificatif de domicile à portée de main pour l'intervenant.",
+  "Panne électrique":"⚡ Pouvez-vous vérifier le disjoncteur général ? Si la panne persiste, je vous envoie un électricien.",
+  "Télésurveillance":"Votre alarme a déclenché une alerte. Tout va bien chez vous ? Répondez *OK* si c'est une fausse alerte."},
+ "🩺 Santé & bien-vivre":{
+  "Téléconsultation":"🩺 Je peux vous proposer une téléconsultation avec un médecin. Préférez-vous un rendez-vous immédiat ou à un horaire précis ?",
+  "Aide au retour d'hospitalisation":"Selon votre contrat, une aide à domicile peut être mise en place après une hospitalisation. Quelle est votre date de sortie prévue ?",
+  "Téléassistance":"Le service de téléassistance permet d'alerter un plateau 24h/24 d'une simple pression. Souhaitez-vous qu'un conseiller vous présente la mise en place ?",
+  "Accompagnement parcours de soins":"Je vous mets en relation avec notre équipe d'accompagnement pour organiser votre parcours de soins. Quel moment vous convient pour un appel ?"},
+ "⚖️ Juridique":{
+  "Information juridique":"⚖️ Un juriste peut répondre à votre question. Pouvez-vous me décrire brièvement la situation (logement, travail, consommation…) ?",
+  "Litige / conciliation":"Avant toute procédure, une démarche amiable peut être tentée. Je transmets votre dossier à un juriste qui vous recontactera.",
+  "Pièces à fournir":"📄 Merci d'envoyer les documents utiles (contrat, courriers, factures) en photo ou PDF dans cette conversation.",
+  "Protection juridique":"Je vérifie si votre contrat *[Assureur]* comprend une protection juridique pour ce type de litige, puis je reviens vers vous."}
+};
+const dt=document.getElementById('domTabs'),dp=document.getElementById('domTpl');
+function showDom(k,b){dt.querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');dp.innerHTML='';
+ for(const [lab,txt] of Object.entries(DOMAINS[k])){const d=document.createElement('div');d.className='tpl';d.dataset.copy=txt;
+  const s=document.createElement('small');s.textContent=lab;d.appendChild(s);bindTpl(d);dp.appendChild(d);}}
+Object.keys(DOMAINS).forEach((k,i)=>{const b=document.createElement('button');b.className='btn ghost';b.textContent=k;
+ b.onclick=()=>showDom(k,b);dt.appendChild(b);if(i===0)showDom(k,b);});
+
+/* aide à la discussion */
+const TOPICS={
+ "Bénéficiaire inquiet":"Je comprends votre inquiétude [Prénom]. Je reste avec vous dans cette conversation jusqu'à ce que la situation soit prise en charge. Nous avançons étape par étape.",
+ "Délai d'intervention":"L'intervenant a bien été missionné. Je relance pour obtenir une estimation et je vous tiens informé dès que j'ai un retour.",
+ "Hors garantie":"Après vérification, cette demande n'entre pas dans les garanties de votre contrat. Je peux toutefois vous orienter vers un professionnel, à votre charge. Souhaitez-vous ses coordonnées ?",
+ "Suivi de dossier":"Votre dossier *[N° dossier]* est bien en cours de traitement. Je regarde où il en est et je vous fais un point.",
+ "Réclamation":"Je suis désolé pour ce désagrément. Je transmets votre réclamation au service concerné, qui reviendra vers vous. Pouvez-vous me préciser ce qui s'est passé ?"
+};
+const tb=document.getElementById('topics'),out=document.getElementById('out');
+Object.keys(TOPICS).forEach(k=>{const b=document.createElement('button');b.className='btn ghost';b.textContent=k;
+ b.onclick=()=>{tb.querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+  out.textContent=fill(TOPICS[k]);out.dataset.raw=TOPICS[k];out.classList.remove('empty');};tb.appendChild(b);});
+document.getElementById('copyOut').onclick=()=>{if(!out.classList.contains('empty'))copy(out.dataset.raw)};
+
+/* annuaire fictif (plage 01 99 00 xx xx réservée à la fiction) */
+const num=document.getElementById('num'),sel=['s1','s2','s3'].map(i=>document.getElementById(i));
+function upd(){const v=sel.map(s=>s.value);
+ if(v.every(Boolean)){const h=[...v.join('')].reduce((a,c)=>(a*31+c.charCodeAt(0))%9000,0)+1000,
+  n='01 99 00 '+String(h).slice(0,2)+' '+String(h).slice(2);
+  num.className='num';num.innerHTML='';num.append(v[2]+' · '+v[0]);
+  const b=document.createElement('b');b.textContent=n;num.appendChild(b);
+  const c=document.createElement('button');c.className='btn';c.textContent='Copier le numéro';
+  c.onclick=()=>{navigator.clipboard&&navigator.clipboard.writeText(n);c.textContent='Copié ✓';setTimeout(()=>c.textContent='Copier le numéro',1200);};
+  num.appendChild(c);}
+ else{num.className='num empty';num.textContent='Renseignez les trois champs pour afficher le numéro.';}}
+sel.forEach(s=>s.onchange=upd);
+</script>
+</body>
+</html>
