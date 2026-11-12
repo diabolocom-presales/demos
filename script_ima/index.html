@@ -7,14 +7,14 @@
 <style>
 /* ===== THEME : seul bloc à modifier pour changer de charte ===== */
 :root{
-  --ink:#1d1d1b;      /* texte + blocs foncés */
+  --ink:#5b6e83;      /* couleur de marque : texte, boutons */
   --on-ink:#ffffff;   /* écriture sur blocs noirs */
-  --accent:#e30613;   /* couleur d'accent */
+  --accent:#500fa0;   /* couleur d'appel : textes clés */
   --on-accent:#ffffff;/* écriture sur l'accent */
-  --tint:#fdecec;     /* survol des modèles et lignes */
+  --tint:#f3eefb;     /* survol des modèles et lignes */
   --wa:#25d366;       /* repère WhatsApp */
-  --bg:#f7f5f5;       /* fond de page */
-  --line:#e6dede;     /* filets discrets */
+  --bg:#ffffff;       /* fond de page */
+  --line:#e8ebef;     /* filets discrets */
   --r:5px;            /* rayon max des bords */
   --gap:5px;          /* espacement standard */
 }
@@ -125,6 +125,19 @@ html,body{max-width:100%;overflow-x:hidden}
 .tplgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:0 var(--gap)}
 .num .btn{margin-top:5px;background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
 @media(max-width:900px){.vars{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* blocs blancs, contours gris très clair */
+.head{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.sep{background:var(--line)}
+.brand img{height:36px}
+.brand h1{color:var(--accent)}
+.kpi{border-color:var(--line)}
+.kpi b{color:var(--accent)}
+.card h2 i{background:var(--accent);color:var(--on-accent)}
+.tpl{border-color:#c9ced6}
+.tpl small{color:var(--accent)}
+li b{color:var(--accent)}
+.num b{color:#ffffff}
+.tpl.copied::after{background:var(--accent);color:var(--on-accent)}
 </style>
 </head>
 <body>
@@ -150,7 +163,7 @@ html,body{max-width:100%;overflow-x:hidden}
   </div>
 </header>
 
-<div class="note">Note privée : lisez le résumé du bot (contrat, assureur, motif, localisation) avant de répondre. Ne reposez pas les mêmes questions. Marque blanche : présentez-vous au nom de l'assureur indiqué dans la note.</div>
+<div class="note">Note privée : lisez le résumé du bot (contrat, assureur, motif, localisation) avant de répondre. Ne reposez pas les mêmes questions. Marque blanche : présentez-vous au nom de l'assureur indiqué dans la note, sans citer IMA.</div>
 
 <!-- ===== BANDEAU 2 : VARIABLES (remplissage à la volée) ===== -->
 <section class="card">
@@ -188,7 +201,7 @@ html,body{max-width:100%;overflow-x:hidden}
 </section>
 
 <!-- ===== BANDEAU 5 : SÉCURITÉ D'ABORD ===== -->
-<section class="card dark">
+<section class="card">
   <h2><i>3</i>Sécurité d'abord</h2>
   <ul>
     <li>Danger immédiat : orienter vers le <b>112</b> (ou 15, 17, 18) avant toute autre question</li>
@@ -239,19 +252,6 @@ html,body{max-width:100%;overflow-x:hidden}
 
 </div>
 
-<!-- ===== BANDEAU 10 : À NE PAS FAIRE ===== -->
-<section class="dont">
-  <h2>À ne pas faire</h2>
-  <ul>
-    <li>Confirmer une prise en charge ou un remboursement avant vérification des garanties</li>
-    <li>Annoncer une heure d'arrivée précise non confirmée par l'intervenant</li>
-    <li>Donner un avis médical ou un diagnostic : orienter vers l'équipe médicale</li>
-    <li>Donner un conseil juridique définitif : orienter vers un juriste</li>
-    <li>Demander par WhatsApp un code de carte bancaire, un mot de passe ou un n° de sécurité sociale</li>
-    <li>Citer IMA quand le contrat est en marque blanche : parler au nom de l'assureur</li>
-  </ul>
-</section>
-
 <div class="foot">Page de démonstration · équipe Presales Diabolocom · © Diabolocom</div>
 </div>
 
@@ -259,7 +259,7 @@ html,body{max-width:100%;overflow-x:hidden}
 
 <script>
 /* ===== CONFIG : logo ===== */
-const LOGO_URL = ""; // ex : "https://.../logo-ima.png" ; vide = logo texte
+const LOGO_URL = "https://www.ima.eu/sites/default/files/styles/logo_header_desktop/public/group/logo/2026-09/IMA_Groupe_logo_header.png?itok=w1lRf1rv"; // vide = logo texte
 const logo=document.getElementById('logo'), wm=document.getElementById('wm');
 if(LOGO_URL){logo.src=LOGO_URL;logo.style.display='block';wm.style.display='none';
   logo.onerror=()=>{logo.style.display='none';wm.style.display=''};}
