@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Script conseiller - Finaxy</title>
+<style>
+/* ===== THEME : seul bloc à modifier pour changer de charte ===== */
+:root{
+  --ink:#191853;      /* couleur principale : texte, blocs bleus, boutons */
+  --on-ink:#ffffff;   /* écriture sur blocs bleus */
+  --accent:#7e1149;   /* couleur d'appel : textes clés */
+  --on-accent:#ffffff;/* écriture sur l'accent */
+  --tint:#f1f1f8;     /* survol des modèles et lignes */
+  --bg:#ffffff;       /* fond de page */
+  --line:#e8ebef;     /* filets discrets */
+  --r:5px;            /* rayon max des bords */
+  --gap:5px;          /* espacement standard */
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{font-size:14px}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.4;padding:var(--gap)}
+.wrap{display:flex;flex-direction:column;gap:var(--gap);width:100%}
+
+/* ---------- Header ---------- */
+.head{background:var(--ink);color:var(--on-ink);border-radius:var(--r);padding:10px 12px;display:flex;flex-wrap:wrap;gap:10px 20px;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:12px}
+.brand img{height:30px;width:auto;display:block}
+.brand .wm{font-weight:800;font-size:1.5rem;letter-spacing:-.5px}
+.brand .wm{color:var(--accent)}
+.brand h1{font-size:1rem;font-weight:700;line-height:1.2}
+.brand p{font-size:.8rem;opacity:.75}
+.sep{width:1px;align-self:stretch;background:#ffffff40}
+.kpis{display:flex;gap:5px;flex-wrap:wrap}
+.kpi{border:1px solid #ffffff40;border-radius:var(--r);padding:3px 9px;text-align:center;min-width:92px}
+.kpi b{display:block;font-size:1.1rem;color:#ffffff;line-height:1.2}
+.kpi span{font-size:.7rem;opacity:.8}
+
+/* ---------- Blocs ---------- */
+.note{background:var(--accent);color:var(--on-accent);border-radius:var(--r);padding:6px 10px;font-weight:600;font-size:.88rem}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap)}
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:8px 10px}
+.card.dark{background:var(--ink);color:var(--on-ink);border-color:var(--ink)}
+.card h2{display:flex;align-items:center;gap:8px;font-size:1rem;margin-bottom:6px}
+.card h2 i{font-style:normal;background:var(--ink);color:var(--accent);border-radius:var(--r);min-width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;font-size:.8rem}
+.card.dark h2 i{background:var(--accent);color:var(--on-accent)}
+.card h3{font-size:.82rem;text-transform:uppercase;letter-spacing:.4px;margin:6px 0 3px;border-bottom:2px solid var(--accent);display:inline-block}
+.card.dark h3{color:var(--on-ink)}
+.full{grid-column:1/-1}
+ul{list-style:none}
+li{padding:2px 0 2px 14px;position:relative}
+li::before{content:"";position:absolute;left:0;top:.65em;width:6px;height:6px;background:var(--accent);border-radius:1px}
+.card.dark li::before{background:var(--accent)}
+
+/* modèles de réponse (cliquables = copie) */
+.tpl{border:1px dashed #000;border-radius:var(--r);padding:6px 8px;margin:3px 0;cursor:pointer;font-size:.9rem;background:var(--bg);position:relative}
+.tpl:hover{background:var(--tint);border-style:solid}
+.tpl small{display:block;font-weight:700;font-size:.7rem;text-transform:uppercase;margin-bottom:1px}
+.tpl.copied::after{content:"Copié ✓";position:absolute;right:6px;top:4px;background:var(--ink);color:var(--accent);padding:0 6px;border-radius:var(--r);font-size:.7rem;font-weight:700}
+
+/* tableau */
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+th{background:var(--ink);color:var(--on-ink);text-align:left;padding:4px 8px}
+th:first-child{border-radius:var(--r) 0 0 0}th:last-child{border-radius:0 var(--r) 0 0}
+td{padding:4px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:hover td{background:var(--tint)}
+td b{border-bottom:2px solid var(--accent)}
+
+/* boutons */
+.btns{display:flex;flex-wrap:wrap;gap:var(--gap);margin:4px 0}
+button,select{font:inherit;border-radius:var(--r);cursor:pointer}
+.btn{background:var(--ink);color:var(--on-ink);border:1px solid var(--ink);padding:4px 10px;font-weight:600}
+.btn:hover{border-color:var(--accent)}
+.btn.on{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.btn.ghost{background:#fff;color:var(--ink)}
+#out{min-height:60px;background:var(--bg);border:1px solid var(--line);border-radius:var(--r);padding:6px 8px;margin:4px 0;font-size:.9rem;white-space:pre-line}
+#out.empty{opacity:.55;font-style:italic}
+
+/* annuaire */
+.fld{display:flex;flex-direction:column;gap:2px;margin:4px 0}
+.fld label{font-size:.75rem;font-weight:700;text-transform:uppercase}
+select{padding:4px 6px;border:1px solid var(--ink);background:#fff;color:var(--ink)}
+.num{background:var(--ink);color:var(--on-ink);border-radius:var(--r);padding:6px 10px;margin-top:5px;font-size:.9rem}
+.num b{color:var(--accent);font-size:1.15rem;display:block}
+.num.empty{background:var(--bg);color:var(--ink);border:1px dashed #000;opacity:.7}
+
+/* à ne pas faire */
+.dont{background:var(--ink);color:var(--on-ink);border-radius:var(--r);padding:8px 10px}
+.dont h2{font-size:1rem;margin-bottom:4px;color:var(--accent)}
+.dont ul{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:0 14px}
+.dont li::before{content:"✕";background:none;color:var(--accent);width:auto;height:auto;top:2px;font-size:.8rem;font-weight:700}
+.foot{text-align:center;font-size:.72rem;opacity:.7;padding:2px}
+.card,.head,.dont,.note{min-width:0;overflow-wrap:anywhere}
+@media(max-width:900px){.grid{grid-template-columns:minmax(0,1fr)}.sep{display:none}}
+@media(max-width:900px){
+  body{font-size:13px}
+  .brand{flex-wrap:wrap;gap:6px}.sep{display:none}
+  .kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%}.kpi{min-width:0}
+  table,thead,tbody,tr,th,td{display:block;width:100%}
+  tr:first-child{display:none}
+  tr{border-bottom:1px solid var(--line);padding:3px 0}
+  td{border:0;padding:1px 4px}
+  td:nth-child(1)::before{content:"Besoin : ";font-weight:700}
+  td:nth-child(3){font-size:.8rem;opacity:.85}
+  .dont ul{grid-template-columns:minmax(0,1fr)}
+}
+html,body{max-width:100%;overflow-x:hidden}
+.wrap,.grid,.card,.head,.dont,.note,.tpl,table,td,li,p,div{min-width:0;max-width:100%}
+.card,.tpl,td,li,p,.note,#out,.num,h1,h2{word-wrap:break-word;overflow-wrap:break-word;word-break:break-word}
+@media(max-width:900px){
+  .grid{display:flex;flex-direction:column;gap:var(--gap)}
+  .grid>*{width:100%}
+  select,.btn{max-width:100%}
+}
+
+/* ---------- Ajouts : modèles, variables, onglets ---------- */
+.tpl{white-space:pre-line}
+.tpl small{white-space:normal}
+.vars{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--gap)}
+.vars input{font:inherit;padding:4px 6px;border:1px solid var(--ink);border-radius:var(--r);width:100%}
+.btn.ghost.on{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.tabs{display:flex;flex-wrap:wrap;gap:var(--gap);margin:2px 0 6px}
+.tplgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:0 var(--gap)}
+.num .btn{margin-top:5px;background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+@media(max-width:900px){.vars{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* blocs blancs, contours gris très clair */
+.head{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.sep{background:var(--line)}
+.brand img{height:40px}
+.brand h1{color:var(--ink)}
+.kpi{border-color:var(--line)}
+.kpi b{color:var(--accent)}
+.card h2 i{background:var(--accent);color:var(--on-accent)}
+.tpl{border-color:#c9ced6}
+.tpl small{color:var(--accent)}
+li b{color:var(--accent)}
+.num b{color:#ffffff}
+.tpl.copied::after{background:var(--accent);color:var(--on-accent)}
+/* parties empilées et espacées */
+.wrap{gap:40px}
+.grid,.grid[class]{display:flex;flex-direction:column;gap:40px}
+.wrap>*,.grid>*{position:relative}
+/* blocs bleus Finaxy */
+.note{background:var(--ink);color:var(--on-ink)}
+.card.dark{background:var(--ink);border-color:var(--ink);color:var(--on-ink)}
+.card.dark li::before{background:#ffffff}
+.card.dark li b{color:#ffffff}
+.card.dark .tpl{background:#ffffff;color:var(--ink)}
+.card.dark .tpl:hover{background:var(--tint)}
+.btn.ghost{color:var(--ink)}
+.hint{display:inline-block;background:var(--accent);color:var(--on-accent);border-radius:var(--r);padding:0 6px;font-size:.72rem;font-weight:700;vertical-align:middle}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ===== BANDEAU 1 : EN-TÊTE ===== -->
+<header class="head">
+  <div class="brand">
+    <!-- LOGO : renseigner LOGO_URL dans le script en bas de page ; à défaut le texte s'affiche -->
+    <img id="logo" src="" alt="Finaxy" style="display:none">
+    <span class="wm" id="wm">Finaxy</span>
+    <div class="sep"></div>
+    <div>
+      <h1>Script conseiller · canaux écrits</h1>
+      <p>Courtage en assurances : particuliers, professionnels et entreprises</p>
+    </div>
+  </div>
+  <div class="kpis">
+    <div class="kpi"><b>Auto</b><span>véhicules & flottes</span></div>
+    <div class="kpi"><b>Habitation</b><span>propriétaire, locataire</span></div>
+    <div class="kpi"><b>Santé</b><span>& prévoyance</span></div>
+    <div class="kpi"><b>Pro</b><span>RC & multirisque</span></div>
+  </div>
+</header>
+
+<div class="note">Note privée : lisez le résumé du bot (profil, contrat, motif) avant de répondre. Ne reposez pas les mêmes questions. Ne communiquez jamais un tarif ou une garantie sans vérification sur le contrat.</div>
+
+<!-- ===== BANDEAU 2 : VARIABLES (remplissage à la volée) ===== -->
+<section class="card">
+  <h2><i style="background:#191853;color:#ffffff">⚙</i>Personnaliser les messages</h2>
+  <div class="vars">
+    <div class="fld"><label for="v-prenom">Prénom client</label><input id="v-prenom" placeholder="[Prénom]"></div>
+    <div class="fld"><label for="v-conseiller">Votre prénom</label><input id="v-conseiller" placeholder="[Conseiller]"></div>
+    <div class="fld"><label for="v-contrat">N° de contrat</label><input id="v-contrat" placeholder="[N° contrat]"></div>
+    <div class="fld"><label for="v-sinistre">N° de sinistre</label><input id="v-sinistre" placeholder="[N° sinistre]"></div>
+  </div>
+  <p style="font-size:.75rem;opacity:.75;margin-top:4px">Les champs remplis remplacent les crochets dans tous les messages, à l'écran comme à la copie. Un clic sur un message le copie, prêt à coller dans la conversation.</p>
+</section>
+
+<div class="grid">
+
+<!-- ===== BANDEAU 3 : ACCUEILLIR ===== -->
+<section class="card">
+  <h2><i style="background:#343369;color:#ffffff">1</i>Accueillir</h2>
+  <div class="tpl" data-copy="Bonjour [Prénom], je suis [Conseiller], conseiller Finaxy. Merci pour votre message, je prends le relais pour vous accompagner."><small>Accueil standard</small></div>
+  <div class="tpl" data-copy="Bonjour [Prénom], je suis [Conseiller], conseiller Finaxy. Je vois que vous nous contactez au sujet de votre contrat n° [N° contrat] : je regarde votre dossier."><small>Accueil client identifié</small></div>
+</section>
+
+<!-- ===== BANDEAU 4 : QUALIFIER ===== -->
+<section class="card">
+  <h2><i style="background:#4f4f80;color:#ffffff">2</i>Qualifier la demande</h2>
+  <ul>
+    <li><b>Profil</b> : particulier, professionnel ou entreprise</li>
+    <li><b>Contrat</b> : client Finaxy ou prospect, n° de contrat</li>
+    <li><b>Motif</b> : devis, sinistre, modification, attestation, résiliation</li>
+    <li><b>Risque</b> : auto, habitation, santé, prévoyance, activité professionnelle</li>
+    <li><b>Échéance</b> : date de renouvellement ou de souscription souhaitée</li>
+  </ul>
+  <div class="tpl" data-copy="Pour vous orienter au mieux, pouvez-vous me préciser si votre demande concerne un contrat existant (n° de contrat) ou un nouveau besoin d'assurance ?"><small>Contrat existant ou nouveau besoin</small></div>
+  <div class="tpl" data-copy="Pour établir votre devis, pouvez-vous m'indiquer le bien ou l'activité à assurer et la date à laquelle vous souhaitez être couvert ?"><small>Préparer un devis</small></div>
+</section>
+
+<!-- ===== BANDEAU 5 : DÉCLARER UN SINISTRE ===== -->
+<section class="card dark">
+  <h2><i style="background:#6a6a96;color:#ffffff">3</i>Déclarer un sinistre</h2>
+  <ul>
+    <li><b>Sécurité</b> : vérifier que personne n'est en danger, sinon orienter vers le 112</li>
+    <li><b>Circonstances</b> : date, lieu, description, tiers impliqué</li>
+    <li><b>Justificatifs</b> : photos, constat amiable, dépôt de plainte en cas de vol, factures</li>
+    <li><b>Délai</b> : rappeler de déclarer dans le délai prévu au contrat</li>
+  </ul>
+  <div class="tpl" data-copy="Je suis désolé pour ce qui vous arrive, [Prénom]. Pour ouvrir votre dossier, pouvez-vous m'indiquer la date, le lieu et ce qui s'est passé ?"><small>Ouvrir la déclaration</small></div>
+  <div class="tpl" data-copy="Votre sinistre est enregistré sous le n° [N° sinistre]. Vous pouvez nous transmettre vos photos et justificatifs directement dans cette conversation."><small>Confirmer l'ouverture</small></div>
+</section>
+
+<!-- ===== BANDEAU 6 : RÉPONSES PAR PRODUIT ===== -->
+<section class="card full">
+  <h2><i style="background:#8586ad;color:#ffffff">4</i>Réponses par produit <span class="hint">cliquer pour copier</span></h2>
+  <div class="tabs" id="domTabs"></div>
+  <div class="tplgrid" id="domTpl"></div>
+</section>
+
+<!-- ===== BANDEAU 7 : RÉPONSES RAPIDES ===== -->
+<section class="card">
+  <h2><i style="background:#a0a1c3;color:#000000">5</i>Réponses rapides</h2>
+  <div class="tpl" data-copy="Merci [Prénom], je vérifie cela dans votre contrat et je reviens vers vous dans quelques instants."><small>Mise en attente</small></div>
+  <div class="tpl" data-copy="Je préfère vérifier vos garanties avant de vous répondre précisément. Je reviens vers vous très rapidement."><small>Garantie à vérifier</small></div>
+  <div class="tpl" data-copy="Souhaitez-vous qu'un conseiller vous rappelle ? Indiquez-moi le numéro à joindre et le créneau qui vous convient."><small>Proposer un rappel</small></div>
+  <div class="tpl" data-copy="Merci pour votre échange, [Prénom]. Votre demande est bien prise en compte. Je reste disponible si vous avez d'autres questions. Belle journée !"><small>Clôture</small></div>
+</section>
+
+<!-- ===== BANDEAU 8 : AIDE À LA DISCUSSION ===== -->
+<section class="card">
+  <h2><i style="background:#bbbdda;color:#000000">6</i>Aide à la discussion</h2>
+  <div class="btns" id="topics"></div>
+  <div id="out" class="empty">Aucune situation sélectionnée.</div>
+  <button class="btn" id="copyOut">Copier le texte</button>
+</section>
+
+<!-- ===== BANDEAU 9 : AIDE ANNUAIRE ===== -->
+<section class="card">
+  <h2><i style="background:#d6d8f0;color:#000000">7</i>Aide annuaire</h2>
+  <div class="fld"><label for="s1">Profil</label>
+    <select id="s1"><option value="">— choisir —</option><option>Particulier</option><option>Professionnel</option><option>Entreprise</option></select></div>
+  <div class="fld"><label for="s2">Sujet</label>
+    <select id="s2"><option value="">— choisir —</option><option>Devis / souscription</option><option>Sinistre</option><option>Gestion de contrat</option><option>Réclamation</option></select></div>
+  <div class="fld"><label for="s3">Interlocuteur</label>
+    <select id="s3"><option value="">— choisir —</option><option>Conseiller commercial</option><option>Gestionnaire sinistres</option><option>Service client</option><option>Service réclamations</option></select></div>
+  <div class="num empty" id="num">Renseignez les trois champs pour afficher le numéro.</div>
+  <p style="font-size:.72rem;opacity:.7;margin-top:3px">Numéros fictifs, uniquement pour la démonstration.</p>
+</section>
+
+</div>
+
+<div class="foot">Page de démonstration · équipe Presales Diabolocom · © Diabolocom</div>
+</div>
+
+<!-- SNIPPET CHATBOT : coller ici le code d'intégration, ne rien modifier au-dessus -->
+
+<script>
+/* ===== CONFIG : logo ===== */
+const LOGO_URL = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlBMc5RuIVyw66fEptoq_OPd4A4OAOzpQSH_d0AcaydYuac3cK9iSvR6I&s=10"; // vide = logo texte
+const logo=document.getElementById('logo'), wm=document.getElementById('wm');
+if(LOGO_URL){logo.src=LOGO_URL;logo.style.display='block';wm.style.display='none';
+  logo.onerror=()=>{logo.style.display='none';wm.style.display=''};}
+
+/* variables remplacées à la copie */
+const VARS={"[Prénom]":"v-prenom","[Conseiller]":"v-conseiller","[N° contrat]":"v-contrat","[N° sinistre]":"v-sinistre"};
+function fill(t){for(const k in VARS){const v=document.getElementById(VARS[k]).value.trim();if(v)t=t.split(k).join(v);}return t;}
+
+/* copie (avec repli si le presse-papiers est indisponible) */
+function copy(t,el){t=fill(t);
+  const done=()=>{if(el){el.classList.add('copied');setTimeout(()=>el.classList.remove('copied'),1200);}};
+  const fb=()=>{const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();
+    try{document.execCommand('copy');done();}catch(e){}a.remove();};
+  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(done,fb);else fb();}
+function bindTpl(e){e._t=document.createTextNode(fill(e.dataset.copy));e.appendChild(e._t);e.onclick=()=>copy(e.dataset.copy,e);}
+/* mise à jour à la volée des textes affichés */
+function refresh(){document.querySelectorAll('.tpl').forEach(e=>{if(e._t)e._t.nodeValue=fill(e.dataset.copy);});
+  const o=document.getElementById('out');if(o&&o.dataset.raw)o.textContent=fill(o.dataset.raw);}
+Object.values(VARS).forEach(i=>document.getElementById(i).addEventListener('input',refresh));
+document.querySelectorAll('.tpl').forEach(bindTpl);
+
+/* réponses par produit */
+const DOMAINS={
+ "🚗 Auto & flotte":{
+  "Devis auto":"Pour votre devis auto, pouvez-vous m'indiquer le modèle du véhicule, sa date de mise en circulation et l'usage prévu (personnel, professionnel) ?",
+  "Attestation d'assurance":"Je vous transmets votre attestation d'assurance pour le contrat n° [N° contrat] par e-mail. Vous pouvez aussi la retrouver dans votre espace client.",
+  "Changement de véhicule":"Pour mettre à jour votre contrat avec votre nouveau véhicule, merci de m'envoyer la carte grise et la date d'acquisition.",
+  "Flotte d'entreprise":"Pour une flotte, un conseiller dédié étudie vos besoins. Combien de véhicules sont concernés et quel est leur usage ?"},
+ "🏠 Habitation":{
+  "Devis habitation":"Pour votre devis habitation, êtes-vous propriétaire ou locataire ? Quel est le type de logement et sa surface ?",
+  "Dégât des eaux":"Pour votre dégât des eaux, merci d'envoyer des photos des dommages et, si un voisin est concerné, le constat amiable dégât des eaux.",
+  "Vol / cambriolage":"Je suis désolé pour ce cambriolage. Pensez à déposer plainte et à nous transmettre le récépissé ainsi que la liste des biens volés.",
+  "Déménagement":"Félicitations pour votre déménagement ! Indiquez-moi votre nouvelle adresse et la date d'emménagement : je mets votre contrat à jour."},
+ "🩺 Santé & prévoyance":{
+  "Devis mutuelle":"Pour votre devis santé, combien de personnes sont à couvrir et quels postes sont prioritaires pour vous (optique, dentaire, hospitalisation…) ?",
+  "Remboursement":"Je regarde l'état de votre remboursement. Pouvez-vous m'indiquer la date des soins et le type de dépense ?",
+  "Ajout d'un bénéficiaire":"Pour ajouter un bénéficiaire à votre contrat, merci de m'indiquer son nom, sa date de naissance et son lien avec vous.",
+  "Prévoyance":"La prévoyance protège vos revenus et vos proches en cas d'arrêt de travail, d'invalidité ou de décès. Souhaitez-vous qu'un conseiller étudie votre situation ?"},
+ "💼 Professionnels":{
+  "RC professionnelle":"Pour votre RC professionnelle, pouvez-vous me préciser votre activité, votre chiffre d'affaires et le nombre de salariés ?",
+  "Multirisque pro":"La multirisque professionnelle couvre vos locaux, votre matériel et votre activité. Quels sont la surface et l'usage de vos locaux ?",
+  "Santé collective":"Pour la mutuelle de vos salariés, combien de personnes sont concernées et avez-vous déjà un contrat collectif en place ?",
+  "Attestation pro":"Je vous envoie votre attestation d'assurance professionnelle par e-mail. Avez-vous besoin d'une mention particulière pour un client ou un chantier ?"}
+};
+const dt=document.getElementById('domTabs'),dp=document.getElementById('domTpl');
+function showDom(k,b){dt.querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');dp.innerHTML='';
+ for(const [lab,txt] of Object.entries(DOMAINS[k])){const d=document.createElement('div');d.className='tpl';d.dataset.copy=txt;
+  const s=document.createElement('small');s.textContent=lab;d.appendChild(s);bindTpl(d);dp.appendChild(d);}}
+Object.keys(DOMAINS).forEach((k,i)=>{const b=document.createElement('button');b.className='btn ghost';b.textContent=k;
+ b.onclick=()=>showDom(k,b);dt.appendChild(b);if(i===0)showDom(k,b);});
+
+/* aide à la discussion */
+const TOPICS={
+ "Client mécontent":"Je comprends votre mécontentement, [Prénom], et je vous remercie de nous en faire part. Je regarde votre dossier en détail pour trouver une solution avec vous.",
+ "Hausse de cotisation":"Je comprends votre question sur l'évolution de votre cotisation. Je vérifie les éléments de votre contrat et je vous propose, si besoin, d'étudier une alternative adaptée.",
+ "Demande de résiliation":"Je prends note de votre souhait de résilier. Avant cela, puis-je vous demander ce qui motive votre décision ? Nous avons peut-être une solution plus adaptée.",
+ "Suivi de sinistre":"Votre dossier n° [N° sinistre] est bien en cours de traitement. Je fais le point avec le gestionnaire et je reviens vers vous.",
+ "Délai de remboursement":"Je vérifie où en est votre remboursement. Dès que j'ai l'information du gestionnaire, je vous la transmets."
+};
+const tb=document.getElementById('topics'),out=document.getElementById('out');
+Object.keys(TOPICS).forEach(k=>{const b=document.createElement('button');b.className='btn ghost';b.textContent=k;
+ b.onclick=()=>{tb.querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+  out.textContent=fill(TOPICS[k]);out.dataset.raw=TOPICS[k];out.classList.remove('empty');};tb.appendChild(b);});
+document.getElementById('copyOut').onclick=()=>{if(!out.classList.contains('empty'))copy(out.dataset.raw)};
+
+/* annuaire fictif (plage 01 99 00 xx xx réservée à la fiction) */
+const num=document.getElementById('num'),sel=['s1','s2','s3'].map(i=>document.getElementById(i));
+function upd(){const v=sel.map(s=>s.value);
+ if(v.every(Boolean)){const h=[...v.join('')].reduce((a,c)=>(a*31+c.charCodeAt(0))%9000,0)+1000,
+  n='01 99 00 '+String(h).slice(0,2)+' '+String(h).slice(2);
+  num.className='num';num.innerHTML='';num.append(v[2]+' · '+v[1]);
+  const b=document.createElement('b');b.textContent=n;num.appendChild(b);
+  const c=document.createElement('button');c.className='btn';c.textContent='Copier le numéro';
+  c.onclick=()=>{navigator.clipboard&&navigator.clipboard.writeText(n);c.textContent='Copié ✓';setTimeout(()=>c.textContent='Copier le numéro',1200);};
+  num.appendChild(c);}
+ else{num.className='num empty';num.textContent='Renseignez les trois champs pour afficher le numéro.';}}
+sel.forEach(s=>s.onchange=upd);
+</script>
+</body>
+</html>
