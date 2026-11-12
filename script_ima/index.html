@@ -138,6 +138,11 @@ html,body{max-width:100%;overflow-x:hidden}
 li b{color:var(--accent)}
 .num b{color:#ffffff}
 .tpl.copied::after{background:var(--accent);color:var(--on-accent)}
+/* parties empilées, espacées et séparées par un trait violet */
+.wrap{gap:40px}
+.grid,.grid[class]{display:flex;flex-direction:column;gap:40px}
+.wrap>*,.grid>*{position:relative}
+.wrap>*:not(:first-child):not(.foot)::before,.grid>*:not(:first-child)::before{content:"";position:absolute;left:0;right:0;top:-22px;height:4px;border-radius:2px;background:var(--accent)}
 </style>
 </head>
 <body>
