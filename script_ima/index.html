@@ -138,11 +138,10 @@ html,body{max-width:100%;overflow-x:hidden}
 li b{color:var(--accent)}
 .num b{color:#ffffff}
 .tpl.copied::after{background:var(--accent);color:var(--on-accent)}
-/* parties empilées, espacées et séparées par un trait violet */
+/* parties empilées et espacées */
 .wrap{gap:40px}
 .grid,.grid[class]{display:flex;flex-direction:column;gap:40px}
 .wrap>*,.grid>*{position:relative}
-.wrap>*:not(:first-child):not(.foot)::before,.grid>*:not(:first-child)::before{content:"";position:absolute;left:0;right:0;top:-22px;height:4px;border-radius:2px;background:var(--accent)}
 </style>
 </head>
 <body>
@@ -172,7 +171,7 @@ li b{color:var(--accent)}
 
 <!-- ===== BANDEAU 2 : VARIABLES (remplissage à la volée) ===== -->
 <section class="card">
-  <h2><i>⚙</i>Personnaliser les messages</h2>
+  <h2><i style="background:#2a0657;color:#ffffff">⚙</i>Personnaliser les messages</h2>
   <div class="vars">
     <div class="fld"><label for="v-prenom">Prénom bénéficiaire</label><input id="v-prenom" placeholder="[Prénom]"></div>
     <div class="fld"><label for="v-conseiller">Votre prénom</label><input id="v-conseiller" placeholder="[Conseiller]"></div>
@@ -186,14 +185,14 @@ li b{color:var(--accent)}
 
 <!-- ===== BANDEAU 3 : ACCUEILLIR ===== -->
 <section class="card">
-  <h2><i>1</i>Accueillir</h2>
+  <h2><i style="background:#411f6d;color:#ffffff">1</i>Accueillir</h2>
   <div class="tpl" data-copy="Bonjour [Prénom] 👋&#10;Je suis [Conseiller], conseiller assistance pour *[Assureur]*. J'ai bien reçu votre message, je prends le relais.&#10;Votre dossier : *[N° dossier]*"><small>Accueil standard</small></div>
   <div class="tpl" data-copy="Bonjour [Prénom], je suis [Conseiller] de l'assistance *[Assureur]*.&#10;Avant tout : *êtes-vous en sécurité ?* Y a-t-il des personnes blessées ?&#10;En cas de danger immédiat, appelez le *112*."><small>Accueil situation d'urgence</small></div>
 </section>
 
 <!-- ===== BANDEAU 4 : QUALIFIER ===== -->
 <section class="card">
-  <h2><i>2</i>Qualifier la demande</h2>
+  <h2><i style="background:#583982;color:#ffffff">2</i>Qualifier la demande</h2>
   <ul>
     <li><b>Sécurité</b> : personnes en danger, blessées, lieu sécurisé</li>
     <li><b>Contrat</b> : assureur ou mutuelle, n° de contrat / d'adhérent</li>
@@ -207,7 +206,7 @@ li b{color:var(--accent)}
 
 <!-- ===== BANDEAU 5 : SÉCURITÉ D'ABORD ===== -->
 <section class="card">
-  <h2><i>3</i>Sécurité d'abord</h2>
+  <h2><i style="background:#6f5298;color:#ffffff">3</i>Sécurité d'abord</h2>
   <ul>
     <li>Danger immédiat : orienter vers le <b>112</b> (ou 15, 17, 18) avant toute autre question</li>
     <li>Sur la route : gilet, triangle, attendre derrière la glissière</li>
@@ -220,14 +219,14 @@ li b{color:var(--accent)}
 
 <!-- ===== BANDEAU 6 : RÉPONSES PAR DOMAINE ===== -->
 <section class="card full">
-  <h2><i>4</i>Réponses par domaine <span class="wa">cliquer pour copier</span></h2>
+  <h2><i style="background:#866cad;color:#ffffff">4</i>Réponses par domaine <span class="wa">cliquer pour copier</span></h2>
   <div class="tabs" id="domTabs"></div>
   <div class="tplgrid" id="domTpl"></div>
 </section>
 
 <!-- ===== BANDEAU 7 : RÉPONSES RAPIDES ===== -->
 <section class="card">
-  <h2><i>5</i>Réponses rapides</h2>
+  <h2><i style="background:#9d85c3;color:#000000">5</i>Réponses rapides</h2>
   <div class="tpl" data-copy="Merci [Prénom], je vérifie cela et je reviens vers vous dans quelques minutes ⏳"><small>Mise en attente</small></div>
   <div class="tpl" data-copy="Je préfère vérifier vos garanties avant de vous confirmer la prise en charge. Je reviens vers vous très vite."><small>Prise en charge à confirmer</small></div>
   <div class="tpl" data-copy="📞 Souhaitez-vous qu'un conseiller vous appelle ? Indiquez-moi le numéro à joindre et le moment qui vous convient."><small>Proposer un appel</small></div>
@@ -236,7 +235,7 @@ li b{color:var(--accent)}
 
 <!-- ===== BANDEAU 8 : AIDE À LA DISCUSSION ===== -->
 <section class="card">
-  <h2><i>6</i>Aide à la discussion</h2>
+  <h2><i style="background:#b49fd8;color:#000000">6</i>Aide à la discussion</h2>
   <div class="btns" id="topics"></div>
   <div id="out" class="empty">Aucune situation sélectionnée.</div>
   <button class="btn" id="copyOut">Copier le texte</button>
@@ -244,7 +243,7 @@ li b{color:var(--accent)}
 
 <!-- ===== BANDEAU 9 : AIDE ANNUAIRE ===== -->
 <section class="card">
-  <h2><i>7</i>Aide annuaire</h2>
+  <h2><i style="background:#cbb8ee;color:#000000">7</i>Aide annuaire</h2>
   <div class="fld"><label for="s1">Domaine</label>
     <select id="s1"><option value="">— choisir —</option><option>Mobilité</option><option>Habitat</option><option>Santé et bien-vivre</option><option>Juridique</option></select></div>
   <div class="fld"><label for="s2">Urgence</label>

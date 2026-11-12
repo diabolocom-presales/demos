@@ -113,6 +113,7 @@ html,body{max-width:100%;overflow-x:hidden}
 /* 40px entre chaque partie */
 .wrap{gap:40px}
 .grid,.grid[class]{gap:40px}
+/* pastilles numérotées : dégradé noir -> gris très clair (couleurs en ligne) */
 </style>
 </head>
 <body>
@@ -144,13 +145,13 @@ html,body{max-width:100%;overflow-x:hidden}
 
 <!-- ===== BANDEAU 2 : ACCUEILLIR ===== -->
 <section class="card">
-  <h2><i>1</i>Accueillir</h2>
+  <h2><i style="background:#000000;color:#ffffff">1</i>Accueillir</h2>
   <div class="tpl" data-copy="Bonjour, merci de contacter MyUnisoft. Je suis [Prénom], conseiller. Je vois que vous nous écrivez au sujet de [sujet] : je prends le relais. Pouvez-vous me préciser si vous êtes expert-comptable, collaborateur de cabinet ou dirigeant d'entreprise ?"><small>Message d'accueil · cliquer pour copier</small>Bonjour, merci de contacter MyUnisoft. Je suis [Prénom], conseiller. Je vois que vous nous écrivez au sujet de [sujet] : je prends le relais. Pouvez-vous me préciser si vous êtes expert-comptable, collaborateur de cabinet ou dirigeant d'entreprise ?</div>
 </section>
 
 <!-- ===== BANDEAU 3 : COMPRENDRE LE BESOIN ===== -->
 <section class="card">
-  <h2><i>2</i>Comprendre le besoin</h2>
+  <h2><i style="background:#272727;color:#ffffff">2</i>Comprendre le besoin</h2>
   <ul>
     <li><b>Profil</b> : cabinet (expert-comptable, collaborateur) ou client TPE/PME</li>
     <li><b>Taille du cabinet</b> : nombre de collaborateurs et de dossiers</li>
@@ -165,7 +166,7 @@ html,body{max-width:100%;overflow-x:hidden}
 
 <!-- ===== BANDEAU 5 : FACTURE ÉLECTRONIQUE ===== -->
 <section class="card dark">
-  <h2><i>3</i>Facture électronique</h2>
+  <h2><i style="background:#4f4f4f;color:#ffffff">3</i>Facture électronique</h2>
   <ul>
     <li>Plateforme Agréée (PA) intégrée à la solution du cabinet</li>
     <li>Factures de vente validées remontées en écritures dans la production</li>
@@ -179,7 +180,7 @@ html,body{max-width:100%;overflow-x:hidden}
 
 <!-- ===== BANDEAU 4 : ORIENTER VERS LES PRODUITS ===== -->
 <section class="card full">
-  <h2><i>4</i>Orienter vers les produits</h2>
+  <h2><i style="background:#767676;color:#ffffff">4</i>Orienter vers les produits</h2>
   <table>
     <tr><th>Besoin exprimé</th><th>Solution MyUnisoft</th><th>À retenir</th></tr>
     <tr><td>Production comptable et fiscale, saisie automatisée, déclarations</td><td><b>MyU Production Comptable et Fiscale</b></td><td>Plateforme collaborative cabinet/client, données partagées en temps réel, 100 % souveraine</td></tr>
@@ -194,7 +195,7 @@ html,body{max-width:100%;overflow-x:hidden}
 
 <!-- ===== BANDEAU 6 : RÉPONSES RAPIDES ===== -->
 <section class="card">
-  <h2><i>5</i>Réponses rapides</h2>
+  <h2><i style="background:#9d9d9d;color:#000000">5</i>Réponses rapides</h2>
   <div class="tpl" data-copy="Je vérifie cela auprès de l'équipe concernée et je reviens vers vous dans quelques instants."><small>Mise en attente</small>Je vérifie cela auprès de l'équipe concernée et je reviens vers vous dans quelques instants.</div>
   <div class="tpl" data-copy="Je ne dispose pas de cette information à cet instant. Je préfère ne pas vous donner une réponse approximative : je la vérifie et je reviens vers vous."><small>Information indisponible</small>Je ne dispose pas de cette information à cet instant. Je préfère ne pas vous donner une réponse approximative : je la vérifie et je reviens vers vous.</div>
   <div class="tpl" data-copy="Souhaitez-vous que l'on poursuive par téléphone ? Un conseiller peut vous rappeler à l'horaire de votre choix, du lundi au vendredi."><small>Proposer un appel</small>Souhaitez-vous que l'on poursuive par téléphone ? Un conseiller peut vous rappeler à l'horaire de votre choix, du lundi au vendredi.</div>
@@ -203,7 +204,7 @@ html,body{max-width:100%;overflow-x:hidden}
 
 <!-- ===== BANDEAU 7 : AIDE À LA DISCUSSION ===== -->
 <section class="card">
-  <h2><i>6</i>Aide à la discussion</h2>
+  <h2><i style="background:#c5c5c5;color:#000000">6</i>Aide à la discussion</h2>
   <div class="btns" id="topics"></div>
   <div id="out" class="empty">Aucun sujet sélectionné.</div>
   <button class="btn" id="copyOut">Copier le texte</button>
@@ -211,7 +212,7 @@ html,body{max-width:100%;overflow-x:hidden}
 
 <!-- ===== BANDEAU 8 : AIDE ANNUAIRE ===== -->
 <section class="card">
-  <h2><i>7</i>Aide annuaire</h2>
+  <h2><i style="background:#ececec;color:#000000">7</i>Aide annuaire</h2>
   <div class="fld"><label for="s1">Profil</label>
     <select id="s1"><option value="">— choisir —</option><option>Expert-comptable</option><option>Collaborateur de cabinet</option><option>Dirigeant TPE/PME</option></select></div>
   <div class="fld"><label for="s2">Sujet</label>
