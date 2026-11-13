@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Script conseiller - CFDP</title>
+<style>
+:root{--p:#194368;--s:#FFCC01;--bg:#f1f5f9;--line:#b7c5d6;--muted:#5a6b7d;--txt:#1b2733;}
+body>div>div{margin-bottom:40px !important}
+body>div>div:last-child{margin-bottom:0 !important}
+body>div>div:nth-child(1),body>div>div:nth-child(2){margin-bottom:0 !important}
+.sec{border-left:4px solid var(--s);background:var(--bg);border-radius:0 6px 6px 0;padding:12px 14px;}
+.ttl{color:var(--p);font-weight:bold;font-size:14px;margin-bottom:6px;}
+.num{display:inline-block;background:var(--p);color:var(--s);border-radius:50%;width:20px;height:20px;line-height:20px;text-align:center;font-size:12px;margin-right:6px;}
+.say{background:#fff;border:1px dashed var(--line);border-radius:4px;padding:8px 10px;}
+.lab{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:2px;}
+.warn{margin-top:6px;font-size:12px;color:var(--muted);}
+.btn{cursor:pointer;background:#fff;color:var(--p);border:1px solid var(--p);border-radius:4px;padding:7px 10px;font:inherit;font-weight:bold;}
+.btn.on{background:var(--p);color:#fff;}
+.btn.cta{background:var(--s);color:var(--p);border-color:var(--s);}
+.lnk{display:inline-block;background:var(--p);color:#fff;text-decoration:none;font-weight:bold;padding:10px 14px;border-radius:4px;margin:10px 8px 0 0;}
+table.t{width:100%;border-collapse:collapse;background:#fff;border-radius:4px;font-size:12.5px;}
+table.t td{padding:6px 8px;border-bottom:1px solid #e1e8f0;vertical-align:top;}
+table.t tr:last-child td{border-bottom:0}
+select,input[type=text]{width:100%;box-sizing:border-box;padding:7px 8px;border:1px solid var(--line);border-radius:4px;font:inherit;background:#fff;color:var(--txt);}
+.chk label{display:flex;gap:8px;padding:4px 0;cursor:pointer;align-items:flex-start}
+.chk input{margin-top:3px;accent-color:#194368}
+.kb{background:#fff;border:1px solid #e1e8f0;border-radius:4px;margin-top:6px;}
+.kb summary{cursor:pointer;padding:8px 10px;font-weight:bold;color:var(--p);}
+.kb div{padding:0 10px 10px;}
+.tag{display:inline-block;background:var(--p);color:var(--s);font-size:10px;text-transform:uppercase;letter-spacing:1px;border-radius:3px;padding:1px 6px;margin-left:6px;font-weight:normal;}
+</style>
+</head>
+<body style="margin:0;padding:24px;background:#ffffff;">
+<div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.5;color:#1b2733;background:#ffffff;max-width:640px;">
+
+<!-- EN-TÊTE -->
+<div style="padding:4px 0 12px;"><img src="https://placehold.co/160x48/194368/FFCC01?text=CFDP" alt="CFDP" style="height:38px;display:block;"></div>
+<div style="background:#194368;border-bottom:4px solid #FFCC01;border-radius:6px 6px 0 0;padding:14px 16px;">
+  <div style="color:#FFCC01;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;">Script conseiller · canaux digitaux</div>
+  <div style="color:#ffffff;font-size:17px;font-weight:bold;margin-top:2px;">Devis, contrats &amp; sinistres professionnels</div>
+</div>
+<div style="background:#f1f5f9;border-radius:0 0 6px 6px;padding:9px 16px;margin-bottom:14px;font-size:12px;color:#194368;">
+  <b>Conseiller connecté :</b> Louis Dubois · <b>Canal :</b> chat / messagerie · <b>Objectif :</b> répondre, qualifier, orienter
+</div>
+
+<!-- 0. AVANT DE RÉPONDRE -->
+<div style="border:1px solid #194368;border-radius:6px;padding:10px 14px;margin-bottom:14px;">
+  <b style="color:#194368;">👀 Avant de répondre</b><br>
+  Lisez la note privée : le bot y a déjà noté le motif du contact et les réponses du client. Ne reposez pas les mêmes questions.
+</div>
+
+<!-- 1. ACCUEIL -->
+<div class="sec">
+  <div class="ttl"><span class="num">1</span>Accueillir</div>
+  <div class="say">« Bonjour <i>[Prénom]</i>, je suis Louis Dubois, conseiller CFDP. Merci pour votre message, je prends le relais et je m'occupe de votre demande 🤝 »</div>
+</div>
+
+<!-- 2. COMPRENDRE -->
+<div class="sec">
+  <div class="ttl"><span class="num">2</span>Comprendre la demande</div>
+  <div style="margin-bottom:6px;color:#194368;">Cochez au fil de l'échange (sans tout demander d'un coup) : <b id="q-cnt">0/6</b></div>
+  <div class="chk" id="q-list">
+    <label><input type="checkbox"><span><b>Motif</b> : devis, contrat existant, sinistre, attestation…</span></label>
+    <label><input type="checkbox"><span><b>Profil</b> : client, prospect ou apporteur</span></label>
+    <label><input type="checkbox"><span><b>Activité</b> : métier exercé et forme juridique</span></label>
+    <label><input type="checkbox"><span><b>Entreprise</b> : SIRET, effectif, chiffre d'affaires</span></label>
+    <label><input type="checkbox"><span><b>Contrat</b> : numéro, assureur actuel, échéance</span></label>
+    <label><input type="checkbox"><span><b>Contact</b> : e-mail et créneau de rappel</span></label>
+  </div>
+</div>
+
+<!-- 3. ORIENTER -->
+<div class="sec">
+  <div class="ttl"><span class="num">3</span>Orienter vers la bonne solution</div>
+  <table class="t">
+    <tr><td style="color:#194368;width:42%;"><b>Responsabilité civile pro</b></td><td>Dommages causés à un tiers dans l'exercice de l'activité</td></tr>
+    <tr><td style="color:#194368;"><b>Décennale &amp; BTP</b></td><td>Artisans et entreprises du bâtiment</td></tr>
+    <tr><td style="color:#194368;"><b>Multirisque professionnelle</b></td><td>Locaux, matériel, pertes d'exploitation</td></tr>
+    <tr><td style="color:#194368;"><b>Flotte &amp; véhicules pro</b></td><td>Utilitaires, parc automobile</td></tr>
+    <tr><td style="color:#194368;"><b>Santé &amp; prévoyance</b></td><td>Salariés et dirigeants</td></tr>
+    <tr><td style="color:#194368;"><b>Cyber-risques</b></td><td>Piratage, fuite de données, interruption d'activité</td></tr>
+  </table>
+  <div class="warn">⚠️ Aucune garantie, franchise ou tarif sans vérification préalable du dossier.</div>
+  <a class="lnk" href="#" onclick="return false">📄 Demander un devis</a><a class="lnk" href="#" onclick="return false">🛡️ Déclarer un sinistre</a>
+</div>
+
+<!-- 4. DOSSIER -->
+<div class="sec">
+  <div class="ttl"><span class="num">4</span>Pièces à demander (selon le motif)</div>
+  <div class="say" style="margin-bottom:6px;"><b style="color:#194368;">Devis</b><br>Kbis ou SIRET · relevé d'informations de l'assureur actuel (moins de 90 jours) · description de l'activité</div>
+  <div class="say" style="margin-bottom:6px;"><b style="color:#194368;">Sinistre</b><br>N° de contrat · date et circonstances · photos ou devis de réparation · coordonnées des tiers</div>
+  <div class="say"><b style="color:#194368;">Avenant / résiliation</b><br>N° de contrat · nature du changement · date d'effet souhaitée</div>
+  <div class="warn">💡 Envoyez le lien de dépôt sécurisé plutôt que de demander des pièces par message.</div>
+</div>
+
+<!-- 5. RÉPONSES RAPIDES -->
+<div class="sec">
+  <div class="ttl"><span class="num">5</span>Réponses rapides</div>
+  <div class="lab">Temps de vérification</div>
+  <div class="say" style="margin-bottom:8px;">« Je vérifie cette information dans votre dossier et je reviens vers vous dans quelques instants. »</div>
+  <div class="lab">Information indisponible</div>
+  <div class="say" style="margin-bottom:8px;">« Cette information dépend de votre contrat : je la vérifie auprès du service concerné et je vous la confirme. »</div>
+  <div class="lab">Proposer un rappel</div>
+  <div class="say" style="margin-bottom:8px;">« Souhaitez-vous qu'un conseiller vous rappelle pour faire le point ? Quels créneaux vous conviendraient ? »</div>
+  <div class="lab">Clôturer</div>
+  <div class="say">« Merci <i>[Prénom]</i> ! Pour résumer : <i>[demande, action réalisée, prochaine étape]</i>. Je reste disponible si besoin. À très bientôt chez CFDP. »</div>
+</div>
+
+<!-- 6. AIDE À LA DISCUSSION -->
+<div class="sec">
+  <div class="ttl"><span class="num">6</span>Aide à la discussion</div>
+  <div style="margin-bottom:8px;color:#194368;">Cliquez sur le sujet évoqué pour afficher une réponse suggérée :</div>
+  <div id="aide-choix" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;"></div>
+  <div id="aide-texte" class="say" style="color:#5a6b7d;">Aucun sujet sélectionné.</div>
+  <button type="button" id="aide-copier" class="btn" style="margin-top:8px;display:none;">📋 Copier la réponse</button>
+</div>
+
+<!-- 7. BASE DE CONNAISSANCE -->
+<div class="sec">
+  <div class="ttl"><span class="num">7</span>Mini base de connaissance</div>
+  <input type="text" id="kb-q" placeholder="🔍 Rechercher : décennale, franchise, attestation, résiliation…">
+  <div id="kb-list"></div>
+  <div class="warn">⚠️ Contenu fictif, pour la démonstration.</div>
+</div>
+
+<!-- 8. ANNUAIRE -->
+<div class="sec">
+  <div class="ttl"><span class="num">8</span>Aide annuaire : vers qui transférer ?</div>
+  <div style="margin-bottom:8px;color:#194368;">Répondez aux questions pour obtenir le numéro du service à contacter :</div>
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="font-size:13px;">
+    <tr><td style="padding:3px 8px 3px 0;width:34%;"><b>Profil</b></td><td style="padding:3px 0;"><select id="ann-profil"><option value="">Choisir…</option><option value="client">Client</option><option value="prospect">Prospect</option><option value="apporteur">Apporteur / courtier</option></select></td></tr>
+    <tr><td style="padding:3px 8px 3px 0;"><b>Sujet</b></td><td style="padding:3px 0;"><select id="ann-sujet"><option value="">Choisir…</option><option value="devis">Devis &amp; souscription</option><option value="sinistre">Sinistres</option><option value="contrat">Contrat &amp; avenants</option><option value="compta">Facturation &amp; paiement</option></select></td></tr>
+    <tr><td style="padding:3px 8px 3px 0;"><b>Activité</b></td><td style="padding:3px 0;"><select id="ann-seg"><option value="">Choisir…</option><option value="btp">Artisan / BTP</option><option value="tpe">TPE / PME</option><option value="liberal">Profession libérale</option></select></td></tr>
+  </table>
+  <div id="ann-res" class="say" style="margin-top:10px;padding:10px;color:#5a6b7d;">Répondez aux 3 questions pour afficher le numéro.</div>
+  <div class="warn">⚠️ Numéros fictifs, pour la démonstration.</div>
+</div>
+
+</div>
+<script>
+(function(){
+function copy(txt,b,lab){
+  function ok(){var o=b.textContent;b.textContent="✅ Copié";setTimeout(function(){b.textContent=lab||o;},1500);}
+  function fb(){var a=document.createElement("textarea");a.value=txt;document.body.appendChild(a);a.select();try{document.execCommand("copy");ok();}catch(e){}document.body.removeChild(a);}
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(ok,fb);}else{fb();}
+}
+/* 2 · compteur de qualification */
+var cks=document.querySelectorAll("#q-list input");
+cks.forEach(function(c){c.addEventListener("change",function(){
+  var n=document.querySelectorAll("#q-list input:checked").length;
+  document.getElementById("q-cnt").textContent=n+"/"+cks.length+(n===cks.length?" ✅":"");
+});});
+
+/* 6 · aide à la discussion */
+var R={
+"📄 Devis":"« Avec plaisir. Pour établir votre devis, j'ai besoin de votre activité, de votre SIRET et de votre assureur actuel s'il y en a un. Je vous envoie le lien pour déposer les pièces en toute sécurité. »",
+"🛡️ Sinistre":"« Je suis désolé pour cette situation. Pouvez-vous me donner votre numéro de contrat, la date et les circonstances ? Je lance la déclaration et je vous indique les prochaines étapes. »",
+"📑 Attestation":"« Je peux vous faire parvenir votre attestation d'assurance. Sur quelle activité et pour quelle période en avez-vous besoin ? Je vous l'envoie par e-mail dès vérification de votre contrat. »",
+"✏️ Modifier mon contrat":"« Bien sûr. Quelle modification souhaitez-vous (activité, chiffre d'affaires, véhicule, adresse…) et à partir de quelle date ? Je vérifie ce qui est possible et je reviens vers vous. »",
+"💶 Cotisation":"« Je consulte votre échéancier. Souhaitez-vous des précisions sur un prélèvement, un changement de mode de paiement ou un fractionnement ? Pour le détail des montants, je vérifie votre dossier. »",
+"📞 Être rappelé":"« Souhaitez-vous qu'un conseiller vous rappelle sur votre projet ? Quels créneaux vous conviendraient cette semaine ? »"};
+var ch=document.getElementById("aide-choix"),box=document.getElementById("aide-texte"),cp=document.getElementById("aide-copier"),cur="";
+Object.keys(R).forEach(function(k){
+  var b=document.createElement("button");b.type="button";b.className="btn";b.textContent=k;
+  b.addEventListener("click",function(){
+    ch.querySelectorAll("button").forEach(function(x){x.className="btn";});b.className="btn on";
+    cur=R[k];box.style.color="#1b2733";box.textContent=cur;cp.style.display="inline-block";
+  });ch.appendChild(b);
+});
+cp.addEventListener("click",function(){copy(cur,cp,"📋 Copier la réponse");});
+
+/* 7 · base de connaissance */
+var K=[
+["Responsabilité civile pro","Garantit les dommages corporels, matériels ou immatériels causés à un tiers dans le cadre de l'activité. À proposer en priorité à tout professionnel.","rc responsabilité civile tiers dommage"],
+["Décennale : qui est concerné ?","Obligatoire pour les professionnels du bâtiment réalisant des travaux de construction. Demander l'activité exacte et les pièces justificatives avant toute réponse.","décennale btp bâtiment artisan obligatoire"],
+["Attestation d'assurance","Délivrée sur demande après vérification du contrat en cours et de la période de couverture. Envoi par e-mail.","attestation justificatif preuve"],
+["Franchise","Part restant à la charge de l'assuré en cas de sinistre. Elle figure dans les conditions particulières : ne jamais l'annoncer sans avoir ouvert le contrat.","franchise reste à charge sinistre"],
+["Déclarer un sinistre","Recueillir : n° de contrat, date, circonstances, photos, coordonnées des tiers. Transmettre au service Sinistres et indiquer au client les prochaines étapes.","sinistre déclaration accident dégât"],
+["Résiliation à échéance","Elle se demande par courrier ou e-mail dans le respect du préavis du contrat. Vérifier la date d'échéance avant de répondre ; ne pas inciter à résilier.","résiliation résilier échéance préavis"],
+["Relevé d'informations","Document de l'assureur précédent attestant de l'historique de sinistralité. Souvent demandé pour établir un devis.","relevé informations sinistralité historique"],
+["Modifier son activité ou son chiffre d'affaires","À déclarer pour que la garantie reste adaptée. Prendre les nouveaux éléments, puis faire valider l'avenant par le service Contrats.","avenant activité chiffre affaires modification"]];
+var kl=document.getElementById("kb-list"),kq=document.getElementById("kb-q");
+function rk(){
+  var q=kq.value.trim().toLowerCase();kl.innerHTML="";var n=0;
+  K.forEach(function(e){
+    if(q&&(e[0]+" "+e[1]+" "+e[2]).toLowerCase().indexOf(q)<0)return;
+    n++;
+    var d=document.createElement("details");d.className="kb";
+    var s=document.createElement("summary");s.textContent=e[0];
+    var c=document.createElement("div");c.textContent=e[1];
+    var b=document.createElement("button");b.type="button";b.className="btn";b.style.cssText="display:block;margin-top:8px;";b.textContent="📋 Copier";
+    b.addEventListener("click",function(){copy(e[1],b,"📋 Copier");});
+    c.appendChild(b);d.appendChild(s);d.appendChild(c);kl.appendChild(d);
+  });
+  if(!n){var m=document.createElement("div");m.className="say";m.style.marginTop="6px";m.textContent="Aucun article : vérifiez auprès du service concerné.";kl.appendChild(m);}
+}
+kq.addEventListener("input",rk);rk();
+
+/* 8 · annuaire */
+var N={devis:{btp:"01 99 00 10 01",tpe:"01 99 00 10 02",liberal:"01 99 00 10 03"},
+sinistre:{btp:"01 99 00 20 01",tpe:"01 99 00 20 01",liberal:"01 99 00 20 02"},
+contrat:{btp:"01 99 00 30 01",tpe:"01 99 00 30 02",liberal:"01 99 00 30 03"},
+compta:{btp:"01 99 00 40 01",tpe:"01 99 00 40 01",liberal:"01 99 00 40 01"}};
+var S={devis:"Souscription",sinistre:"Gestion des sinistres",contrat:"Gestion des contrats",compta:"Comptabilité clients"};
+var P=document.getElementById("ann-profil"),U=document.getElementById("ann-sujet"),C=document.getElementById("ann-seg"),res=document.getElementById("ann-res");
+function maj(){
+  if(!P.value||!U.value||!C.value){res.style.color="#5a6b7d";res.textContent="Répondez aux 3 questions pour afficher le numéro.";return;}
+  var n=N[U.value][C.value];res.style.color="#1b2733";res.innerHTML="";
+  var l=document.createElement("div");l.innerHTML="Transférer vers : <b>"+S[U.value]+" · "+C.options[C.selectedIndex].text+"</b>";
+  var v=document.createElement("div");v.style.cssText="font-size:20px;font-weight:bold;color:#194368;margin:6px 0;";v.textContent=n;
+  var b=document.createElement("button");b.type="button";b.className="btn cta";b.textContent="📋 Copier le numéro";
+  b.addEventListener("click",function(){copy(n,b,"📋 Copier le numéro");});
+  res.appendChild(l);res.appendChild(v);res.appendChild(b);
+}
+[P,U,C].forEach(function(s){s.addEventListener("change",maj);});
+})();
+</script>
+</body>
+</html>
