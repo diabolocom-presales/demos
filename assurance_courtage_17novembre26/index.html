@@ -62,7 +62,7 @@
   @media(max-width:600px){.nav-grid{grid-template-columns:repeat(2,1fr)}}
   .nav-tile{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:14px;text-align:center;color:var(--txt);text-decoration:none;transition:transform .1s,background .1s}
   .nav-tile:hover{transform:translateY(-2px);background:var(--accent);color:#fff}
-  .nav-tile img{width:34px;height:34px;object-fit:contain;filter:invert(1) brightness(1.6)}
+  .nav-tile svg{display:block;margin:0 auto;}
   .nav-tile span{display:block;margin-top:8px;font-size:11px;font-weight:600}
   .promo{background:linear-gradient(135deg,#1f5c9e,#2a69ab);border:1px solid var(--line);border-radius:14px;padding:20px;color:var(--txt);display:flex;flex-direction:column;height:100%}
   .promo h3{margin:0 0 6px;font-size:15px}
@@ -86,7 +86,7 @@
   @media(max-width:420px){.help-grid,.help-grid-3{grid-template-columns:1fr}}
   .help-tile{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:21px 14px;text-align:center;color:var(--txt);text-decoration:none;transition:transform .1s,background .1s;display:flex;flex-direction:column;align-items:center;gap:11px}
   .help-tile:hover{transform:translateY(-2px);background:var(--accent);color:#fff}
-  .help-tile img{width:42px;height:42px;object-fit:contain;filter:invert(1) brightness(1.6)}
+  .help-tile svg{width:42px;height:42px;}
   .help-tile span{font-size:12px;font-weight:600}
  
   /* ---- Bandeau langue pleine largeur, collé au footer ---- */
@@ -106,6 +106,14 @@
     h1{font-size:22px}
     .user span:last-child{display:none}
   }
+.promo-visual{flex:1;min-height:150px;border-radius:10px;background:linear-gradient(135deg,#004687 0%,#6b3d7a 60%,#F07D00 130%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:#fff;font-size:13px;font-weight:600;text-align:center;padding:16px}
+  .promo-btn{display:block;margin-top:14px;text-align:center;background:var(--accent);color:#fff;text-decoration:none;font-weight:700;font-size:14px;padding:11px;border-radius:9px}
+  .promo-btn:hover{filter:brightness(1.08)}
+  .hero-banner{border-radius:14px;padding:38px 34px;margin:0 0 .5cm;color:#fff;background:linear-gradient(120deg,#0b2f5b 0%,#004687 45%,#a24a4f 78%,#F07D00 115%);position:relative;overflow:hidden}
+  .hero-banner h3{margin:0 0 8px;font-size:22px}
+  .hero-banner p{margin:0 0 20px;max-width:560px;font-size:14px;line-height:1.6;color:#e6edf6}
+  .hero-chips{display:flex;flex-wrap:wrap;gap:10px}
+  .hero-chips span{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:7px 14px;font-size:13px;font-weight:600}
 </style>
 </head>
 <body>
@@ -162,21 +170,26 @@
     <div class="promo">
       <h3>Trouver un professionnel de santé</h3>
       <p>Localisez un praticien du réseau médical près de chez vous ou à l'étranger.</p>
-      <img src="https://placehold.co/600x300/004687/ffffff?text=Reseau+medical" alt="Store">
+      <div class="promo-visual"><svg viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"/><path d="M12 7v5M9.5 9.5h5"/></svg><span>Près de moi ou à l'étranger</span></div>
+      <a class="promo-btn" href="#">Rechercher un praticien</a>
     </div>
   </div>
  
   <!-- ============ BANDEAU 5/10 : IMAGE (titre + visuel pleine largeur) ============ -->
   <h2 class="section-title spaced">Votre protection santé, <span class="name">où que vous soyez</span></h2>
-  <img class="demo-img" src="https://placehold.co/1280x560/004687/ffffff?text=Diot-Siaci+Espace+assure" alt="Illustration démonstration">
+  <div class="hero-banner">
+    <h3>Une couverture santé pensée pour la mobilité internationale</h3>
+    <p>Que vous soyez en France ou à l'étranger, retrouvez vos garanties, suivez vos remboursements et accédez au réseau de professionnels de santé de votre contrat.</p>
+    <div class="hero-chips"><span>Réseau médical</span><span>Assistance 24h/24</span><span>Remboursements en ligne</span></div>
+  </div>
  
   <!-- ============ BANDEAU 6/10 : BLOCS N°2 (titre + 4 tuiles de services) ============ -->
   <h2 class="section-title spaced">Mes <span class="name">services en ligne</span></h2>
   <div class="nav-grid">
-    <a class="nav-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/512/117/117641.png" alt=""><span>Nouvelle demande de remboursement</span></a>
-    <a class="nav-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/256/17/17004.png" alt=""><span>Mon profil</span></a>
-    <a class="nav-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/256/26/26589.png" alt=""><span>Historique de mes demandes</span></a>
-    <a class="nav-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/512/10042/10042848.png" alt=""><span>Foire aux questions</span></a>
+    <a class="nav-tile" href="#"><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M12 11v6M9 14h6"/></svg><span>Nouvelle demande de remboursement</span></a>
+    <a class="nav-tile" href="#"><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg><span>Mon profil</span></a>
+    <a class="nav-tile" href="#"><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>Historique de mes demandes</span></a>
+    <a class="nav-tile" href="#"><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .9-1 1.7M12 17h.01"/></svg><span>Foire aux questions</span></a>
   </div>
  
   <!-- Bandeau d'assistance pleine largeur, texte centré -->
@@ -189,16 +202,16 @@
   <h2 class="section-title">Besoin d'<span class="name">aide</span></h2>
   <!-- Rubriques : rangée de 4 -->
   <div class="help-grid">
-    <a class="help-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/512/4659/4659011.png" alt=""><span>Mes garanties</span></a>
-    <a class="help-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/512/686/686589.png" alt=""><span>Ma carte d'assurance</span></a>
-    <a class="help-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/512/3092/3092920.png" alt=""><span>Mes bénéficiaires</span></a>
-    <a class="help-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/512/75/75668.png" alt=""><span>Hospitalisations et avances de frais</span></a>
+    <a class="help-tile" href="#"><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.4 8-8 9-4.6-1-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><span>Mes garanties</span></a>
+    <a class="help-tile" href="#"><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M6 16c.5-1.5 1.7-2 3-2s2.5.5 3 2M15 10h3M15 13h3"/></svg><span>Ma carte d'assurance</span></a>
+    <a class="help-tile" href="#"><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.3 2.9-5.5 6.5-5.5s6.5 2.2 6.5 5.5M16 4.8a3.5 3.5 0 0 1 0 6.4M18 14.8c2 .6 3.5 2.2 3.5 5.2"/></svg><span>Mes bénéficiaires</span></a>
+    <a class="help-tile" href="#"><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21V8l8-5 8 5v13zM12 9v6M9 12h6M9 21v-4h6v4"/></svg><span>Hospitalisations et avances de frais</span></a>
   </div>
   <!-- Rubriques : rangée de 3 élargie -->
   <div class="help-grid help-grid-3">
-    <a class="help-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/512/545/545676.png" alt=""><span>Professionnels de santé</span></a>
-    <a class="help-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/512/1034/1034153.png" alt=""><span>Mon centre de gestion</span></a>
-    <a class="help-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/512/348/348488.png" alt=""><span>Mes documents</span></a>
+    <a class="help-tile" href="#"><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7" r="3.5"/><path d="M5 21c0-4 3-7 7-7s7 3 7 7M12 5.5v3M10.5 7h3"/></svg><span>Professionnels de santé</span></a>
+    <a class="help-tile" href="#"><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A15 15 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg><span>Mon centre de gestion</span></a>
+    <a class="help-tile" href="#"><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span>Mes documents</span></a>
   </div>
 </main>
  
@@ -222,6 +235,6 @@
   </div>
 </footer>
 <!-- ============ SNIPPET CHATBOT — coller ici le script de demo, ne rien mettre apres ============ -->
-<script src="https://fr2.chat.diabolocom.com/01a1df70-3bb9-72bc-8517-d8717a738197/config.js"></script>
+<script src="https://fr2.chat.diabolocom.com/01a1ea02-27ec-7483-806c-03e669cc422c/config.js"></script>
 </body>
 </html>
