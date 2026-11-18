@@ -49,9 +49,13 @@
   /* onglets orange */
   .panel{border:1px solid var(--line);background:#ececec;border-radius:4px;margin-top:6px}
   .tabbar{background:var(--accent);padding:10px 12px 0;display:flex;gap:6px;border-radius:4px 4px 0 0}
-  .tab{background:#fff;color:var(--blue);font-weight:700;font-size:14px;padding:9px 18px;border:2px solid #fff;border-bottom:none;border-radius:4px 4px 0 0}
+  .tab{font-family:inherit;cursor:pointer;background:#fff;color:var(--blue);font-weight:700;font-size:14px;padding:9px 18px;border:2px solid #fff;border-bottom:none;border-radius:4px 4px 0 0}
   .tab.off{background:#e6f0fa;color:#2a6cae;opacity:.9}
   .panel-body{padding:18px 20px}
+  .help{font-size:14px;line-height:1.6;margin:0 0 14px;color:var(--txt)}
+  .chat-help{margin:22px 0 0;font-size:14px;color:var(--muted)}
+  .chat-help a{color:var(--accent);font-weight:700}
+  [hidden]{display:none!important}
   .legend{list-style:none;margin:0 0 16px;padding:0;font-size:14px}
   .legend li{display:flex;align-items:center;gap:10px;margin:5px 0}
   .dot{width:12px;height:12px;border-radius:50%;border:1.5px solid #555;flex:none}
@@ -129,40 +133,21 @@
 <main>
   <!-- ============ BANDEAU 2/10 : ALERTE DEMO DIABOLOCOM — NE JAMAIS SUPPRIMER ============ -->
   <p class="demo-note">Ceci est un site de démonstration conçu par l'équipe Presales de Diabolocom afin de tester les fonctionnalités du Chatbot.</p>
-  <!-- ============ BANDEAU 3/10 : SALUTATION ============ -->
-  <h1>Bonjour <span class="name">Louis</span></h1>
-  <p class="sub-t">Voici l'état de votre demande de prise en charge au 18 novembre 2026.</p>
+  <!-- ============ BANDEAU 3/10 : TITRE ============ -->
+  <h1>Prise en charge hospitalière</h1>
+  <p class="sub-t">Déposez vos documents pour demander une prise en charge.</p>
 
-  <!-- ============ BANDEAU 4/10 : DOSSIER EN COURS ============ -->
-  <div class="case">
-    <div class="wide"><span>Demande de prise en charge hospitalière</span><b>Cholécystectomie programmée le 25/11/2026</b></div>
-    <div><span>Établissement</span><b>Saigon Riverside International Clinic</b></div>
-    <div><span>Lieu</span><b>Hô-Chi-Minh-Ville (Vietnam)</b></div>
-    <div><span>Statut</span><span class="badge pending" style="margin:0;display:inline-block">En attente de pièces</span></div>
-  </div>
-
-  <!-- ============ BANDEAU 5/10 : DEPOT DE PIECES JUSTIFICATIVES ============ -->
-  <h2 class="section-title">Déposer mes <span class="name">pièces justificatives</span></h2>
+  <!-- ============ BANDEAU 5/10 : DEPOT DE DOCUMENTS ============ -->
+  <h2 class="section-title">Déposer mes <span class="name">documents</span></h2>
   <div class="panel">
-    <div class="tabbar"><span class="tab">Pièces à fournir</span><span class="tab off">Informations</span></div>
-    <div class="panel-body">
-      <ul class="legend">
-        <li><span class="dot ok"></span>Pièce reçue et enregistrée</li>
-        <li><span class="dot pend"></span>Pièce déposée, en cours de vérification</li>
-        <li><span class="dot"></span>Pièce à fournir</li>
-      </ul>
-      <h3 class="res">Pièces demandées</h3>
-      <div class="tbl-wrap"><table>
-        <thead><tr><th>Pièce</th><th>Émetteur</th><th>Statut</th></tr></thead>
-        <tbody id="expected">
-          <tr data-k="Prescription médicale"><td class="l">Prescription médicale</td><td>Dr Haddad</td><td><span class="badge ok">Transmise</span></td></tr>
-          <tr data-k="Devis"><td class="l">Devis de l'hospitalisation</td><td>Saigon Riverside International Clinic</td><td><span class="badge todo">À fournir</span></td></tr>
-          <tr data-k="Rapport médical"><td class="l">Rapport médical</td><td>Saigon Riverside International Clinic</td><td><span class="badge todo">À fournir</span></td></tr>
-        </tbody>
-      </table></div>
-
-      <h3 class="res" style="margin-top:20px">Ajouter un document</h3>
-      <div class="success" id="success" role="status"></div>
+    <div class="tabbar" role="tablist">
+      <button type="button" class="tab" id="tab1" role="tab" aria-selected="true">Déposer des documents</button>
+      <button type="button" class="tab off" id="tab2" role="tab" aria-selected="false">Informations</button>
+    </div>
+    <div class="panel-body" id="pane1">
+      <p class="help">Pour faciliter l'étude de votre demande, vous pouvez joindre la prescription médicale, le devis de l'établissement et le rapport médical si vous en disposez.</p>
+      <h3 class="res">Ajouter un document</h3>
+      <div class="success" id="success" role="status">Vos documents ont bien été transmis à MSH International.</div>
       <div class="drop" id="drop">
         <svg viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>
         <p>Glissez-déposez vos fichiers ici</p>
@@ -179,15 +164,16 @@
 
       <h3 class="res" style="margin-top:20px">Documents déposés</h3>
       <div class="tbl-wrap"><table>
-        <thead><tr><th>Date</th><th>Document</th><th>Type</th><th>Référence</th></tr></thead>
+        <thead><tr><th>Date</th><th>Document</th><th>Type</th><th>Statut</th></tr></thead>
         <tbody id="done"><tr id="emptyrow"><td colspan="4">Aucun document déposé depuis cette page.</td></tr></tbody>
       </table></div>
     </div>
-  </div>
-
-  <!-- ============ BANDEAU 6/10 : TEXTE DESCRIPTIF ============ -->
-  <div class="support-banner">
-    <p>Une hospitalisation à l'étranger se prépare : votre espace assuré Diot-Siaci vous accompagne à chaque étape de votre demande de prise en charge. Avant votre admission, déposez ici votre prescription médicale, le devis établi par l'établissement et le rapport médical. Ces pièces permettent à votre centre de gestion d'instruire votre dossier et, selon les termes de votre contrat, de contacter la clinique pour organiser la prise en charge. Pensez à nommer clairement vos fichiers et à vérifier qu'ils sont lisibles. Votre centre de gestion traite les demandes du lundi au vendredi. Pour toute question, consultez la Foire aux questions ou contactez-nous.</p>
+    <div class="panel-body" id="pane2" hidden>
+      <h3 class="res">Qu'est-ce qu'une prise en charge hospitalière ?</h3>
+      <p class="help">Une prise en charge hospitalière est un accord préalable par lequel MSH International étudie votre demande avant une hospitalisation et, selon les termes de votre contrat, peut organiser avec l'établissement le règlement de tout ou partie des frais.</p>
+      <h3 class="res">Pourquoi la demander avant l'hospitalisation ?</h3>
+      <p class="help">Effectuer cette démarche en amont permet d'anticiper les formalités avec l'établissement et de limiter, dans la mesure du possible, l'avance de frais. Les documents que vous joignez aident nos équipes à étudier votre demande.</p>
+    </div>
   </div>
 
   <!-- ============ BANDEAU 7/10 : BLOCS (4 tuiles) ============ -->
@@ -195,6 +181,7 @@
   <div class="help-grid"><a class="help-tile" href="#"><svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.4 8-8 9-4.6-1-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><span>Mes garanties</span></a><a class="help-tile" href="#"><svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M6 16c.5-1.5 1.7-2 3-2s2.5.5 3 2M15 10h3M15 13h3"/></svg><span>Ma carte d'assurance</span></a><a class="help-tile" href="#"><svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.3 2.9-5.5 6.5-5.5s6.5 2.2 6.5 5.5M16 4.8a3.5 3.5 0 0 1 0 6.4M18 14.8c2 .6 3.5 2.2 3.5 5.2"/></svg><span>Mes bénéficiaires</span></a><a class="help-tile" href="#"><svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21V8l8-5 8 5v13zM12 9v6M9 12h6M9 21v-4h6v4"/></svg><span>Hospitalisations et avances de frais</span></a></div>
   <!-- ============ BANDEAU 8/10 : BLOCS (3 tuiles) ============ -->
   <div class="help-grid help-grid-3"><a class="help-tile" href="#"><svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7" r="3.5"/><path d="M5 21c0-4 3-7 7-7s7 3 7 7M12 5.5v3M10.5 7h3"/></svg><span>Professionnels de santé</span></a><a class="help-tile" href="#"><svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A15 15 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg><span>Mon centre de gestion</span></a><a class="help-tile" href="#"><svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span>Mes documents</span></a></div>
+  <p class="chat-help">Besoin d'aide ? <a href="#" id="chatlink">Discutez avec notre assistant</a></p>
 </main>
 </div>
 
@@ -222,7 +209,7 @@
   var queue=[], n=0;
   var $=function(i){return document.getElementById(i)};
   var drop=$('drop'), input=$('file'), q=$('queue'), msg=$('msg'), val=$('validate');
-  var TYPES=['Prescription médicale','Devis','Rapport médical','Autre document'];
+  var TYPES=['Prescription médicale','Devis de l\'établissement','Rapport médical','Autre'];
   function size(b){return b>1048576?(b/1048576).toFixed(1)+' Mo':Math.max(1,Math.round(b/1024))+' Ko'}
   function say(t,err){msg.textContent=t||'';msg.className='msg'+(err?' err':'')}
   function guess(name){var s=name.toLowerCase();if(/prescri/.test(s))return TYPES[0];if(/devis/.test(s))return TYPES[1];if(/rapport/.test(s))return TYPES[2];return TYPES[3]}
@@ -250,6 +237,9 @@
     });
     val.disabled=!queue.length;
   }
+  function tab(n){$('pane1').hidden=n!==1;$('pane2').hidden=n!==2;$('tab1').className='tab'+(n===1?'':' off');$('tab2').className='tab'+(n===2?'':' off');$('tab1').setAttribute('aria-selected',n===1);$('tab2').setAttribute('aria-selected',n===2)}
+  $('tab1').onclick=function(){tab(1)};$('tab2').onclick=function(){tab(2)};
+  $('chatlink').onclick=function(e){e.preventDefault()};
   $('browse').onclick=function(){input.click()};
   input.onchange=function(){add(input.files);input.value=''};
   ['dragenter','dragover'].forEach(function(e){drop.addEventListener(e,function(ev){ev.preventDefault();drop.classList.add('over')})});
@@ -258,18 +248,13 @@
   val.onclick=function(){
     if(!queue.length)return;
     var now=new Date(), d=now.toLocaleDateString('fr-FR')+' '+now.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
-    var ref='DEP-'+now.getFullYear()+'-'+String(Math.floor(Math.random()*90000)+10000);
     var tb=$('done'), er=$('emptyrow'); if(er)er.remove();
     queue.forEach(function(it){
       var tr=document.createElement('tr');
-      [d,it.file.name,it.type,ref].forEach(function(v,i){var td=document.createElement('td');td.textContent=v;if(i===1)td.className='l';tr.appendChild(td)});
+      [d,it.file.name,it.type,'Reçu'].forEach(function(v,i){var td=document.createElement('td');td.textContent=v;if(i===1)td.className='l';tr.appendChild(td)});
       tb.appendChild(tr);
-      var row=document.querySelector('#expected tr[data-k="'+it.type+'"]');
-      if(row){var c=row.cells[2];c.textContent='';var b=document.createElement('span');b.className='badge pending';b.textContent='Déposé – en vérification';c.appendChild(b)}
     });
-    var s=$('success');s.textContent='';
-    var b=document.createElement('b');b.textContent='Dépôt validé';
-    s.appendChild(b);s.appendChild(document.createTextNode(queue.length+' document(s) transmis à votre centre de gestion. Référence du dépôt : '+ref+'.'));
+    var s=$('success');
     s.style.display='block';
     queue=[];render();say('');
   };
