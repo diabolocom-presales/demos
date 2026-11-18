@@ -5,224 +5,205 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Diot-Siaci - Mon espace assuré</title>
 <style>
-  /* =====================================================================
-     THEME — seules ces variables changent d'un client a l'autre.
-     --accent : couleur principale du client (liens, hover, mots en bleu)
-     --tag1/2/3 : pastilles de categorie dans le bandeau BLOCS N°1
-     ===================================================================== */
   :root{
-    --bg:#f2f6fb; --card:#1f5c9e; --card2:#2a69ab; --line:#3b78b8;
-    --banner:#e3ebf5; --footer:#ffffff;
-    --txt:#f2f5f8; --muted:#aab4bf; --accent:#F07D00;
+    --bg:#ffffff; --card:#f1f3f6; --card2:#ffffff; --line:#d5dae1;
+    --banner:#e9eef5; --footer:#ffffff;
+    --txt:#2b3440; --muted:#5a6672; --accent:#F07D00; --blue:#004687;
     --tag1:#F07D00; --tag2:#2ea043; --tag3:#7a5fc0;
-    --ok:#2ea043; --pending:#d29922;
+    --ok:#2e8b57; --pending:#c26a00; --thead:#8a97a8;
     --footer-txt:#004687; --footer-muted:#5a6672; --footer-line:#e2e6ea;
   }
   *{box-sizing:border-box}
-  body{margin:0;overflow-x:hidden;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:#1a1f26}
-  header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:14px 24px;border-bottom:1px solid var(--footer-line);background:var(--footer)}
-  .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;color:var(--footer-txt)}
-  .logo{height:52px;max-width:150px;object-fit:contain}
-  nav{display:flex;flex-wrap:wrap;justify-content:center}
-  nav a{color:var(--footer-muted);text-decoration:none;margin:0 10px;font-size:14px;padding-bottom:2px}
-  nav a:hover{color:var(--footer-txt)}
-  nav a.active{font-weight:700;color:var(--footer-txt);border-bottom:2px solid var(--accent)}
-  .user{display:flex;align-items:center;gap:10px;color:var(--footer-txt)}
-  .avatar{width:34px;height:34px;border-radius:50%;background:#eef1f5;color:#1a1f26;border:1px solid #dce1e7;display:grid;place-items:center;font-size:13px;font-weight:700;flex:none}
-  main{max-width:1040px;margin:0 auto;padding:28px 24px}
-  h1{font-size:26px;margin:0 0 4px}
+  body{margin:0;overflow-x:hidden;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--txt)}
+  header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 24px;border-bottom:1px solid var(--footer-line);background:var(--footer)}
+  .logo{height:52px;max-width:150px;object-fit:contain;display:block}
+  .user{display:flex;align-items:center;gap:10px;color:var(--footer-txt);font-size:14px}
+  .avatar{width:34px;height:34px;border-radius:50%;background:#eef1f5;color:#1a1f26;border:1px solid #dce1e7;display:grid;place-items:center;font-size:13px;font-weight:700}
+  .layout{display:flex;max-width:1240px;margin:0 auto;gap:24px;padding:0 16px}
+  aside{width:230px;flex:none;align-self:flex-start;background:#f1f3f6;padding:8px 0 24px}
+  aside a{display:block;padding:14px 18px;font-size:11.5px;letter-spacing:.2px;color:#4a5560;text-decoration:none;border-bottom:1px solid #e1e5ea;text-transform:uppercase}
+  aside a:hover{color:var(--accent)}
+  aside a.active{color:var(--accent);border-bottom:none;padding-bottom:6px}
+  aside .sub{background:#f1f3f6;border-bottom:1px solid #e1e5ea;padding:0 0 12px 18px}
+  aside .sub a{padding:3px 0;border:none;text-transform:none;font-size:12px;color:#8a949f}
+  aside .sub a.on{color:var(--accent);font-weight:700}
+  main{flex:1;min-width:0;padding:22px 0 8px}
+  h1{font-size:24px;margin:0 0 4px;color:var(--blue)}
   h1 .name{color:var(--accent)}
-  .sub{color:#5a6672;margin:0 0 20px;font-size:14px}
+  .demo-note{color:#5a6672;font-size:13.5px;font-style:italic;margin:0 0 16px;line-height:1.5}
+  .sub-t{color:var(--muted);margin:0 0 18px;font-size:14px}
   .toggle{background:none;border:1px solid #cfd6dd;color:#5a6672;padding:6px 12px;border-radius:8px;font-size:13px;cursor:pointer}
-  .grid{display:grid;grid-template-columns:1.75fr 1fr;gap:20px;margin:35px 0 0.5cm;align-items:stretch}
-  @media(max-width:760px){.grid{grid-template-columns:1fr}}
-  .col-left{display:flex;flex-direction:column;gap:20px}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 18px;color:var(--txt)}
-  .card h2{font-size:16px;margin:0 0 8px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
-  .card h2 a{font-size:13px;color:var(--accent);text-decoration:none}
-  .row{display:flex;align-items:center;gap:12px;padding:7px 0;border-bottom:1px solid var(--line)}
-  .row:last-child{border-bottom:none}
-  .tag{width:40px;height:40px;border-radius:8px;display:grid;place-items:center;font-size:12px;font-weight:700;color:#fff;flex:none}
-  .tag.t1{background:var(--tag1)} .tag.t2{background:var(--tag2)} .tag.t3{background:var(--tag3)}
-  .row .info{flex:1;min-width:0}
-  .row .info b{display:block;font-size:14px}
-  .row .info span{font-size:12px;color:var(--muted)}
-  .status{font-size:12px;padding:3px 8px;border-radius:20px;font-weight:600;white-space:nowrap;flex:none}
-  .status.ok{background:rgba(46,160,67,.2);color:#5fd07a}
-  .status.pending{background:rgba(210,153,34,.2);color:#e3b64a}
-  .amount{font-weight:700;font-size:15px;min-width:60px;text-align:right;flex:none}
- 
-  .demo-note{text-align:left;color:#5a6672;font-size:14px;font-style:italic;margin:0 0 18px;white-space:nowrap;line-height:1.6}
-  .section-title{font-size:26px;font-weight:700;margin:0 0 14px;text-align:left;color:#1a1f26}
-  .section-title.spaced{margin-top:1.5cm}
-  .section-title .name{color:var(--accent)}
-  .demo-img{display:block;max-width:100%;width:640px;margin:0 auto 0.5cm;border-radius:12px}
- 
-  .nav-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:0 0 32px}
-  @media(max-width:600px){.nav-grid{grid-template-columns:repeat(2,1fr)}}
-  .nav-tile{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:14px;text-align:center;color:var(--txt);text-decoration:none;transition:transform .1s,background .1s}
-  .nav-tile:hover{transform:translateY(-2px);background:var(--accent);color:#fff}
-  .nav-tile svg{display:block;margin:0 auto;}
-  .nav-tile span{display:block;margin-top:8px;font-size:11px;font-weight:600}
-  .promo{background:linear-gradient(135deg,#1f5c9e,#2a69ab);border:1px solid var(--line);border-radius:14px;padding:20px;color:var(--txt);display:flex;flex-direction:column;height:100%}
-  .promo h3{margin:0 0 6px;font-size:15px}
-  .promo p{margin:0 0 14px;color:var(--muted);font-size:13px}
-  .promo img{width:100%;border-radius:10px;display:block;flex:1;min-height:0;object-fit:cover}
-  .progress{height:8px;background:var(--card2);border-radius:20px;overflow:hidden;margin:12px 0 6px}
-  .progress i{display:block;height:100%;width:55%;background:var(--accent)}
-  .achieve b{font-size:22px}
-  .achieve span{color:var(--muted);font-size:13px}
- 
-  /* ---- Bandeau assistance pleine largeur ---- */
-  .support-banner{background:var(--banner);border-top:1px solid #cfd6dd;border-bottom:1px solid #cfd6dd;padding:32px 24px;margin:40px 0;
-    width:100vw;position:relative;left:50%;right:50%;margin-left:-50vw;margin-right:-50vw}
-  .support-banner p{max-width:900px;margin:0 auto;color:#1a1f26;line-height:2;font-size:14px;text-align:center}
-  .support-banner strong{color:#000}
- 
-  /* ---- Rubriques d'assistance ---- */
-  .help-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:16px 0}
-  .help-grid-3{grid-template-columns:repeat(3,1fr);margin-bottom:40px}
-  @media(max-width:760px){.help-grid,.help-grid-3{grid-template-columns:repeat(2,1fr)}}
-  @media(max-width:420px){.help-grid,.help-grid-3{grid-template-columns:1fr}}
-  .help-tile{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:21px 14px;text-align:center;color:var(--txt);text-decoration:none;transition:transform .1s,background .1s;display:flex;flex-direction:column;align-items:center;gap:11px}
+  h2.section-title{font-size:20px;font-weight:700;margin:30px 0 12px;color:var(--blue);padding-bottom:8px;border-bottom:1px solid var(--line)}
+  h2.section-title .name{color:var(--accent)}
+  .pill{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;border:none;border-radius:22px;padding:10px 24px;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none}
+  .pill:hover{filter:brightness(1.08)}
+  .pill[disabled]{opacity:.45;cursor:not-allowed;filter:none}
+  .pill.ghost{background:#fff;color:var(--accent);border:1px solid var(--accent)}
+  /* dossier */
+  .case{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:16px 20px;display:grid;grid-template-columns:repeat(3,1fr);gap:14px 24px}
+  .case div span{display:block;font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;margin-bottom:3px}
+  .case div b{font-size:14px;color:var(--txt)}
+  .case .wide{grid-column:1/-1}
+  .badge{display:inline-block;font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px;white-space:nowrap}
+  .badge.ok{background:#e1f3e8;color:var(--ok)} .badge.pending{background:#fdecd6;color:var(--pending)} .badge.todo{background:#e6e9ee;color:#5a6672}
+  /* onglets orange */
+  .panel{border:1px solid var(--line);background:#ececec;border-radius:4px;margin-top:6px}
+  .tabbar{background:var(--accent);padding:10px 12px 0;display:flex;gap:6px;border-radius:4px 4px 0 0}
+  .tab{background:#fff;color:var(--blue);font-weight:700;font-size:14px;padding:9px 18px;border:2px solid #fff;border-bottom:none;border-radius:4px 4px 0 0}
+  .tab.off{background:#e6f0fa;color:#2a6cae;opacity:.9}
+  .panel-body{padding:18px 20px}
+  .legend{list-style:none;margin:0 0 16px;padding:0;font-size:14px}
+  .legend li{display:flex;align-items:center;gap:10px;margin:5px 0}
+  .dot{width:12px;height:12px;border-radius:50%;border:1.5px solid #555;flex:none}
+  .dot.ok{background:var(--accent);border-color:#b45a00} .dot.pend{background:#aaa}
+  h3.res{color:var(--accent);font-size:15px;margin:6px 0 8px}
+  table{width:100%;border-collapse:collapse;font-size:12.5px}
+  th{background:var(--thead);color:#fff;font-weight:600;padding:8px 10px;border:1px solid #fff;font-size:13px}
+  td{background:#e3e6ea;padding:7px 10px;border:1px solid #fff;text-align:center;color:#333}
+  td.l{text-align:left}
+  .tbl-wrap{overflow-x:auto}
+  /* depot */
+  .drop{border:2px dashed #b4bcc7;background:#fff;border-radius:8px;padding:26px 16px;text-align:center;transition:background .15s,border-color .15s}
+  .drop.over{background:#fff4e6;border-color:var(--accent)}
+  .drop svg{color:var(--blue)}
+  .drop p{margin:8px 0;font-size:14px;color:var(--txt)}
+  .drop small{color:var(--muted);font-size:12px}
+  .queue{list-style:none;margin:14px 0 0;padding:0}
+  .queue li{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:6px;padding:9px 12px;margin-bottom:8px;font-size:13.5px;flex-wrap:wrap}
+  .queue .fn{flex:1;min-width:160px;font-weight:600;word-break:break-all}
+  .queue .sz{color:var(--muted);font-size:12px}
+  .queue select{border:1px solid #a9b3bf;border-radius:4px;padding:6px 8px;font-size:13px;background:#fff}
+  .queue button.rm{background:none;border:none;color:#a33;font-size:20px;cursor:pointer;line-height:1}
+  .actions{display:flex;justify-content:flex-end;align-items:center;gap:14px;margin-top:14px;flex-wrap:wrap}
+  .msg{font-size:13.5px;margin:0;flex:1;min-width:200px}
+  .msg.err{color:#b3261e}
+  .success{display:none;background:#e1f3e8;border:1px solid #9fd3b2;color:#1d5e3a;border-radius:6px;padding:12px 16px;margin-bottom:14px;font-size:14px}
+  .success b{display:block;margin-bottom:2px}
+  .demo-info{font-size:12px;color:var(--muted);margin:10px 0 0}
+  .support-banner{background:var(--banner);border-top:1px solid #cfd6dd;border-bottom:1px solid #cfd6dd;padding:28px 24px;margin:34px 0 0;border-radius:6px;border:1px solid #cfd6dd}
+  .support-banner p{max-width:900px;margin:0 auto;color:#1a1f26;line-height:1.9;font-size:14px;text-align:center}
+  .help-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}
+  .help-grid-3{grid-template-columns:repeat(3,1fr);margin-bottom:34px}
+  .help-tile{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:20px 12px;text-align:center;color:var(--blue);text-decoration:none;transition:transform .1s,background .1s;display:flex;flex-direction:column;align-items:center;gap:10px}
   .help-tile:hover{transform:translateY(-2px);background:var(--accent);color:#fff}
-  .help-tile svg{width:42px;height:42px;}
-  .help-tile span{font-size:12px;font-weight:600}
- 
-  /* ---- Bandeau langue pleine largeur, collé au footer ---- */
-  .locale-bar{background:var(--card);border-top:1px solid var(--line);padding:16px 24px;display:flex;align-items:center;justify-content:flex-end;gap:16px;margin-top:40px}
-  .locale-bar img{height:34px;max-width:130px;object-fit:contain}
-  .locale-bar select{background:var(--card2);color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:8px 12px;font-size:14px;cursor:pointer}
- 
-  footer.site{background:var(--footer);color:var(--footer-txt)}
-  footer.site .inner{max-width:1040px;margin:0 auto;padding:30px 24px;display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center}
+  .help-tile span{font-size:12.5px;font-weight:600}
+  .locale-bar{background:#f1f3f6;border-top:1px solid var(--line);padding:14px 24px;display:flex;justify-content:flex-end;margin-top:30px}
+  .locale-bar select{background:#fff;color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:8px 12px;font-size:14px}
+  footer.site{background:var(--footer);color:var(--footer-txt);border-top:1px solid var(--footer-line)}
+  footer.site .inner{max-width:1240px;margin:0 auto;padding:26px 24px;display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center}
   footer.site a{color:var(--footer-muted);text-decoration:none;font-size:13px}
-  footer.site a:hover{color:var(--footer-txt)}
+  footer.site a:hover{color:var(--accent)}
   footer.site .copy{color:var(--footer-muted);font-size:13px;margin-left:auto}
-  @media(max-width:600px){footer.site .copy{margin-left:0;width:100%}}
-  @media(max-width:520px){
-    header{padding:12px 16px}
+  @media(max-width:900px){
+    .layout{flex-direction:column;gap:0;padding:0}
+    aside{width:100%}
     main{padding:20px 16px}
-    h1{font-size:22px}
-    .user span:last-child{display:none}
+    .case{grid-template-columns:1fr}
+    .help-grid,.help-grid-3{grid-template-columns:repeat(2,1fr)}
   }
-.promo-visual{flex:1;min-height:150px;border-radius:10px;background:linear-gradient(135deg,#004687 0%,#6b3d7a 60%,#F07D00 130%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:#fff;font-size:13px;font-weight:600;text-align:center;padding:16px}
-  .promo-btn{display:block;margin-top:14px;text-align:center;background:var(--accent);color:#fff;text-decoration:none;font-weight:700;font-size:14px;padding:11px;border-radius:9px}
-  .promo-btn:hover{filter:brightness(1.08)}
-  .hero-banner{border-radius:14px;padding:38px 34px;margin:0 0 .5cm;color:#fff;background:linear-gradient(120deg,#0b2f5b 0%,#004687 45%,#a24a4f 78%,#F07D00 115%);position:relative;overflow:hidden}
-  .hero-banner h3{margin:0 0 8px;font-size:22px}
-  .hero-banner p{margin:0 0 20px;max-width:560px;font-size:14px;line-height:1.6;color:#e6edf6}
-  .hero-chips{display:flex;flex-wrap:wrap;gap:10px}
-  .hero-chips span{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:7px 14px;font-size:13px;font-weight:600}
+  @media(max-width:520px){.user span:last-child{display:none}.help-grid,.help-grid-3{grid-template-columns:1fr}footer.site .copy{margin-left:0;width:100%}}
 </style>
 </head>
 <body>
-<!-- ============ BANDEAU 1/10 : HEADER (logo + nom client, menu, utilisateur) ============ -->
+<!-- ============ BANDEAU 1/10 : HEADER ============ -->
 <header>
-  <div class="brand"><img class="logo" src="logo.png" alt="logo"></div>
-  <nav>
-    <a href="#" class="active">Mon espace</a><a href="#">Mes remboursements</a><a href="#">Mes garanties</a><a href="#">Professionnels de santé</a><a href="#">Aide</a>
-  </nav>
+  <img class="logo" src="logo.png" alt="MSH DiotSiaci Group">
   <div class="user"><span class="avatar">LD</span><span>Louis Dubois</span></div>
 </header>
- 
+
+<div class="layout">
+<aside>
+  <a href="#">Accueil</a>
+  <a href="#">Votre affiliation</a>
+  <a href="#">Vos remboursements</a>
+  <a href="#">Guide pratique</a>
+  <a href="#" class="active">Votre santé</a>
+  <div class="sub"><a href="#">Trouver un prestataire</a><a href="#">Téléconsultation</a><a href="#" class="on">Prise en charge hospitalière</a><a href="#">Prévention santé</a></div>
+  <a href="#">FAQ / Tutoriels</a>
+  <a href="#">Autres solutions MSH</a>
+  <a href="#">Contactez-nous</a>
+  <a href="#">Conditions générales</a>
+  <a href="#">Déconnexion</a>
+</aside>
+
 <main>
   <!-- ============ BANDEAU 2/10 : ALERTE DEMO DIABOLOCOM — NE JAMAIS SUPPRIMER ============ -->
   <p class="demo-note">Ceci est un site de démonstration conçu par l'équipe Presales de Diabolocom afin de tester les fonctionnalités du Chatbot.</p>
-  <!-- ============ BANDEAU 3/10 : SALUTATION (titre + sous-titre + bouton) ============ -->
+  <!-- ============ BANDEAU 3/10 : SALUTATION ============ -->
   <h1>Bonjour <span class="name">Louis</span></h1>
-  <p class="sub">Voici un aperçu de vos remboursements santé au 17 novembre 2026.</p>
-  <button class="toggle" onclick="document.querySelectorAll('.amount').forEach(e=>e.style.visibility=e.style.visibility==='hidden'?'visible':'hidden')">Masquer les montants</button>
- 
-  <!-- ============ BANDEAU 4/10 : BLOCS N°1 (3 blocs : liste principale, encart promo, compteur) ============ -->
-  <div class="grid">
-    <div class="col-left">
-    <div class="card">
-      <h2>Mes dernières demandes de remboursement <a href="#">Tout voir &rarr;</a></h2>
-      <div class="row">
-        <div class="tag t1">CG</div>
-        <div class="info"><b>Consultation généraliste</b><span>Soins courants</span></div>
-        <span class="status ok">Remboursée</span>
-        <div class="amount">18 &euro;</div>
+  <p class="sub-t">Voici l'état de votre demande de prise en charge au 18 novembre 2026.</p>
+
+  <!-- ============ BANDEAU 4/10 : DOSSIER EN COURS ============ -->
+  <div class="case">
+    <div class="wide"><span>Demande de prise en charge hospitalière</span><b>Cholécystectomie programmée le 25/11/2026</b></div>
+    <div><span>Établissement</span><b>Saigon Riverside International Clinic</b></div>
+    <div><span>Lieu</span><b>Hô-Chi-Minh-Ville (Vietnam)</b></div>
+    <div><span>Statut</span><span class="badge pending" style="margin:0;display:inline-block">En attente de pièces</span></div>
+  </div>
+
+  <!-- ============ BANDEAU 5/10 : DEPOT DE PIECES JUSTIFICATIVES ============ -->
+  <h2 class="section-title">Déposer mes <span class="name">pièces justificatives</span></h2>
+  <div class="panel">
+    <div class="tabbar"><span class="tab">Pièces à fournir</span><span class="tab off">Informations</span></div>
+    <div class="panel-body">
+      <ul class="legend">
+        <li><span class="dot ok"></span>Pièce reçue et enregistrée</li>
+        <li><span class="dot pend"></span>Pièce déposée, en cours de vérification</li>
+        <li><span class="dot"></span>Pièce à fournir</li>
+      </ul>
+      <h3 class="res">Pièces demandées</h3>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Pièce</th><th>Émetteur</th><th>Statut</th></tr></thead>
+        <tbody id="expected">
+          <tr data-k="Prescription médicale"><td class="l">Prescription médicale</td><td>Dr Haddad</td><td><span class="badge ok">Transmise</span></td></tr>
+          <tr data-k="Devis"><td class="l">Devis de l'hospitalisation</td><td>Saigon Riverside International Clinic</td><td><span class="badge todo">À fournir</span></td></tr>
+          <tr data-k="Rapport médical"><td class="l">Rapport médical</td><td>Saigon Riverside International Clinic</td><td><span class="badge todo">À fournir</span></td></tr>
+        </tbody>
+      </table></div>
+
+      <h3 class="res" style="margin-top:20px">Ajouter un document</h3>
+      <div class="success" id="success" role="status"></div>
+      <div class="drop" id="drop">
+        <svg viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>
+        <p>Glissez-déposez vos fichiers ici</p>
+        <button type="button" class="pill ghost" id="browse">Parcourir mes fichiers</button>
+        <p><small>PDF, JPG ou PNG – 10 Mo maximum par fichier</small></p>
+        <input type="file" id="file" multiple accept=".pdf,.jpg,.jpeg,.png" hidden>
       </div>
-      <div class="row">
-        <div class="tag t2">DT</div>
-        <div class="info"><b>Soins dentaires</b><span>Dentaire</span></div>
-        <span class="status pending">En cours d'instruction</span>
-        <div class="amount">64 &euro;</div>
+      <ul class="queue" id="queue"></ul>
+      <div class="actions">
+        <p class="msg" id="msg"></p>
+        <button type="button" class="pill" id="validate" disabled>&rarr; Valider le dépôt</button>
       </div>
-      <div class="row">
-        <div class="tag t3">OP</div>
-        <div class="info"><b>Lunettes de vue</b><span>Optique</span></div>
-        <span class="status ok">Remboursée</span>
-        <div class="amount">142 &euro;</div>
-      </div>
-    </div>
- 
-    <div class="card">
-      <h2>Mon plafond de garanties</h2>
-      <div class="achieve"><b>1 240 &euro;</b> <span>/ 2 250 &euro; utilisés</span></div>
-      <div class="progress"><i></i></div>
-      <span style="font-size:13px;color:var(--muted)">55 % du plafond annuel consommé</span>
-    </div>
-    </div>
- 
-    <div class="promo">
-      <h3>Trouver un professionnel de santé</h3>
-      <p>Localisez un praticien du réseau médical près de chez vous ou à l'étranger.</p>
-      <div class="promo-visual"><svg viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"/><path d="M12 7v5M9.5 9.5h5"/></svg><span>Près de moi ou à l'étranger</span></div>
-      <a class="promo-btn" href="#">Rechercher un praticien</a>
+      <p class="demo-info">Démonstration : les fichiers restent dans votre navigateur et ne sont pas envoyés.</p>
+
+      <h3 class="res" style="margin-top:20px">Documents déposés</h3>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Date</th><th>Document</th><th>Type</th><th>Référence</th></tr></thead>
+        <tbody id="done"><tr id="emptyrow"><td colspan="4">Aucun document déposé depuis cette page.</td></tr></tbody>
+      </table></div>
     </div>
   </div>
- 
-  <!-- ============ BANDEAU 5/10 : IMAGE (titre + visuel pleine largeur) ============ -->
-  <h2 class="section-title spaced">Votre protection santé, <span class="name">où que vous soyez</span></h2>
-  <div class="hero-banner">
-    <h3>Une couverture santé pensée pour la mobilité internationale</h3>
-    <p>Que vous soyez en France ou à l'étranger, retrouvez vos garanties, suivez vos remboursements et accédez au réseau de professionnels de santé de votre contrat.</p>
-    <div class="hero-chips"><span>Réseau médical</span><span>Assistance 24h/24</span><span>Remboursements en ligne</span></div>
-  </div>
- 
-  <!-- ============ BANDEAU 6/10 : BLOCS N°2 (titre + 4 tuiles de services) ============ -->
-  <h2 class="section-title spaced">Mes <span class="name">services en ligne</span></h2>
-  <div class="nav-grid">
-    <a class="nav-tile" href="#"><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M12 11v6M9 14h6"/></svg><span>Nouvelle demande de remboursement</span></a>
-    <a class="nav-tile" href="#"><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg><span>Mon profil</span></a>
-    <a class="nav-tile" href="#"><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>Historique de mes demandes</span></a>
-    <a class="nav-tile" href="#"><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .9-1 1.7M12 17h.01"/></svg><span>Foire aux questions</span></a>
-  </div>
- 
-  <!-- Bandeau d'assistance pleine largeur, texte centré -->
-  <!-- ============ BANDEAU 7/10 : TEXTE DESCRIPTIF (paragraphe gris pleine largeur) ============ -->
+
+  <!-- ============ BANDEAU 6/10 : TEXTE DESCRIPTIF ============ -->
   <div class="support-banner">
-    <p>Une question sur un remboursement, une garantie ou la prise en charge d'une hospitalisation ? Votre espace assuré Diot-Siaci vous accompagne dans toutes vos démarches de santé, en France comme à l'international. Avant de contacter votre centre de gestion, pensez à consulter notre <strong>Foire aux questions</strong> ci-dessous : vous y trouverez le détail de vos garanties, la marche à suivre pour déclarer des soins et les réponses aux demandes les plus fréquentes. Votre question persiste ? Cliquez sur le bouton «&nbsp;Nous contacter&nbsp;». Pensez à préciser votre numéro de contrat et à joindre vos justificatifs (factures, ordonnances, décomptes) pour accélérer l'instruction de votre dossier. Votre centre de gestion traite vos demandes du lundi au vendredi, généralement sous quelques jours ouvrés. Pour un accord de prise en charge hospitalière, contactez-nous avant votre admission.</p>
+    <p>Une hospitalisation à l'étranger se prépare : votre espace assuré Diot-Siaci vous accompagne à chaque étape de votre demande de prise en charge. Avant votre admission, déposez ici votre prescription médicale, le devis établi par l'établissement et le rapport médical. Ces pièces permettent à votre centre de gestion d'instruire votre dossier et, selon les termes de votre contrat, de contacter la clinique pour organiser la prise en charge. Pensez à nommer clairement vos fichiers et à vérifier qu'ils sont lisibles. Votre centre de gestion traite les demandes du lundi au vendredi. Pour toute question, consultez la Foire aux questions ou contactez-nous.</p>
   </div>
- 
-  <!-- ============ BANDEAU 8/10 : BLOCS N°3 (titre + 4 + 3 tuiles d'assistance) ============ -->
+
+  <!-- ============ BANDEAU 7/10 : BLOCS (4 tuiles) ============ -->
   <h2 class="section-title">Besoin d'<span class="name">aide</span></h2>
-  <!-- Rubriques : rangée de 4 -->
-  <div class="help-grid">
-    <a class="help-tile" href="#"><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.4 8-8 9-4.6-1-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><span>Mes garanties</span></a>
-    <a class="help-tile" href="#"><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M6 16c.5-1.5 1.7-2 3-2s2.5.5 3 2M15 10h3M15 13h3"/></svg><span>Ma carte d'assurance</span></a>
-    <a class="help-tile" href="#"><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.3 2.9-5.5 6.5-5.5s6.5 2.2 6.5 5.5M16 4.8a3.5 3.5 0 0 1 0 6.4M18 14.8c2 .6 3.5 2.2 3.5 5.2"/></svg><span>Mes bénéficiaires</span></a>
-    <a class="help-tile" href="#"><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21V8l8-5 8 5v13zM12 9v6M9 12h6M9 21v-4h6v4"/></svg><span>Hospitalisations et avances de frais</span></a>
-  </div>
-  <!-- Rubriques : rangée de 3 élargie -->
-  <div class="help-grid help-grid-3">
-    <a class="help-tile" href="#"><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7" r="3.5"/><path d="M5 21c0-4 3-7 7-7s7 3 7 7M12 5.5v3M10.5 7h3"/></svg><span>Professionnels de santé</span></a>
-    <a class="help-tile" href="#"><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A15 15 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg><span>Mon centre de gestion</span></a>
-    <a class="help-tile" href="#"><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span>Mes documents</span></a>
-  </div>
+  <div class="help-grid"><a class="help-tile" href="#"><svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.4 8-8 9-4.6-1-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><span>Mes garanties</span></a><a class="help-tile" href="#"><svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M6 16c.5-1.5 1.7-2 3-2s2.5.5 3 2M15 10h3M15 13h3"/></svg><span>Ma carte d'assurance</span></a><a class="help-tile" href="#"><svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.3 2.9-5.5 6.5-5.5s6.5 2.2 6.5 5.5M16 4.8a3.5 3.5 0 0 1 0 6.4M18 14.8c2 .6 3.5 2.2 3.5 5.2"/></svg><span>Mes bénéficiaires</span></a><a class="help-tile" href="#"><svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21V8l8-5 8 5v13zM12 9v6M9 12h6M9 21v-4h6v4"/></svg><span>Hospitalisations et avances de frais</span></a></div>
+  <!-- ============ BANDEAU 8/10 : BLOCS (3 tuiles) ============ -->
+  <div class="help-grid help-grid-3"><a class="help-tile" href="#"><svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7" r="3.5"/><path d="M5 21c0-4 3-7 7-7s7 3 7 7M12 5.5v3M10.5 7h3"/></svg><span>Professionnels de santé</span></a><a class="help-tile" href="#"><svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A15 15 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg><span>Mon centre de gestion</span></a><a class="help-tile" href="#"><svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span>Mes documents</span></a></div>
 </main>
- 
-<!-- ============ BANDEAU 9/10 : FOOTER 1 (logo client + pays / langue) ============ -->
-<div class="locale-bar">
-  <select aria-label="Langue">
-    <option selected>France</option>
-  </select>
 </div>
- 
-<!-- ============ BANDEAU 10/10 : FOOTER 2 (menu legal + copyright Diabolocom) ============ -->
+
+<!-- ============ BANDEAU 9/10 : FOOTER 1 (pays / langue) ============ -->
+<div class="locale-bar">
+  <select aria-label="Langue"><option selected>France</option></select>
+</div>
+
+<!-- ============ BANDEAU 10/10 : FOOTER 2 (menu bas de page + copyright Diabolocom) ============ -->
 <footer class="site">
   <div class="inner">
     <a href="#">Mon espace assuré</a>
@@ -234,6 +215,66 @@
     <span class="copy">&copy; Diabolocom, 2026</span>
   </div>
 </footer>
+
+<script>
+(function(){
+  var MAX=10*1024*1024, OK=/\.(pdf|jpe?g|png)$/i;
+  var queue=[], n=0;
+  var $=function(i){return document.getElementById(i)};
+  var drop=$('drop'), input=$('file'), q=$('queue'), msg=$('msg'), val=$('validate');
+  var TYPES=['Prescription médicale','Devis','Rapport médical','Autre document'];
+  function size(b){return b>1048576?(b/1048576).toFixed(1)+' Mo':Math.max(1,Math.round(b/1024))+' Ko'}
+  function say(t,err){msg.textContent=t||'';msg.className='msg'+(err?' err':'')}
+  function guess(name){var s=name.toLowerCase();if(/prescri/.test(s))return TYPES[0];if(/devis/.test(s))return TYPES[1];if(/rapport/.test(s))return TYPES[2];return TYPES[3]}
+  function add(files){
+    say('');$('success').style.display='none';
+    Array.prototype.forEach.call(files,function(f){
+      if(!OK.test(f.name)){say('« '+f.name+' » : format non accepté (PDF, JPG ou PNG).',true);return}
+      if(f.size>MAX){say('« '+f.name+' » dépasse 10 Mo.',true);return}
+      queue.push({id:++n,file:f,type:guess(f.name)});
+    });
+    render();
+  }
+  function render(){
+    q.textContent='';
+    queue.forEach(function(it){
+      var li=document.createElement('li');
+      var fn=document.createElement('span');fn.className='fn';fn.textContent=it.file.name;
+      var sz=document.createElement('span');sz.className='sz';sz.textContent=size(it.file.size);
+      var sel=document.createElement('select');sel.setAttribute('aria-label','Type de document');
+      TYPES.forEach(function(t){var o=document.createElement('option');o.textContent=t;if(t===it.type)o.selected=true;sel.appendChild(o)});
+      sel.onchange=function(){it.type=sel.value};
+      var rm=document.createElement('button');rm.type='button';rm.className='rm';rm.title='Retirer';rm.innerHTML='&times;';
+      rm.onclick=function(){queue=queue.filter(function(x){return x!==it});render()};
+      li.appendChild(fn);li.appendChild(sz);li.appendChild(sel);li.appendChild(rm);q.appendChild(li);
+    });
+    val.disabled=!queue.length;
+  }
+  $('browse').onclick=function(){input.click()};
+  input.onchange=function(){add(input.files);input.value=''};
+  ['dragenter','dragover'].forEach(function(e){drop.addEventListener(e,function(ev){ev.preventDefault();drop.classList.add('over')})});
+  ['dragleave','drop'].forEach(function(e){drop.addEventListener(e,function(ev){ev.preventDefault();drop.classList.remove('over')})});
+  drop.addEventListener('drop',function(ev){add(ev.dataTransfer.files)});
+  val.onclick=function(){
+    if(!queue.length)return;
+    var now=new Date(), d=now.toLocaleDateString('fr-FR')+' '+now.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+    var ref='DEP-'+now.getFullYear()+'-'+String(Math.floor(Math.random()*90000)+10000);
+    var tb=$('done'), er=$('emptyrow'); if(er)er.remove();
+    queue.forEach(function(it){
+      var tr=document.createElement('tr');
+      [d,it.file.name,it.type,ref].forEach(function(v,i){var td=document.createElement('td');td.textContent=v;if(i===1)td.className='l';tr.appendChild(td)});
+      tb.appendChild(tr);
+      var row=document.querySelector('#expected tr[data-k="'+it.type+'"]');
+      if(row){var c=row.cells[2];c.textContent='';var b=document.createElement('span');b.className='badge pending';b.textContent='Déposé – en vérification';c.appendChild(b)}
+    });
+    var s=$('success');s.textContent='';
+    var b=document.createElement('b');b.textContent='Dépôt validé';
+    s.appendChild(b);s.appendChild(document.createTextNode(queue.length+' document(s) transmis à votre centre de gestion. Référence du dépôt : '+ref+'.'));
+    s.style.display='block';
+    queue=[];render();say('');
+  };
+})();
+</script>
 <!-- ============ SNIPPET CHATBOT — coller ici le script de demo, ne rien mettre apres ============ -->
 <script src="https://fr2.chat.diabolocom.com/01a1ea02-27ec-7483-806c-03e669cc422c/config.js"></script>
 </body>
