@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Informatique CDC - FAQ</title>
+<style>
+  /* ===== THEME : seul bloc à modifier pour changer de charte ===== */
+  :root{
+    --header:#ffffff;    /* bandeau haut et bas */
+    --red:#e30613;       /* fond des bandeaux texte */
+    --block:#e6ebf3;     /* blocs */
+    --ink:#001838;       /* texte important */
+    --txt:#33415c;       /* texte courant */
+    --line:#d3dbe7;      /* filets */
+    --bg:#ffffff;        /* fond de page */
+  }
+  *{box-sizing:border-box}
+  html,body{max-width:100%;overflow-x:hidden}
+  body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--txt);line-height:1.55}
+  a{color:var(--ink)}
+
+  /* ---------- Bandeau haut ---------- */
+  header{background:var(--header);border-bottom:1px solid var(--line);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  .logo{height:46px;max-width:220px;object-fit:contain;display:block}
+  nav{display:flex;flex-wrap:wrap;gap:4px 18px}
+  nav a{color:var(--ink);text-decoration:none;font-size:14px;font-weight:600;padding-bottom:3px;border-bottom:3px solid transparent}
+  nav a:hover,nav a.active{border-bottom-color:var(--red)}
+
+  main{max-width:1040px;margin:0 auto;padding:24px}
+  .demo-note{color:#5a6672;font-size:14px;font-style:italic;margin:0 0 22px}
+
+  /* ---------- Titre + recherche ---------- */
+  h1{color:var(--ink);font-size:32px;margin:0 0 6px}
+  h1 span{color:var(--red)}
+  .sub{margin:0 0 18px;font-size:15px}
+  .search{display:flex;gap:8px;max-width:620px}
+  .search input{flex:1;min-width:0;font:inherit;padding:12px 14px;border:2px solid var(--ink);border-radius:6px;color:var(--ink)}
+  .search input:focus{outline:none;border-color:var(--red)}
+  #count{font-size:13px;margin:8px 0 0;color:#5a6672}
+
+  /* ---------- Catégories ---------- */
+  .cats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:34px 0 10px}
+  .cat{background:var(--block);border-radius:8px;padding:16px;color:var(--ink);text-decoration:none;border:2px solid transparent;transition:border-color .1s,transform .1s}
+  .cat:hover{border-color:var(--red);transform:translateY(-2px)}
+  .cat b{display:block;font-size:15px;margin-bottom:3px}
+  .cat span{font-size:13px;color:var(--txt)}
+  .cat i{font-style:normal;font-size:22px;display:block;margin-bottom:6px}
+
+  /* ---------- Questions ---------- */
+  .section-title{color:var(--ink);font-size:22px;margin:42px 0 12px;padding-left:12px;border-left:5px solid var(--red)}
+  details{background:var(--block);border-radius:8px;margin:0 0 8px;overflow:hidden}
+  summary{cursor:pointer;list-style:none;padding:14px 46px 14px 16px;color:var(--ink);font-weight:700;position:relative}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+";position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:22px;color:var(--red);font-weight:700}
+  details[open] summary::after{content:"–"}
+  details[open] summary{border-bottom:1px solid var(--line)}
+  details p{margin:0;padding:12px 16px 16px;background:#fff}
+  .hidden{display:none}
+
+  /* ---------- Bandeau texte rouge pleine largeur ---------- */
+  .band{background:var(--red);color:#fff;width:100vw;position:relative;left:50%;margin-left:-50vw;padding:34px 24px;margin-top:48px;margin-bottom:48px}
+  .band p{max-width:900px;margin:0 auto;text-align:center;line-height:1.9;font-size:15px}
+  .band strong{color:#fff}
+
+  /* ---------- Visuels ---------- */
+  .visuals{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .visual{background:var(--block);border-radius:8px;overflow:hidden;color:var(--ink);text-decoration:none;display:flex;flex-direction:column}
+  .visual img{width:100%;height:220px;object-fit:cover;display:block;background:#fff}
+  .visual.contain img{object-fit:contain;padding:18px}
+  .visual div{padding:14px 16px}
+  .visual b{font-size:17px}
+  .visual span{display:block;font-size:13px;color:var(--txt);margin-top:2px}
+
+  /* ---------- Bas de page ---------- */
+  .contact{background:var(--block);border-radius:8px;padding:20px;margin-top:42px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+  .contact b{color:var(--ink);font-size:17px;display:block}
+  .btn{background:var(--red);color:#fff;text-decoration:none;font-weight:700;padding:10px 18px;border-radius:6px}
+  footer{background:var(--header);border-top:1px solid var(--line);margin-top:48px}
+  footer .inner{max-width:1040px;margin:0 auto;padding:24px;display:flex;flex-wrap:wrap;gap:10px 24px;align-items:center;font-size:13px}
+  footer a{color:var(--ink);text-decoration:none}
+  footer .copy{margin-left:auto;color:#5a6672}
+
+  @media(max-width:760px){
+    .cats{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .visuals{grid-template-columns:1fr}
+    h1{font-size:26px}
+    footer .copy{margin-left:0;width:100%}
+  }
+  @media(max-width:460px){.cats{grid-template-columns:1fr} header,main{padding-left:16px;padding-right:16px}}
+</style>
+</head>
+<body>
+
+<!-- ===== BANDEAU HAUT ===== -->
+<header>
+  <img class="logo" src="https://www.icdc.caissedesdepots.fr/sites/default/files/cdc-informatique-logo.svg" alt="Informatique CDC">
+  <nav>
+    <a href="#">Qui sommes-nous</a><a href="#">Nos métiers</a><a href="#">Nous rejoindre</a><a href="#" class="active">FAQ</a><a href="#">Contact</a>
+  </nav>
+</header>
+
+<main>
+  <!-- ===== ALERTE DEMO DIABOLOCOM — NE JAMAIS SUPPRIMER ===== -->
+  <p class="demo-note">Ceci est un site de démonstration conçu par l'équipe Presales de Diabolocom afin de tester les fonctionnalités du Chatbot.</p>
+
+  <h1>Foire aux <span>questions</span></h1>
+  <p class="sub">Retrouvez les réponses aux questions les plus fréquentes sur Informatique CDC, nos métiers et nos recrutements.</p>
+  <div class="search">
+    <input id="q" type="search" placeholder="Rechercher une question (ex. alternance, télétravail, candidature…)" aria-label="Rechercher dans la FAQ">
+  </div>
+  <p id="count"></p>
+
+  <!-- ===== CATÉGORIES ===== -->
+  <div class="cats">
+    <a class="cat" href="#apropos"><i>🏛️</i><b>À propos</b><span>Qui sommes-nous, notre rôle dans le Groupe</span></a>
+    <a class="cat" href="#metiers"><i>💻</i><b>Nos métiers</b><span>Développement, infrastructures, sécurité…</span></a>
+    <a class="cat" href="#candidature"><i>📝</i><b>Candidature</b><span>Postuler, suivre sa candidature</span></a>
+    <a class="cat" href="#alternance"><i>🎓</i><b>Stages &amp; alternance</b><span>Rejoindre nos équipes en formation</span></a>
+    <a class="cat" href="#vie"><i>🤝</i><b>Vie au travail</b><span>Télétravail, formation, engagement</span></a>
+    <a class="cat" href="#contact"><i>✉️</i><b>Contact</b><span>Nous écrire, données personnelles</span></a>
+  </div>
+
+  <!-- ===== QUESTIONS ===== -->
+  <h2 class="section-title" id="apropos">À propos d'Informatique CDC</h2>
+  <details><summary>Qu'est-ce qu'Informatique CDC ?</summary><p>Informatique CDC est l'opérateur informatique du groupe Caisse des Dépôts. Elle conçoit, développe et exploite des systèmes d'information au service des métiers du Groupe et de leurs bénéficiaires.</p></details>
+  <details><summary>Quel est le lien avec la Caisse des Dépôts ?</summary><p>Informatique CDC fait partie du groupe Caisse des Dépôts. Elle accompagne ses différents métiers dans leur transformation numérique et dans la conduite de leurs projets informatiques.</p></details>
+  <details><summary>Pour qui travaillent vos équipes ?</summary><p>Nos équipes travaillent pour les métiers du groupe Caisse des Dépôts, dont les activités touchent de nombreux publics : retraités, collectivités, entreprises, particuliers… Nos solutions contribuent ainsi à des missions d'intérêt général.</p></details>
+
+  <h2 class="section-title" id="metiers">Nos métiers</h2>
+  <details><summary>Quels métiers peut-on exercer chez Informatique CDC ?</summary><p>Nous couvrons l'ensemble des métiers du numérique : développement, architecture, gestion de projet, infrastructures et cloud, cybersécurité, data, exploitation, support et pilotage.</p></details>
+  <details><summary>Sur quels types de projets interviennent vos équipes ?</summary><p>Nos équipes interviennent sur la conception de nouveaux services numériques, la modernisation d'applications existantes, l'hébergement et l'exploitation des systèmes, ainsi que leur sécurisation.</p></details>
+  <details><summary>Quelle place pour la cybersécurité ?</summary><p>La sécurité des systèmes d'information est au cœur de nos activités : nos solutions traitent des données sensibles, qui doivent être protégées à chaque étape, de la conception à l'exploitation.</p></details>
+
+  <h2 class="section-title" id="candidature">Candidature</h2>
+  <details><summary>Comment postuler à une offre ?</summary><p>Consultez nos offres dans la rubrique « Nous rejoindre » et postulez en ligne en joignant votre CV. Vous pouvez aussi déposer une candidature spontanée si aucune offre ne correspond à votre profil.</p></details>
+  <details><summary>Comment se déroule le processus de recrutement ?</summary><p>Après une première lecture de votre candidature, vous pouvez être contacté pour un ou plusieurs entretiens avec les équipes RH et les managers concernés. Les étapes peuvent varier selon le poste.</p></details>
+  <details><summary>Comment suivre ma candidature ?</summary><p>Vous recevez un accusé de réception après l'envoi de votre candidature. Pour toute question sur son avancement, vous pouvez contacter l'équipe recrutement via le formulaire de contact.</p></details>
+
+  <h2 class="section-title" id="alternance">Stages &amp; alternance</h2>
+  <details><summary>Proposez-vous des stages et des contrats en alternance ?</summary><p>Oui, nous accueillons des stagiaires et des alternants dans nos différents métiers. Les offres sont publiées dans la rubrique « Nous rejoindre ».</p></details>
+  <details><summary>Quand postuler pour une alternance ?</summary><p>Nous vous conseillons de postuler plusieurs mois avant la rentrée de votre formation : de nombreuses offres sont publiées au printemps.</p></details>
+  <details><summary>Comment suis-je accompagné pendant mon alternance ?</summary><p>Chaque alternant est accompagné par un tuteur au sein de son équipe, qui l'aide à monter en compétences tout au long de son parcours.</p></details>
+
+  <!-- ===== BANDEAU TEXTE ===== -->
+  <div class="band">
+    <p>Vous avez une question qui ne figure pas dans cette FAQ ? Notre <strong>assistant virtuel</strong> est là pour vous répondre à tout moment. Il peut vous renseigner sur nos métiers, nos offres d'emploi, les stages et l'alternance, ou encore sur le déroulement d'une candidature. Pour toute question plus spécifique, il vous oriente vers le bon interlocuteur. Pensez à préciser l'intitulé du poste ou la référence de l'offre qui vous intéresse pour obtenir une réponse plus rapide. Nos équipes traitent les demandes transmises du lundi au vendredi.</p>
+  </div>
+
+  <h2 class="section-title" id="vie">Vie au travail</h2>
+  <details><summary>Le télétravail est-il possible ?</summary><p>Le télétravail est possible selon les postes et l'organisation des équipes. Les modalités vous sont présentées lors du processus de recrutement.</p></details>
+  <details><summary>Quelles possibilités de formation ?</summary><p>Nous accompagnons nos collaborateurs dans le développement de leurs compétences, notamment sur les nouvelles technologies, au travers de parcours de formation adaptés.</p></details>
+  <details><summary>Quels sont vos engagements ?</summary><p>En tant qu'entité du groupe Caisse des Dépôts, nous sommes attachés à l'intérêt général, à l'inclusion et à un numérique plus responsable.</p></details>
+
+  <h2 class="section-title" id="contact">Contact</h2>
+  <details><summary>Comment contacter Informatique CDC ?</summary><p>Vous pouvez nous écrire via le formulaire de contact du site ou poser votre question à l'assistant virtuel de cette page.</p></details>
+  <details><summary>Comment exercer mes droits sur mes données personnelles ?</summary><p>Vous pouvez exercer vos droits d'accès, de rectification ou d'effacement en suivant les indications de la page « Données personnelles » du site.</p></details>
+
+  <!-- ===== VISUELS ===== -->
+  <h2 class="section-title">Pour aller plus loin</h2>
+  <div class="visuals">
+    <a class="visual contain" href="#"><img src="https://union-atrium.fr/images/pagebuilderck/CAISSE_DES_DEPOTS_LOGO_POS_CMJN%20-%20copie.jpg" alt="Groupe Caisse des Dépôts"><div><b>En savoir plus sur le groupe</b><span>Découvrez les missions du groupe Caisse des Dépôts.</span></div></a>
+    <a class="visual" href="#"><img src="https://media.licdn.com/dms/image/v2/C4D1BAQF-Wf7pqw_0Qw/company-background_10000/company-background_10000/0/1598962325862/informatique_cdc_cover?e=2147483647&amp;v=beta&amp;t=P26yj9DNbA9SiQdsM-Jfj1h6UjSx76cDfuSpjWLoeJU" alt="On recrute"><div><b>On recrute</b><span>Consultez nos offres d'emploi, de stage et d'alternance.</span></div></a>
+  </div>
+
+  <div class="contact">
+    <div><b>Vous n'avez pas trouvé votre réponse ?</b>Posez votre question à notre assistant virtuel ou écrivez-nous.</div>
+    <a class="btn" href="#">Nous contacter</a>
+  </div>
+</main>
+
+<!-- ===== BANDEAU BAS (copyright Diabolocom — NE JAMAIS SUPPRIMER) ===== -->
+<footer>
+  <div class="inner">
+    <a href="#">Mentions légales</a>
+    <a href="#">Données personnelles</a>
+    <a href="#">Accessibilité</a>
+    <a href="#">Plan du site</a>
+    <span class="copy">&copy; Diabolocom, 2026</span>
+  </div>
+</footer>
+
+<script>
+/* recherche dans la FAQ */
+const q=document.getElementById('q'),count=document.getElementById('count'),items=[...document.querySelectorAll('details')];
+const norm=s=>s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+q.addEventListener('input',()=>{const v=norm(q.value.trim());let n=0;
+  items.forEach(d=>{const ok=!v||norm(d.textContent).includes(v);d.classList.toggle('hidden',!ok);if(ok)n++;if(v&&ok)d.open=true;if(!v)d.open=false;});
+  document.querySelectorAll('.section-title[id]').forEach(h=>{let e=h.nextElementSibling,any=false;
+    while(e&&e.tagName==='DETAILS'){if(!e.classList.contains('hidden'))any=true;e=e.nextElementSibling;}h.classList.toggle('hidden',!any);});
+  count.textContent=v?(n?n+' question'+(n>1?'s':'')+' trouvée'+(n>1?'s':''):'Aucune question trouvée : posez votre question à l\'assistant virtuel.'):'';});
+</script>
+<!-- ============ SNIPPET CHATBOT — coller ici le script de demo, ne rien mettre apres ============ -->
+</body>
+</html>
