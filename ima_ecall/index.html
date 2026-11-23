@@ -147,7 +147,7 @@ const ANNUAIRE = [
 ];
 const DEFAUT = {declenchement:"Automatique (airbag)",canal:"eCall 112 via UDA",vin:"VF3MCYHZRLS123456",immatriculation:"GH-123-KL",
   vehicule:"Peugeot 3008 gris",latitude:"47.4436",longitude:"0.6967",localisation:"A10, sens Paris vers Bordeaux, PK 232, sortie Tours-Nord",
-  passagers:"2",horodatage:"Alerte reçue à l'instant",dossier:"ECALL-2026-004187",contactid:"e36f0283-46ac-f111-aaac-00224839dc41",prenom:"Paul",nom:"Henry"};
+  passagers:"2",horodatage:"Alerte reçue à l'instant",dossier:"ECALL-2026-004187",contactid:"e36f0283-46ac-f111-aaac-00224839dc41",prenom:"Paul",nom:"Henry",codeack:""};
 const CRM = "https://org64f41.crm12.dynamics.com/main.aspx?appid=14ffad22-8b2c-eb11-bf68-000d3a898b6e&forceUCI=1&pagetype=entityrecord&etn=contact&id=";
 const CRM_SUFFIX = "&lid=1795457239763";
 let D = {...DEFAUT}; const answers = {}; const t0 = Date.now(); let slaDone=false;
@@ -160,7 +160,7 @@ function copy(t,msg){ (navigator.clipboard?navigator.clipboard.writeText(t):Prom
 const gpsText = () => D.latitude+', '+D.longitude;
 
 function render(){
-  $('h-dossier').textContent=D.dossier; $('h-canal').textContent=D.canal; $('h-decl').textContent=D.declenchement;
+  $('h-dossier').textContent=D.dossier; $('ack').textContent=D.codeack?('ACK UDA '+D.codeack+' ✓'):'ACK UDA envoyé ✓'; $('h-canal').textContent=D.canal; $('h-decl').textContent=D.declenchement;
   $('d-decl').textContent=D.declenchement; $('d-canal').textContent=D.canal; $('d-horo').textContent=D.horodatage;
   $('d-veh').textContent=D.vehicule; $('d-immat').textContent=D.immatriculation; $('d-vin').textContent=D.vin;
   $('d-pax').textContent=D.passagers; $('d-loc').textContent=D.localisation;
@@ -211,7 +211,7 @@ setInterval(()=>{ const s=Math.floor((Date.now()-t0)/1000);
 
 /* Données : URL (?cle=valeur) > ecall.json (API simulée) > valeurs par défaut */
 function applyParams(){ new URLSearchParams(location.search).forEach((v,k)=>{ if(k in D) D[k]=v; }); }
-buildConf(); applyParams(); render(); log('Appel eCall présenté – ACK UDA envoyé');
+buildConf(); applyParams(); render(); log('Appel eCall présenté – '+(D.codeack?'code ACK UDA reçu : '+D.codeack:'ACK UDA envoyé'));
 fetch('ecall.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(j=>{ if(j){ D={...DEFAUT,...j}; applyParams(); render(); } }).catch(()=>{});
 </script>
 </body>
