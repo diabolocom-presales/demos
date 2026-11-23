@@ -1,0 +1,16 @@
+{
+  "declenchement": "Automatique (airbag)",
+  "canal": "eCall 112 via UDA",
+  "vin": "VF3MCYHZRLS123456",
+  "immatriculation": "GH-123-KL",
+  "vehicule": "Peugeot 3008 gris",
+  "latitude": "47.4436",
+  "longitude": "0.6967",
+  "localisation": "A10, sens Paris vers Bordeaux, PK 232, sortie Tours-Nord",
+  "passagers": "2",
+  "horodatage": "Alerte reçue à l'instant",
+  "dossier": "ECALL-2026-004187",
+  "contactid": "e36f0283-46ac-f111-aaac-00224839dc41",
+  "prenom": "Paul",
+  "nom": "Henry"
+}

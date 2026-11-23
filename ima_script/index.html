@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>IMA – Script eCall</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1099px;height:559px;overflow:hidden;font-family:"Segoe UI",Arial,sans-serif;font-size:12px;color:#1c2333;background:#eef1f6}
+.app{display:grid;grid-template-rows:42px 1fr;width:1099px;height:559px;padding:5px;gap:5px}
+header{display:flex;align-items:center;gap:10px;background:#1D2A4A;color:#fff;border-radius:6px;padding:0 10px}
+.logo{font-weight:800;font-size:16px;letter-spacing:.5px}
+.tag{background:#C62828;border-radius:4px;padding:3px 8px;font-weight:700;font-size:11px;animation:pulse 1.6s infinite}
+@keyframes pulse{50%{opacity:.6}}
+.hinfo{font-size:11px;opacity:.9}
+.hinfo b{font-weight:700}
+.spacer{flex:1}
+.chip{background:rgba(255,255,255,.12);border-radius:4px;padding:3px 8px;font-size:11px;white-space:nowrap}
+.chip.ok{background:#2E7D32}.chip.ko{background:#C62828}
+main{display:grid;grid-template-columns:290px 360px 1fr;gap:5px;min-height:0}
+.card{background:#fff;border-radius:6px;padding:8px;display:flex;flex-direction:column;min-height:0;box-shadow:0 1px 2px rgba(0,0,0,.06)}
+.card h2{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:#1D2A4A;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.card h2 .n{background:#1D2A4A;color:#fff;border-radius:50%;width:16px;height:16px;display:inline-flex;align-items:center;justify-content:center;font-size:10px}
+.scroll{overflow-y:auto;overflow-x:hidden;min-height:0}
+dl{display:grid;grid-template-columns:96px 1fr;row-gap:3px;column-gap:6px}
+dt{color:#6b7385}dd{font-weight:600;word-break:break-word}
+.sep{height:1px;background:#e3e7ef;margin:7px 0}
+.btn{border:1px solid #c9d0dd;background:#f6f8fb;border-radius:5px;padding:5px 7px;font-size:11px;cursor:pointer;font-weight:600;color:#1D2A4A}
+.btn:hover{background:#e8edf5}
+.btn.primary{background:#1D2A4A;color:#fff;border-color:#1D2A4A}
+.btn.red{background:#C62828;color:#fff;border-color:#C62828}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+#map{flex:1;border:0;border-radius:5px;min-height:0;width:100%}
+.gps{display:flex;gap:6px;align-items:center;margin-top:6px;font-size:11px}
+.gps code{background:#eef1f6;padding:3px 6px;border-radius:4px;font-weight:700}
+.say{background:#FFF8E1;border-left:3px solid #F9A825;padding:5px 7px;border-radius:4px;font-style:italic;margin:3px 0 6px}
+.q{display:flex;align-items:center;justify-content:space-between;margin:3px 0;gap:6px}
+.seg{display:flex}
+.seg button{border:1px solid #c9d0dd;background:#fff;padding:3px 7px;font-size:11px;cursor:pointer}
+.seg button:first-child{border-radius:4px 0 0 4px}.seg button:last-child{border-radius:0 4px 4px 0;border-left:0}
+.seg button.on{background:#1D2A4A;color:#fff;border-color:#1D2A4A}
+.seg button.on.alert{background:#C62828;border-color:#C62828}
+.conf{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin:4px 0 2px}
+.conf button{border:1px solid #f1b3b3;background:#FDECEC;color:#8E1B1B;border-radius:5px;padding:4px 2px;cursor:pointer;font-size:11px;font-weight:700;line-height:1.15}
+.conf button small{display:block;font-weight:500;font-size:9.5px;color:#a04040}
+.conf button.blue{border-color:#b9c6e4;background:#EEF2FB;color:#1D2A4A}.conf button.blue small{color:#4a5a80}
+.conf button.done{background:#2E7D32;border-color:#2E7D32;color:#fff}.conf button.done small{color:#dff0e0}
+.conf button.hl{outline:2px solid #F9A825}
+.chk{display:flex;align-items:flex-start;gap:6px;margin:3px 0;cursor:pointer}
+.chk input{margin-top:2px}
+#journal{font-family:Consolas,monospace;font-size:10.5px;background:#f6f8fb;border-radius:4px;padding:5px;height:64px;overflow-y:auto;white-space:pre-wrap}
+textarea{width:100%;height:40px;resize:none;border:1px solid #c9d0dd;border-radius:4px;padding:4px;font:inherit;font-size:11px}
+.row{display:flex;gap:5px;align-items:center}
+.toast{position:fixed;bottom:12px;left:50%;transform:translateX(-50%);background:#1D2A4A;color:#fff;padding:6px 12px;border-radius:5px;font-size:11px;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.show{opacity:1}
+.muted{color:#6b7385;font-size:10.5px}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <span class="logo">IMA</span>
+    <span class="tag">🚨 eCALL – PRIORITÉ MAX</span>
+    <span class="hinfo">Dossier <b id="h-dossier">–</b> · <b id="h-canal">–</b> · déclenchement <b id="h-decl">–</b></span>
+    <span class="spacer"></span>
+    <span class="chip" id="ack">ACK UDA envoyé ✓</span>
+    <span class="chip" id="sla">Décroché –</span>
+    <span class="chip">Durée <b id="timer">00:00</b></span>
+  </header>
+
+  <main>
+    <!-- Colonne 1 : données véhicule + client -->
+    <section class="card">
+      <h2><span class="n">1</span>Données eCall reçues (API)</h2>
+      <div class="scroll">
+        <dl>
+          <dt>Déclenchement</dt><dd id="d-decl">–</dd>
+          <dt>Canal</dt><dd id="d-canal">–</dd>
+          <dt>Horodatage</dt><dd id="d-horo">–</dd>
+          <dt>Véhicule</dt><dd id="d-veh">–</dd>
+          <dt>Immatriculation</dt><dd id="d-immat">–</dd>
+          <dt>VIN</dt><dd id="d-vin">–</dd>
+          <dt>Occupants</dt><dd id="d-pax">–</dd>
+          <dt>Localisation</dt><dd id="d-loc">–</dd>
+        </dl>
+        <div class="sep"></div>
+        <h2>Client identifié</h2>
+        <dl>
+          <dt>Nom</dt><dd id="d-client">–</dd>
+          <dt>Fiche CRM</dt><dd><a id="d-crm" href="#" target="_blank" class="btn" style="text-decoration:none;display:inline-block">Ouvrir dans Dynamics ↗</a></dd>
+        </dl>
+        <div class="sep"></div>
+        <p class="muted">Données transmises par la plateforme UDA / constructeur et reçues sur le SI IMA par API.</p>
+      </div>
+    </section>
+
+    <!-- Colonne 2 : carte -->
+    <section class="card">
+      <h2><span class="n">2</span>Position GPS du véhicule</h2>
+      <iframe id="map" title="Carte"></iframe>
+      <div class="gps">
+        <code id="d-gps">–</code>
+        <button class="btn" onclick="copy(gpsText(),'Coordonnées copiées')">Copier</button>
+        <a class="btn" id="d-gmaps" target="_blank" style="text-decoration:none">Itinéraire ↗</a>
+      </div>
+    </section>
+
+    <!-- Colonne 3 : script + conférence -->
+    <section class="card">
+      <div class="scroll" style="flex:1">
+        <h2><span class="n">3</span>Prise de contact</h2>
+        <div class="say">« IMA Assistance, bonjour. Nous avons reçu une alerte d'urgence de votre véhicule. Est-ce que tout le monde va bien ? »</div>
+        <div class="q"><span>Personne blessée ?</span><div class="seg" data-q="blesses"><button data-v="Oui" class="alert">Oui</button><button data-v="Non">Non</button><button data-v="Pas de réponse" class="alert">Silence</button></div></div>
+        <div class="q"><span>Danger immédiat (feu, voie) ?</span><div class="seg" data-q="danger"><button data-v="Oui" class="alert">Oui</button><button data-v="Non">Non</button></div></div>
+        <div class="q"><span>Langue de l'appelant</span><div class="seg" data-q="langue"><button data-v="Français">FR</button><button data-v="Autre langue" class="alert">Autre</button></div></div>
+
+        <h2 style="margin-top:6px"><span class="n">4</span>Conférence <span class="muted" style="text-transform:none;letter-spacing:0">– le client reste en ligne</span></h2>
+        <div class="conf" id="conf"></div>
+
+        <h2 style="margin-top:6px"><span class="n">5</span>Fin de prise en charge</h2>
+        <label class="chk"><input type="checkbox" id="auth"> <span>Les secours autorisent le chargé à quitter la conférence</span></label>
+        <div class="row" style="margin:3px 0 6px">
+          <button class="btn red" id="leave" disabled onclick="leave()">Quitter – laisser secours et client en ligne</button>
+        </div>
+        <div id="journal"></div>
+        <div class="row" style="margin-top:5px;align-items:stretch">
+          <textarea id="note" placeholder="Note complémentaire du chargé d'assistance…"></textarea>
+          <button class="btn primary" style="width:110px" onclick="buildNote()">Note dossier<br>(copier)</button>
+        </div>
+        <p class="muted" style="margin-top:3px">Communication enregistrée intégralement – conservation selon la réglementation.</p>
+      </div>
+    </section>
+  </main>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* Numéros de DÉMO uniquement : ne jamais mettre les vrais 15 / 17 / 18 / 112 ici. */
+const ANNUAIRE = [
+  {id:'psap',  label:'112 / PSAP',      num:'+33 1 00 00 01 12'},
+  {id:'samu',  label:'SAMU',            num:'+33 1 00 00 00 15'},
+  {id:'sdis',  label:'SDIS (pompiers)', num:'+33 1 00 00 00 18'},
+  {id:'police',label:'Police / Gend.',  num:'+33 1 00 00 00 17'},
+  {id:'pc',    label:'PC autoroutier',  num:'+33 1 00 00 02 00'},
+  {id:'lang',  label:'Support linguist.',num:'+33 1 00 00 03 00', blue:true},
+  {id:'depan', label:'Partenaire dépann.',num:'+33 1 00 00 04 00', blue:true},
+  {id:'sup',   label:'Superviseur',     num:'+33 1 00 00 05 00', blue:true}
+];
+const DEFAUT = {declenchement:"Automatique (airbag)",canal:"eCall 112 via UDA",vin:"VF3MCYHZRLS123456",immatriculation:"GH-123-KL",
+  vehicule:"Peugeot 3008 gris",latitude:"47.4436",longitude:"0.6967",localisation:"A10, sens Paris vers Bordeaux, PK 232, sortie Tours-Nord",
+  passagers:"2",horodatage:"Alerte reçue à l'instant",dossier:"ECALL-2026-004187",contactid:"e36f0283-46ac-f111-aaac-00224839dc41",prenom:"Paul",nom:"Henry"};
+const CRM = "https://org64f41.crm12.dynamics.com/main.aspx?appid=14ffad22-8b2c-eb11-bf68-000d3a898b6e&forceUCI=1&pagetype=entityrecord&etn=contact&id=";
+const CRM_SUFFIX = "&lid=1795457239763";
+let D = {...DEFAUT}; const answers = {}; const t0 = Date.now(); let slaDone=false;
+
+const $ = id => document.getElementById(id);
+const hm = () => new Date().toLocaleTimeString('fr-FR');
+function log(t){ const j=$('journal'); j.textContent += hm()+'  '+t+'\n'; j.scrollTop=j.scrollHeight; }
+function toast(t){ const e=$('toast'); e.textContent=t; e.classList.add('show'); clearTimeout(e._t); e._t=setTimeout(()=>e.classList.remove('show'),1800); }
+function copy(t,msg){ (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast(msg||'Copié')).catch(()=>toast(t)); }
+const gpsText = () => D.latitude+', '+D.longitude;
+
+function render(){
+  $('h-dossier').textContent=D.dossier; $('h-canal').textContent=D.canal; $('h-decl').textContent=D.declenchement;
+  $('d-decl').textContent=D.declenchement; $('d-canal').textContent=D.canal; $('d-horo').textContent=D.horodatage;
+  $('d-veh').textContent=D.vehicule; $('d-immat').textContent=D.immatriculation; $('d-vin').textContent=D.vin;
+  $('d-pax').textContent=D.passagers; $('d-loc').textContent=D.localisation;
+  $('d-client').textContent=(D.prenom+' '+D.nom).trim(); $('d-crm').href=CRM+D.contactid+CRM_SUFFIX;
+  $('d-gps').textContent=gpsText();
+  $('d-gmaps').href='https://www.google.com/maps/dir/?api=1&destination='+D.latitude+','+D.longitude;
+  const la=parseFloat(D.latitude), lo=parseFloat(D.longitude), e=0.012;
+  $('map').src='https://www.openstreetmap.org/export/embed.html?bbox='+(lo-e)+','+(la-e/1.6)+','+(lo+e)+','+(la+e/1.6)+'&layer=mapnik&marker='+la+','+lo;
+}
+
+function buildConf(){
+  const c=$('conf');
+  ANNUAIRE.forEach(a=>{
+    const b=document.createElement('button'); b.id='c-'+a.id; if(a.blue) b.classList.add('blue');
+    b.innerHTML=a.label+'<small>'+a.num+'</small>';
+    b.onclick=()=>{ b.classList.add('done'); copy(a.num.replace(/\s/g,''),'N° '+a.label+' copié – lancez la conférence depuis le bandeau'); log('Conférence '+a.label+' ('+a.num+')'); };
+    c.appendChild(b);
+  });
+}
+
+document.querySelectorAll('.seg').forEach(s=>s.querySelectorAll('button').forEach(b=>b.onclick=()=>{
+  s.querySelectorAll('button').forEach(x=>x.classList.remove('on')); b.classList.add('on');
+  const q=s.dataset.q; answers[q]=b.dataset.v; log((q==='blesses'?'Blessés':q==='danger'?'Danger immédiat':'Langue')+' : '+b.dataset.v);
+  const hl=(id,on)=>$('c-'+id).classList.toggle('hl',on);
+  if(q==='blesses'){ hl('samu',b.dataset.v!=='Non'); hl('psap',b.dataset.v!=='Non'); }
+  if(q==='danger'){ hl('sdis',b.dataset.v==='Oui'); hl('pc',b.dataset.v==='Oui'); }
+  if(q==='langue'){ hl('lang',b.dataset.v!=='Français'); }
+}));
+
+$('auth').onchange=e=>{ $('leave').disabled=!e.target.checked; if(e.target.checked) log('Autorisation des secours obtenue pour quitter la conférence'); };
+function leave(){ log('Chargé sorti de la conférence – secours et client restent en ligne'); $('leave').disabled=true; $('leave').textContent='Conférence quittée ✓'; toast('Raccrochez côté bandeau : la conférence reste active'); }
+
+function buildNote(){
+  const conf=ANNUAIRE.filter(a=>$('c-'+a.id).classList.contains('done')).map(a=>a.label).join(', ')||'aucune';
+  const txt=['eCall '+D.dossier+' – '+D.canal+' – déclenchement '+D.declenchement,
+    'Véhicule : '+D.vehicule+' '+D.immatriculation+' (VIN '+D.vin+')',
+    'Position : '+gpsText()+' – '+D.localisation,
+    'Blessés : '+(answers.blesses||'non renseigné')+' · Danger : '+(answers.danger||'non renseigné')+' · Langue : '+(answers.langue||'non renseignée'),
+    'Conférences : '+conf, '', 'Journal :', $('journal').textContent.trim(), '', 'Note : '+($('note').value.trim()||'—')].join('\n');
+  copy(txt,'Note dossier copiée – collez-la dans Dynamics'); log('Note dossier générée');
+}
+
+setInterval(()=>{ const s=Math.floor((Date.now()-t0)/1000);
+  $('timer').textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
+  if(!slaDone){ slaDone=true; const w=parseInt(new URLSearchParams(location.search).get('attente')||'0',10);
+    $('sla').textContent='Décroché '+(w?w+' s':'')+(w&&w>13?' – SLA 13 s dépassé':' – SLA 13 s ✓'); $('sla').classList.add(w>13?'ko':'ok'); }
+},1000);
+
+/* Données : URL (?cle=valeur) > ecall.json (API simulée) > valeurs par défaut */
+function applyParams(){ new URLSearchParams(location.search).forEach((v,k)=>{ if(k in D) D[k]=v; }); }
+buildConf(); applyParams(); render(); log('Appel eCall présenté – ACK UDA envoyé');
+fetch('ecall.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(j=>{ if(j){ D={...DEFAUT,...j}; applyParams(); render(); } }).catch(()=>{});
+</script>
+</body>
+</html>
