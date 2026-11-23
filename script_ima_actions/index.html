@@ -17,7 +17,7 @@ body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font
 .cli span{color:var(--mut)}
 .pill{font-size:10px;background:var(--wa);color:#fff;border-radius:10px;padding:1px 7px;font-weight:600}
 .steps{display:flex;gap:3px}
-.steps button{flex:1;border:0;background:var(--t);color:var(--p);border-radius:4px;padding:6px 0;font:600 11px inherit;cursor:pointer;font-family:inherit}
+.steps button{flex:1;border:0;background:var(--t);color:var(--p);border-radius:4px;padding:6px 2px;font:600 10.5px inherit;cursor:pointer;font-family:inherit;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .steps button.on{background:var(--p);color:#fff}
 .steps button.done{background:var(--okb);color:var(--ok)}
 .card{border:1px solid var(--line);border-radius:6px;padding:10px;display:none;flex-direction:column;gap:8px}
@@ -45,6 +45,17 @@ body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font
 .bar{height:5px;background:var(--t);border-radius:3px;overflow:hidden}.bar i{display:block;height:100%;background:var(--ok);width:0;transition:width .3s}
 .toast{position:fixed;left:50%;bottom:14px;transform:translateX(-50%) translateY(60px);background:var(--ok);color:#fff;padding:7px 14px;border-radius:20px;font-weight:600;font-size:12px;transition:.25s;opacity:0}
 .toast.on{transform:translateX(-50%);opacity:1}
+.crm{font-size:11px;font-weight:600;color:#fff;background:var(--p);border-radius:4px;padding:2px 8px;text-decoration:none}
+.crm:hover{background:var(--pd)}
+.chk label{display:flex;gap:6px;align-items:center;font-size:12px;padding:1px 0;cursor:pointer}.chk input{accent-color:var(--p)}
+.in{width:100%;border:1px solid var(--line);border-radius:4px;padding:6px 8px;font:inherit;font-size:12px;color:var(--txt);background:#fff}
+.msg{border:1px solid var(--line);border-radius:5px;padding:7px 8px;display:flex;flex-direction:column;gap:5px}
+.msg .top{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:600}
+.tg{display:flex;border:1px solid var(--p);border-radius:4px;overflow:hidden}
+.tg button{border:0;background:#fff;color:var(--p);font:600 11px inherit;font-family:inherit;padding:3px 8px;cursor:pointer}.tg button.on{background:var(--p);color:#fff}
+.msg textarea{width:100%;height:68px;resize:vertical;border:1px solid var(--line);border-radius:4px;padding:6px;font:inherit;font-size:12px;color:var(--txt)}
+.msg .bot{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--mut)}
+.tpls{display:flex;gap:4px;flex-wrap:wrap}.tpls button{border:1px solid var(--line);background:var(--t);color:var(--p);border-radius:10px;font-size:10.5px;padding:1px 7px;cursor:pointer;font-family:inherit}
 </style>
 </head>
 <body>
@@ -52,15 +63,17 @@ body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font
 
 <div class="hd">
   <img src="https://upload.wikimedia.org/wikipedia/fr/5/51/Logo_Inter_mutuelles_assistance.png" alt="IMA">
-  <div><b>Script conseiller · Assistance auto</b><small>Complément de la conversation WhatsApp</small></div>
+  <div><b>Script chargé d'assistance · Auto</b><small>Panne / accident · véhicule immobilisé</small></div>
 </div>
 
 <div class="cli">
-  <div class="n">Louis Dubois <span class="pill">WhatsApp</span></div>
+  <div class="n">Louis Dubois <a class="crm" href="https://org64f41.crm12.dynamics.com/main.aspx?appid=588314b3-882c-eb11-bf68-000d3a898b6e&pagetype=entityrecord&etn=contact&id=dde0a0e6-361d-f111-8342-000d3ae7a778" target="_blank" rel="noopener">Fiche contact ↗</a></div>
   <div><span>Tél.</span> +33 6 48 78 05 03</div>
-  <div><span>Contrat</span> IMA-AUTO-482 917</div>
+  <div><span>Sociétaire</span> n° 2 184 559 K</div>
   <div><span>Véhicule</span> Peugeot 308 · GH-512-KT</div>
-  <div><span>Garantie</span> Assistance 0 km</div>
+  <div><span>Formule</span> Assistance 0 km</div>
+  <div><span>Domicile</span> Nantes (44)</div>
+  <div><span>Dossiers 12 mois</span> 0</div>
 </div>
 
 <div class="steps" id="steps"></div>
@@ -68,59 +81,72 @@ body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font
 
 <!-- 1 -->
 <div class="card" data-t="Accueil">
-  <h2>1 · Accueillir &amp; rassurer</h2>
-  <div class="say">Bonjour M. Dubois, je suis Camille, votre chargée d'assistance IMA. J'ai bien reçu votre message, je m'occupe de tout 🤝</div>
-  <div class="lab">Sécurité d'abord</div>
+  <h2>1 · Accueillir &amp; sécuriser</h2>
+  <div class="say">IMA Assistance, Camille à votre écoute. Je vois que vous êtes M. Dubois, êtes-vous en sécurité en ce moment ?</div>
+  <div class="lab">Sécurité des personnes</div>
   <div class="grid">
-    <button class="ch" data-g="secu">✅ En sécurité</button>
-    <button class="ch" data-g="secu">⚠️ Sur voie rapide</button>
+    <button class="ch" data-g="secu">✅ Hors danger</button>
+    <button class="ch" data-g="secu">⚠️ Autoroute / voie rapide</button>
     <button class="ch" data-g="secu">🚑 Personne blessée</button>
-    <button class="ch" data-g="secu">👨‍👩‍👧 Passagers à bord</button>
+    <button class="ch" data-g="secu">👶 Enfants / personne fragile</button>
   </div>
-  <div class="info">Si voie rapide : faire passer derrière la glissière, gilet + triangle. Si blessé : orienter vers le 112.</div>
+  <div class="info">Autoroute : derrière la glissière, gilet jaune, appel via borne orange (dépanneur agréé obligatoire). Blessé : 112 en priorité.</div>
+  <div class="lab">Contrôle d'identité</div>
+  <div class="chk">
+    <label><input type="checkbox"> Nom et date de naissance</label>
+    <label><input type="checkbox"> Immatriculation du véhicule</label>
+    <label><input type="checkbox"> Code postal du domicile</label>
+  </div>
 </div>
 
 <!-- 2 -->
-<div class="card" data-t="Situation">
-  <h2>2 · Qualifier la situation</h2>
-  <div class="lab">Nature de l'événement</div>
+<div class="card" data-t="Diagnostic">
+  <h2>2 · Qualifier l'événement</h2>
   <div class="grid">
     <button class="ch" data-g="evt">🔋 Batterie</button>
     <button class="ch" data-g="evt">🛞 Crevaison</button>
-    <button class="ch" data-g="evt">⚙️ Panne moteur</button>
+    <button class="ch" data-g="evt">⚙️ Panne mécanique</button>
     <button class="ch" data-g="evt">💥 Accident</button>
-    <button class="ch" data-g="evt">🔑 Clés / carburant</button>
-    <button class="ch" data-g="evt">🔧 Autre</button>
+    <button class="ch" data-g="evt">⛽ Erreur carburant</button>
+    <button class="ch" data-g="evt">🔑 Perte de clés</button>
   </div>
-  <div class="act"><div>📍 Localisation du véhicule<small>Envoi d'un lien de géolocalisation par SMS</small></div><button class="btn" data-a="Lien de géolocalisation envoyé par SMS">Envoyer</button></div>
-  <div class="act"><div>📷 Photos du véhicule<small>Demande de photos via WhatsApp</small></div><button class="btn" data-a="Demande de photos envoyée">Demander</button></div>
+  <div class="lab">Véhicule</div>
+  <div class="grid">
+    <button class="ch" data-g="roul">Roulant</button>
+    <button class="ch" data-g="roul">Non roulant</button>
+  </div>
+  <div class="lab">Localisation</div>
+  <input type="text" class="in" value="A11, sortie 20 Ancenis · direction Nantes">
+  <div class="msg" data-tpl="geo"></div>
 </div>
 
 <!-- 3 -->
-<div class="card" data-t="Solution">
-  <h2>3 · Organiser l'assistance</h2>
-  <div class="say">Bonne nouvelle, votre contrat couvre le dépannage dès 0 km. J'organise l'intervention maintenant.</div>
-  <div class="act"><div>🚛 Dépanneuse<small>Garage Martin · ETA 35 min</small></div><button class="btn" data-a="Dépanneuse missionnée (ETA 35 min)">Missionner</button></div>
-  <div class="act"><div>🚗 Véhicule de remplacement<small>Catégorie B · 3 jours</small></div><button class="btn" data-a="Véhicule de remplacement réservé">Réserver</button></div>
-  <div class="act"><div>🚕 Taxi / rapatriement<small>Passagers jusqu'au domicile</small></div><button class="btn" data-a="Taxi commandé">Commander</button></div>
-  <div class="act"><div>🏨 Hébergement<small>Si immobilisation &gt; 24 h loin du domicile</small></div><button class="btn" data-a="Nuit d'hôtel réservée">Réserver</button></div>
+<div class="card" data-t="Prestations">
+  <h2>3 · Déclencher les prestations</h2>
+  <div class="say">Votre contrat couvre le dépannage dès 0 km. Je missionne un dépanneur et je m'occupe de votre mobilité.</div>
+  <div class="act"><div>🚛 Dépannage / remorquage<small>Dépannage Loire Atlantique · ETA 40 min</small></div><button class="btn" data-a="Dépanneur missionné (ETA 40 min)">Missionner</button></div>
+  <div class="act"><div>🔧 Garage de destination<small>Peugeot Ancenis · 6 km · agréé</small></div><button class="btn" data-a="Garage Peugeot Ancenis prévenu">Prévenir</button></div>
+  <div class="act"><div>🚗 Véhicule de remplacement<small>Cat. B · 5 jours max · agence Ancenis</small></div><button class="btn" data-a="Véhicule de remplacement réservé (cat. B)">Réserver</button></div>
+  <div class="act"><div>🚕 Taxi<small>Lieu de panne → agence de location</small></div><button class="btn" data-a="Taxi commandé">Commander</button></div>
+  <div class="info">Hébergement (80 €/nuit/pers.) uniquement si immobilisation &gt; 24 h à plus de 50 km du domicile.</div>
 </div>
 
 <!-- 4 -->
-<div class="card" data-t="Suivi">
-  <h2>4 · Informer le client</h2>
-  <div class="act"><div>💬 SMS de suivi<small>Lien temps réel vers la dépanneuse</small></div><button class="btn" data-a="SMS de suivi envoyé au +33 6 48 78 05 03">Envoyer SMS</button></div>
-  <div class="act"><div>✉️ Email récapitulatif<small>Dossier, prestations, contacts</small></div><button class="btn" data-a="Email récapitulatif envoyé">Envoyer email</button></div>
-  <div class="act"><div>📞 Rappel conseiller<small>Point d'étape dans 1 h</small></div><button class="btn" data-a="Rappel planifié dans 1 h">Planifier</button></div>
-  <div class="act"><div>🗂️ Dossier d'assistance<small>N° AS-2026-118 402</small></div><button class="btn" data-a="Dossier AS-2026-118 402 créé">Créer</button></div>
+<div class="card" data-t="Informer">
+  <h2>4 · Informer le sociétaire</h2>
+  <div class="msg" data-tpl="suivi"></div>
+  <div class="act"><div>✉️ Email récapitulatif<small>l.dubois@email.fr · dossier + prestations</small></div><button class="btn" data-a="Email récapitulatif envoyé">Envoyer</button></div>
+  <div class="act"><div>📞 Rappel de suivi<small>Point d'étape après remorquage</small></div><button class="btn" data-a="Rappel planifié dans 1 h">Planifier</button></div>
 </div>
 
 <!-- 5 -->
 <div class="card" data-t="Clôture">
-  <h2>5 · Clôturer</h2>
-  <div class="say">Récapitulatif M. Dubois : la dépanneuse arrive dans 35 min, vous recevez un SMS de suivi et un email avec votre dossier. Je reste joignable ici sur WhatsApp. Bonne fin de journée !</div>
-  <div class="act"><div>⭐ Enquête de satisfaction<small>Envoi après l'intervention</small></div><button class="btn" data-a="Enquête de satisfaction programmée">Programmer</button></div>
-  <div class="act"><div>✅ Clôturer l'échange<small>Qualification : assistance organisée</small></div><button class="btn" data-a="Échange clôturé et qualifié">Clôturer</button></div>
+  <h2>5 · Récapituler &amp; clôturer</h2>
+  <div class="say">M. Dubois, je récapitule : le dépanneur arrive dans 40 minutes, votre véhicule sera remorqué chez Peugeot Ancenis et un taxi vous conduira à votre véhicule de remplacement. Votre dossier est le AS-2026-118 402. Avez-vous d'autres questions ?</div>
+  <div class="lab">Qualification</div>
+  <select class="in"><option>Panne mécanique · remorquage + VR</option><option>Batterie · dépannage sur place</option><option>Accident · remorquage</option><option>Renseignement garanties</option></select>
+  <div class="act"><div>⭐ Enquête de satisfaction<small>Envoi automatique J+1</small></div><button class="btn" data-a="Enquête de satisfaction programmée">Programmer</button></div>
+  <div class="act"><div>✅ Clôturer le dossier<small>AS-2026-118 402</small></div><button class="btn" data-a="Dossier AS-2026-118 402 qualifié et clôturé">Clôturer</button></div>
 </div>
 
 <div class="nav"><button class="btn ghost" id="prev">← Précédent</button><button class="btn" id="next">Suivant →</button></div>
@@ -143,9 +169,21 @@ document.getElementById('next').onclick=()=>cur===cards.length-1?location.reload
 document.querySelectorAll('.ch').forEach(b=>b.onclick=()=>{document.querySelectorAll('.ch[data-g="'+b.dataset.g+'"]').forEach(x=>x.classList.remove('on'));b.classList.add('on')});
 const log=document.getElementById('log'),toast=document.getElementById('toast');
 document.querySelectorAll('.btn[data-a]').forEach(b=>b.onclick=()=>{if(b.classList.contains('ok'))return;b.classList.add('busy');b.textContent='…';
- setTimeout(()=>{b.classList.remove('busy');b.classList.add('ok');b.textContent='✓ Validé';
- log.querySelector('.e')?.remove();const li=document.createElement('li');li.textContent=new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})+' · '+b.dataset.a;log.prepend(li);
- toast.textContent=b.dataset.a+' ✓';toast.classList.add('on');setTimeout(()=>toast.classList.remove('on'),1600)},600)});
+ setTimeout(()=>{b.classList.remove('busy');b.classList.add('ok');b.textContent='✓ Validé';done(b.dataset.a)},600)});
+const T={geo:{t:"📍 Partage de position",m:{"Géoloc":"IMA Assistance : pour localiser précisément votre véhicule, cliquez sur ce lien et autorisez la localisation : https://ima.loc/aZ7k2"}},
+suivi:{t:"💬 Message au sociétaire",m:{"Dépanneur":"IMA Assistance - Dossier AS-2026-118402 : un dépanneur arrive dans 40 min environ. Suivez son arrivée : https://ima.track/Rk82q",
+"Véhicule rempl.":"IMA Assistance : un véhicule de remplacement cat. B vous attend à l'agence d'Ancenis, 12 rue du Port. Munissez-vous de votre permis.",
+"Taxi":"IMA Assistance : votre taxi (Taxi Ancenis, Renault Talisman grise) arrive dans 15 min sur le lieu de la panne."}}};
+document.querySelectorAll('.msg').forEach(w=>{const d=T[w.dataset.tpl],k=Object.keys(d.m);
+ w.innerHTML='<div class="top">'+d.t+'<div class="tg"><button class="on">SMS</button><button>WhatsApp</button></div></div>'+(k.length>1?'<div class="tpls">'+k.map(x=>'<button>'+x+'</button>').join('')+'</div>':'')+'<textarea></textarea><div class="bot"><span class="cnt"></span><button class="btn send">Envoyer</button></div>';
+ const ta=w.querySelector('textarea'),cnt=w.querySelector('.cnt'),send=w.querySelector('.send'),tg=[...w.querySelectorAll('.tg button')];let ch='SMS';
+ const up=()=>{cnt.textContent=ch==='SMS'?ta.value.length+' car. · '+Math.ceil(ta.value.length/160||1)+' SMS':'→ +33 6 48 78 05 03'};
+ const reset=()=>{send.className='btn send';send.textContent='Envoyer'};
+ tg.forEach(b=>b.onclick=()=>{tg.forEach(x=>x.classList.remove('on'));b.classList.add('on');ch=b.textContent;up();reset()});
+ w.querySelectorAll('.tpls button').forEach(b=>b.onclick=()=>{ta.value=d.m[b.textContent];up();reset()});
+ ta.value=d.m[k[0]];ta.oninput=()=>{up();reset()};up();
+ send.onclick=()=>{if(send.classList.contains('ok'))return;send.textContent='…';setTimeout(()=>{send.classList.add('ok');send.textContent='✓ Envoyé';done(ch+' envoyé au +33 6 48 78 05 03')},600)}});
+function done(t){log.querySelector('.e')?.remove();const li=document.createElement('li');li.textContent=new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})+' · '+t;log.prepend(li);toast.textContent=t+' ✓';toast.classList.add('on');setTimeout(()=>toast.classList.remove('on'),1600)}
 go(0);
 </script>
 </body>
