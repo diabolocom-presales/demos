@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Script conseiller - IMA</title>
+<style>
+:root{--p:#5B6E83;--pd:#43546a;--t:#eef1f5;--ok:#1f9d61;--okb:#e7f6ee;--wa:#25d366;--line:#dde3ea;--txt:#24313f;--mut:#7b8a9a}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:13px;line-height:1.4;color:var(--txt);background:#fff;padding:6px}
+.w{max-width:440px;display:flex;flex-direction:column;gap:6px}
+.hd{background:var(--p);color:#fff;border-radius:6px;padding:8px 10px;display:flex;align-items:center;gap:10px}
+.hd img{height:26px;background:#fff;border-radius:4px;padding:2px 4px}
+.hd b{font-size:13px;display:block}.hd small{opacity:.8;font-size:11px}
+.cli{border:1px solid var(--line);border-radius:6px;padding:7px 10px;display:grid;grid-template-columns:1fr 1fr;gap:2px 10px;font-size:12px}
+.cli .n{grid-column:1/-1;font-weight:700;color:var(--p);font-size:14px;display:flex;justify-content:space-between;align-items:center}
+.cli span{color:var(--mut)}
+.pill{font-size:10px;background:var(--wa);color:#fff;border-radius:10px;padding:1px 7px;font-weight:600}
+.steps{display:flex;gap:3px}
+.steps button{flex:1;border:0;background:var(--t);color:var(--p);border-radius:4px;padding:6px 0;font:600 11px inherit;cursor:pointer;font-family:inherit}
+.steps button.on{background:var(--p);color:#fff}
+.steps button.done{background:var(--okb);color:var(--ok)}
+.card{border:1px solid var(--line);border-radius:6px;padding:10px;display:none;flex-direction:column;gap:8px}
+.card.on{display:flex}
+.card h2{font-size:14px;color:var(--p)}
+.say{background:var(--t);border-left:3px solid var(--p);border-radius:0 4px 4px 0;padding:7px 9px;font-style:italic;position:relative}
+.say .cp{position:absolute;top:4px;right:4px;border:0;background:#fff;color:var(--p);border-radius:3px;font-size:10px;padding:2px 5px;cursor:pointer;font-style:normal}
+.lab{font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:var(--mut);font-weight:600}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.ch{border:1px solid var(--line);background:#fff;border-radius:5px;padding:7px 6px;font:inherit;font-size:12px;color:var(--txt);cursor:pointer;text-align:left}
+.ch.on{border-color:var(--p);background:var(--p);color:#fff}
+.act{display:flex;align-items:center;justify-content:space-between;gap:8px;border:1px solid var(--line);border-radius:5px;padding:7px 8px}
+.act div{font-size:12px}.act small{display:block;color:var(--mut);font-size:11px}
+.btn{border:0;background:var(--p);color:#fff;border-radius:4px;padding:6px 10px;font:600 12px inherit;font-family:inherit;cursor:pointer;white-space:nowrap;min-width:84px}
+.btn:hover{background:var(--pd)}
+.btn.ok{background:var(--ok);cursor:default}
+.btn.busy{opacity:.7}
+.nav{display:flex;justify-content:space-between;margin-top:2px}
+.nav .btn.ghost{background:#fff;color:var(--p);border:1px solid var(--p)}
+.info{font-size:11.5px;color:var(--mut)}
+.log{border:1px dashed var(--line);border-radius:6px;padding:7px 10px;font-size:11.5px}
+.log ul{list-style:none;margin-top:3px;max-height:92px;overflow:auto}
+.log li{padding:1px 0}.log li::before{content:"✓ ";color:var(--ok);font-weight:700}
+.log .e{color:var(--mut);font-style:italic}
+.bar{height:5px;background:var(--t);border-radius:3px;overflow:hidden}.bar i{display:block;height:100%;background:var(--ok);width:0;transition:width .3s}
+.toast{position:fixed;left:50%;bottom:14px;transform:translateX(-50%) translateY(60px);background:var(--ok);color:#fff;padding:7px 14px;border-radius:20px;font-weight:600;font-size:12px;transition:.25s;opacity:0}
+.toast.on{transform:translateX(-50%);opacity:1}
+</style>
+</head>
+<body>
+<div class="w">
+
+<div class="hd">
+  <img src="https://upload.wikimedia.org/wikipedia/fr/5/51/Logo_Inter_mutuelles_assistance.png" alt="IMA">
+  <div><b>Script conseiller · Assistance auto</b><small>Complément de la conversation WhatsApp</small></div>
+</div>
+
+<div class="cli">
+  <div class="n">Louis Dubois <span class="pill">WhatsApp</span></div>
+  <div><span>Tél.</span> +33 6 48 78 05 03</div>
+  <div><span>Contrat</span> IMA-AUTO-482 917</div>
+  <div><span>Véhicule</span> Peugeot 308 · GH-512-KT</div>
+  <div><span>Garantie</span> Assistance 0 km</div>
+</div>
+
+<div class="steps" id="steps"></div>
+<div class="bar"><i id="bar"></i></div>
+
+<!-- 1 -->
+<div class="card" data-t="Accueil">
+  <h2>1 · Accueillir &amp; rassurer</h2>
+  <div class="say">Bonjour M. Dubois, je suis Camille, votre chargée d'assistance IMA. J'ai bien reçu votre message, je m'occupe de tout 🤝</div>
+  <div class="lab">Sécurité d'abord</div>
+  <div class="grid">
+    <button class="ch" data-g="secu">✅ En sécurité</button>
+    <button class="ch" data-g="secu">⚠️ Sur voie rapide</button>
+    <button class="ch" data-g="secu">🚑 Personne blessée</button>
+    <button class="ch" data-g="secu">👨‍👩‍👧 Passagers à bord</button>
+  </div>
+  <div class="info">Si voie rapide : faire passer derrière la glissière, gilet + triangle. Si blessé : orienter vers le 112.</div>
+</div>
+
+<!-- 2 -->
+<div class="card" data-t="Situation">
+  <h2>2 · Qualifier la situation</h2>
+  <div class="lab">Nature de l'événement</div>
+  <div class="grid">
+    <button class="ch" data-g="evt">🔋 Batterie</button>
+    <button class="ch" data-g="evt">🛞 Crevaison</button>
+    <button class="ch" data-g="evt">⚙️ Panne moteur</button>
+    <button class="ch" data-g="evt">💥 Accident</button>
+    <button class="ch" data-g="evt">🔑 Clés / carburant</button>
+    <button class="ch" data-g="evt">🔧 Autre</button>
+  </div>
+  <div class="act"><div>📍 Localisation du véhicule<small>Envoi d'un lien de géolocalisation par SMS</small></div><button class="btn" data-a="Lien de géolocalisation envoyé par SMS">Envoyer</button></div>
+  <div class="act"><div>📷 Photos du véhicule<small>Demande de photos via WhatsApp</small></div><button class="btn" data-a="Demande de photos envoyée">Demander</button></div>
+</div>
+
+<!-- 3 -->
+<div class="card" data-t="Solution">
+  <h2>3 · Organiser l'assistance</h2>
+  <div class="say">Bonne nouvelle, votre contrat couvre le dépannage dès 0 km. J'organise l'intervention maintenant.</div>
+  <div class="act"><div>🚛 Dépanneuse<small>Garage Martin · ETA 35 min</small></div><button class="btn" data-a="Dépanneuse missionnée (ETA 35 min)">Missionner</button></div>
+  <div class="act"><div>🚗 Véhicule de remplacement<small>Catégorie B · 3 jours</small></div><button class="btn" data-a="Véhicule de remplacement réservé">Réserver</button></div>
+  <div class="act"><div>🚕 Taxi / rapatriement<small>Passagers jusqu'au domicile</small></div><button class="btn" data-a="Taxi commandé">Commander</button></div>
+  <div class="act"><div>🏨 Hébergement<small>Si immobilisation &gt; 24 h loin du domicile</small></div><button class="btn" data-a="Nuit d'hôtel réservée">Réserver</button></div>
+</div>
+
+<!-- 4 -->
+<div class="card" data-t="Suivi">
+  <h2>4 · Informer le client</h2>
+  <div class="act"><div>💬 SMS de suivi<small>Lien temps réel vers la dépanneuse</small></div><button class="btn" data-a="SMS de suivi envoyé au +33 6 48 78 05 03">Envoyer SMS</button></div>
+  <div class="act"><div>✉️ Email récapitulatif<small>Dossier, prestations, contacts</small></div><button class="btn" data-a="Email récapitulatif envoyé">Envoyer email</button></div>
+  <div class="act"><div>📞 Rappel conseiller<small>Point d'étape dans 1 h</small></div><button class="btn" data-a="Rappel planifié dans 1 h">Planifier</button></div>
+  <div class="act"><div>🗂️ Dossier d'assistance<small>N° AS-2026-118 402</small></div><button class="btn" data-a="Dossier AS-2026-118 402 créé">Créer</button></div>
+</div>
+
+<!-- 5 -->
+<div class="card" data-t="Clôture">
+  <h2>5 · Clôturer</h2>
+  <div class="say">Récapitulatif M. Dubois : la dépanneuse arrive dans 35 min, vous recevez un SMS de suivi et un email avec votre dossier. Je reste joignable ici sur WhatsApp. Bonne fin de journée !</div>
+  <div class="act"><div>⭐ Enquête de satisfaction<small>Envoi après l'intervention</small></div><button class="btn" data-a="Enquête de satisfaction programmée">Programmer</button></div>
+  <div class="act"><div>✅ Clôturer l'échange<small>Qualification : assistance organisée</small></div><button class="btn" data-a="Échange clôturé et qualifié">Clôturer</button></div>
+</div>
+
+<div class="nav"><button class="btn ghost" id="prev">← Précédent</button><button class="btn" id="next">Suivant →</button></div>
+
+<div class="log"><b>Journal des actions</b><ul id="log"><li class="e" style="list-style:none">Aucune action pour l'instant.</li></ul></div>
+</div>
+<div class="toast" id="toast">Validé ✓</div>
+
+<script>
+const cards=[...document.querySelectorAll('.card')],steps=document.getElementById('steps');let cur=0;
+cards.forEach((c,i)=>{c.querySelectorAll('.say').forEach(s=>{const b=document.createElement('button');b.className='cp';b.textContent='Copier';b.onclick=()=>{navigator.clipboard?.writeText(s.firstChild.textContent.trim());b.textContent='Copié ✓';setTimeout(()=>b.textContent='Copier',1200)};s.appendChild(b)});
+ const b=document.createElement('button');b.textContent=(i+1)+'. '+c.dataset.t;b.onclick=()=>go(i);steps.appendChild(b)});
+function go(i){cur=Math.max(0,Math.min(cards.length-1,i));cards.forEach((c,j)=>c.classList.toggle('on',j===cur));
+ [...steps.children].forEach((b,j)=>{b.classList.toggle('on',j===cur);b.classList.toggle('done',j<cur)});
+ document.getElementById('bar').style.width=(cur/(cards.length-1)*100)+'%';
+ document.getElementById('prev').style.visibility=cur?'visible':'hidden';
+ document.getElementById('next').textContent=cur===cards.length-1?'Nouveau dossier ↺':'Suivant →'}
+document.getElementById('prev').onclick=()=>go(cur-1);
+document.getElementById('next').onclick=()=>cur===cards.length-1?location.reload():go(cur+1);
+document.querySelectorAll('.ch').forEach(b=>b.onclick=()=>{document.querySelectorAll('.ch[data-g="'+b.dataset.g+'"]').forEach(x=>x.classList.remove('on'));b.classList.add('on')});
+const log=document.getElementById('log'),toast=document.getElementById('toast');
+document.querySelectorAll('.btn[data-a]').forEach(b=>b.onclick=()=>{if(b.classList.contains('ok'))return;b.classList.add('busy');b.textContent='…';
+ setTimeout(()=>{b.classList.remove('busy');b.classList.add('ok');b.textContent='✓ Validé';
+ log.querySelector('.e')?.remove();const li=document.createElement('li');li.textContent=new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})+' · '+b.dataset.a;log.prepend(li);
+ toast.textContent=b.dataset.a+' ✓';toast.classList.add('on');setTimeout(()=>toast.classList.remove('on'),1600)},600)});
+go(0);
+</script>
+</body>
+</html>
