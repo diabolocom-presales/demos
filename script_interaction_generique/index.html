@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Script conseiller - Diabolocom</title>
+<style>
+/* 40px de blanc entre chaque partie */
+body>div>div{margin-bottom:40px !important}
+body>div>div:last-child{margin-bottom:0 !important}
+/* en-tête : logo, titre et bandeau restent groupés */
+body>div>div:nth-child(1),body>div>div:nth-child(2){margin-bottom:0 !important}
+</style>
+</head>
+<body style="margin:0;padding:24px;background:#ffffff;">
+<div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.5;color:#2d2d2d;background:#ffffff;max-width:640px;">
+
+<!-- EN-TÊTE -->
+<div style="padding:4px 0 12px;"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJ9sQTmI-EdHA4Ty0Sb33t5rAd-u3R075KaYFTcOBBrQ&s=10" alt="Diabolocom" style="height:38px;display:block;"></div>
+<div style="background:#E75941;border-radius:6px 6px 0 0;padding:14px 16px;">
+  <div style="color:#ffe3dd;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;">Script conseiller · tous canaux</div>
+  <div style="color:#ffffff;font-size:17px;font-weight:bold;margin-top:2px;">Script d'interaction standard</div>
+</div>
+<div style="background:#f6f6f7;border-radius:0 0 6px 6px;padding:9px 16px;margin-bottom:14px;font-size:12px;color:#555555;">
+  <b>Accueillir</b> · <b>Identifier</b> · <b>Comprendre</b> · <b>Traiter</b> · <b>Conclure</b>
+</div>
+
+<!-- 0. AVANT DE RÉPONDRE -->
+<div style="border:1px solid #E75941;border-radius:6px;padding:10px 14px;margin-bottom:14px;">
+  <b style="color:#E75941;">👀 Avant de répondre</b><br>
+  Consultez la fiche client et l'historique des échanges : le motif du contact et les informations déjà collectées (SVI, bot, formulaire) y sont notés. Ne reposez pas les mêmes questions.
+</div>
+
+<!-- 1. ACCUEIL -->
+<div style="border-left:4px solid #E75941;background:#f6f6f7;border-radius:0 6px 6px 0;padding:12px 14px;margin-bottom:12px;">
+  <div style="color:#E75941;font-weight:bold;font-size:14px;margin-bottom:6px;">1 · Accueillir</div>
+  <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#777777;margin-bottom:2px;">Voix</div>
+  <div style="background:#ffffff;border:1px dashed #d4d4d8;border-radius:4px;padding:8px 10px;margin-bottom:8px;">
+    « <i>[Nom de l'entreprise]</i>, <i>[Votre prénom]</i> à votre écoute, bonjour ! Que puis-je faire pour vous ? »
+  </div>
+  <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#777777;margin-bottom:2px;">Écrit (chat, e-mail, messagerie)</div>
+  <div style="background:#ffffff;border:1px dashed #d4d4d8;border-radius:4px;padding:8px 10px;">
+    « Bonjour <i>[Prénom]</i>, je suis <i>[Votre prénom]</i>, conseiller <i>[Nom de l'entreprise]</i>. Merci pour votre message, je prends le relais pour vous accompagner. »
+  </div>
+</div>
+
+<!-- 2. IDENTIFIER -->
+<div style="border-left:4px solid #E75941;background:#f6f6f7;border-radius:0 6px 6px 0;padding:12px 14px;margin-bottom:12px;">
+  <div style="color:#E75941;font-weight:bold;font-size:14px;margin-bottom:6px;">2 · Identifier le client</div>
+  <div style="margin-bottom:6px;color:#555555;">Si le client n'est pas reconnu automatiquement :</div>
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="font-size:13px;">
+    <tr><td style="padding:3px 0;width:22px;">☐</td><td><b>Nom et prénom</b></td></tr>
+    <tr><td style="padding:3px 0;">☐</td><td><b>Numéro client</b> ou de dossier</td></tr>
+    <tr><td style="padding:3px 0;">☐</td><td><b>Contrôle de sécurité</b> : date de naissance, code postal ou e-mail</td></tr>
+  </table>
+  <div style="background:#ffffff;border:1px dashed #d4d4d8;border-radius:4px;padding:8px 10px;margin-top:8px;">
+    « Pour accéder à votre dossier, pouvez-vous me confirmer votre nom et votre numéro client, s'il vous plaît ? »
+  </div>
+</div>
+
+<!-- 3. COMPRENDRE -->
+<div style="border-left:4px solid #E75941;background:#f6f6f7;border-radius:0 6px 6px 0;padding:12px 14px;margin-bottom:12px;">
+  <div style="color:#E75941;font-weight:bold;font-size:14px;margin-bottom:6px;">3 · Comprendre la demande</div>
+  <div style="margin-bottom:6px;color:#555555;">À compléter dans l'échange (sans tout demander d'un coup) :</div>
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="font-size:13px;">
+    <tr><td style="padding:3px 0;width:22px;">☐</td><td><b>Motif</b> : information, commande, réclamation, résiliation…</td></tr>
+    <tr><td style="padding:3px 0;">☐</td><td><b>Contexte</b> : produit ou service concerné, date</td></tr>
+    <tr><td style="padding:3px 0;">☐</td><td><b>Historique</b> : premier contact ou relance</td></tr>
+    <tr><td style="padding:3px 0;">☐</td><td><b>Urgence</b> et attente du client</td></tr>
+  </table>
+  <div style="background:#ffffff;border:1px dashed #d4d4d8;border-radius:4px;padding:8px 10px;margin-top:8px;">
+    « Si je comprends bien, vous souhaitez <i>[reformulation]</i>. C'est bien cela ? »
+  </div>
+</div>
+
+<!-- 4. TRAITER -->
+<div style="border-left:4px solid #E75941;background:#f6f6f7;border-radius:0 6px 6px 0;padding:12px 14px;margin-bottom:12px;">
+  <div style="color:#E75941;font-weight:bold;font-size:14px;margin-bottom:6px;">4 · Traiter la demande</div>
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="font-size:12.5px;background:#ffffff;border-radius:4px;">
+    <tr><td style="padding:6px 8px;color:#555555;width:42%;border-bottom:1px solid #ececee;"><b>Réponse immédiate</b></td><td style="padding:6px 8px;border-bottom:1px solid #ececee;">Répondre, puis vérifier que le client a bien compris</td></tr>
+    <tr><td style="padding:6px 8px;color:#555555;border-bottom:1px solid #ececee;"><b>Vérification nécessaire</b></td><td style="padding:6px 8px;border-bottom:1px solid #ececee;">Annoncer le délai, mettre en attente ou rappeler</td></tr>
+    <tr><td style="padding:6px 8px;color:#555555;border-bottom:1px solid #ececee;"><b>Hors périmètre</b></td><td style="padding:6px 8px;border-bottom:1px solid #ececee;">Transférer vers le bon service (voir section 7)</td></tr>
+    <tr><td style="padding:6px 8px;color:#555555;"><b>Réclamation</b></td><td style="padding:6px 8px;">Écouter, reconnaître, ouvrir un ticket, donner un délai</td></tr>
+  </table>
+  <div style="margin-top:6px;font-size:12px;color:#777777;">⚠️ Ne communiquez aucun montant, délai ou engagement sans vérification préalable.</div>
+</div>
+
+<!-- 5. RÉPONSES RAPIDES -->
+<div style="border-left:4px solid #E75941;background:#f6f6f7;border-radius:0 6px 6px 0;padding:12px 14px;margin-bottom:12px;">
+  <div style="color:#E75941;font-weight:bold;font-size:14px;margin-bottom:6px;">5 · Réponses rapides</div>
+  <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#777777;margin-bottom:2px;">Mise en attente</div>
+  <div style="background:#ffffff;border:1px dashed #d4d4d8;border-radius:4px;padding:7px 10px;margin-bottom:8px;">« Je vérifie cette information, pouvez-vous patienter quelques instants ? »</div>
+  <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#777777;margin-bottom:2px;">Reprise après attente</div>
+  <div style="background:#ffffff;border:1px dashed #d4d4d8;border-radius:4px;padding:7px 10px;margin-bottom:8px;">« Merci de votre patience. J'ai bien vérifié : <i>[réponse]</i>. »</div>
+  <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#777777;margin-bottom:2px;">Transfert</div>
+  <div style="background:#ffffff;border:1px dashed #d4d4d8;border-radius:4px;padding:7px 10px;margin-bottom:8px;">« Votre demande concerne le service <i>[service]</i>. Je vous mets en relation, je lui transmets déjà les éléments pour que vous n'ayez pas à les répéter. »</div>
+  <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#777777;margin-bottom:2px;">Conclure</div>
+  <div style="background:#ffffff;border:1px dashed #d4d4d8;border-radius:4px;padding:7px 10px;">« Pour résumer : <i>[demande, solution, prochaine étape]</i>. Puis-je faire autre chose pour vous ? Merci <i>[Prénom]</i> et excellente journée ! »</div>
+</div>
+
+<!-- 6. AIDE À LA DISCUSSION (interactif) -->
+<div style="border-left:4px solid #E75941;background:#f6f6f7;border-radius:0 6px 6px 0;padding:12px 14px;margin-bottom:12px;">
+  <div style="color:#E75941;font-weight:bold;font-size:14px;margin-bottom:6px;">6 · Aide à la discussion</div>
+  <div style="margin-bottom:8px;color:#555555;">Cliquez sur la situation rencontrée pour afficher une réponse suggérée :</div>
+  <div id="aide-choix" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;">
+    <button type="button" data-k="info" style="cursor:pointer;background:#ffffff;color:#E75941;border:1px solid #E75941;border-radius:4px;padding:7px 10px;font:inherit;font-weight:bold;">ℹ️ Demande d'information</button>
+    <button type="button" data-k="reclamation" style="cursor:pointer;background:#ffffff;color:#E75941;border:1px solid #E75941;border-radius:4px;padding:7px 10px;font:inherit;font-weight:bold;">😠 Client mécontent</button>
+    <button type="button" data-k="suivi" style="cursor:pointer;background:#ffffff;color:#E75941;border:1px solid #E75941;border-radius:4px;padding:7px 10px;font:inherit;font-weight:bold;">📦 Suivi de dossier</button>
+    <button type="button" data-k="resiliation" style="cursor:pointer;background:#ffffff;color:#E75941;border:1px solid #E75941;border-radius:4px;padding:7px 10px;font:inherit;font-weight:bold;">🚪 Résiliation</button>
+    <button type="button" data-k="rappel" style="cursor:pointer;background:#ffffff;color:#E75941;border:1px solid #E75941;border-radius:4px;padding:7px 10px;font:inherit;font-weight:bold;">📞 Proposer un rappel</button>
+  </div>
+  <div id="aide-texte" style="background:#ffffff;border:1px dashed #d4d4d8;border-radius:4px;padding:8px 10px;color:#777777;">Aucune situation sélectionnée.</div>
+  <button type="button" id="aide-copier" style="cursor:pointer;background:#ffffff;color:#E75941;border:1px solid #E75941;border-radius:4px;padding:7px 10px;font:inherit;font-weight:bold;margin-top:8px;display:none;">📋 Copier la réponse</button>
+</div>
+
+<!-- 7. AIDE ANNUAIRE (interactif) -->
+<div style="border-left:4px solid #E75941;background:#f6f6f7;border-radius:0 6px 6px 0;padding:12px 14px;margin-bottom:12px;">
+  <div style="color:#E75941;font-weight:bold;font-size:14px;margin-bottom:6px;">7 · Aide annuaire : vers qui transférer ?</div>
+  <div style="margin-bottom:8px;color:#555555;">Répondez aux questions pour obtenir le numéro du service à contacter :</div>
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="font-size:13px;">
+    <tr><td style="padding:3px 8px 3px 0;width:34%;"><b>Profil</b></td><td style="padding:3px 0;"><select id="ann-profil" style="width:100%;padding:7px 8px;border:1px solid #d4d4d8;border-radius:4px;font:inherit;background:#ffffff;color:#2d2d2d;"><option value="">Choisir…</option><option value="particulier">Particulier</option><option value="pro">Professionnel</option><option value="prospect">Prospect</option></select></td></tr>
+    <tr><td style="padding:3px 8px 3px 0;"><b>Sujet</b></td><td style="padding:3px 0;"><select id="ann-sujet" style="width:100%;padding:7px 8px;border:1px solid #d4d4d8;border-radius:4px;font:inherit;background:#ffffff;color:#2d2d2d;"><option value="">Choisir…</option><option value="commercial">Commercial</option><option value="facturation">Facturation</option><option value="technique">Support technique</option><option value="reclamation">Réclamation</option></select></td></tr>
+    <tr><td style="padding:3px 8px 3px 0;"><b>Niveau</b></td><td style="padding:3px 0;"><select id="ann-niveau" style="width:100%;padding:7px 8px;border:1px solid #d4d4d8;border-radius:4px;font:inherit;background:#ffffff;color:#2d2d2d;"><option value="">Choisir…</option><option value="n1">Niveau 1</option><option value="n2">Expert (niveau 2)</option><option value="sup">Superviseur</option></select></td></tr>
+  </table>
+  <div id="ann-res" style="margin-top:10px;background:#ffffff;border:1px dashed #d4d4d8;border-radius:4px;padding:10px;color:#777777;">Répondez aux 3 questions pour afficher le numéro.</div>
+  <div style="margin-top:6px;font-size:12px;color:#777777;">⚠️ Numéros fictifs, pour la démonstration.</div>
+</div>
+
+</div>
+<script>
+(function(){
+var A="#E75941";
+var R={
+info:"« Bien sûr, je vous renseigne. Pour vous donner l'information exacte, pouvez-vous me préciser [produit / service concerné] ? »",
+reclamation:"« Je comprends tout à fait votre mécontentement et je vous remercie de nous l'avoir signalé. Je prends en charge votre demande : pouvez-vous me décrire ce qui s'est passé ? »",
+suivi:"« Je consulte votre dossier. Votre demande est actuellement [statut] ; la prochaine étape est [étape], prévue sous [délai]. »",
+resiliation:"« Je prends note de votre souhait. Puis-je vous demander ce qui motive votre décision ? Il existe peut-être une solution plus adaptée à vos besoins. »",
+rappel:"« Souhaitez-vous qu'un conseiller vous rappelle ? Quel créneau et quel numéro vous conviendraient le mieux ? »"};
+var cur="";
+var box=document.getElementById("aide-texte"),cp=document.getElementById("aide-copier");
+function copy(txt,b,lab){
+  function ok(){var o=b.textContent;b.textContent="✅ Copié";setTimeout(function(){b.textContent=lab||o;},1500);}
+  function fb(){var a=document.createElement("textarea");a.value=txt;document.body.appendChild(a);a.select();try{document.execCommand("copy");ok();}catch(e){}document.body.removeChild(a);}
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(ok,fb);}else{fb();}
+}
+document.querySelectorAll("#aide-choix button").forEach(function(b){
+  b.addEventListener("click",function(){
+    document.querySelectorAll("#aide-choix button").forEach(function(x){x.style.background="#ffffff";x.style.color=A;});
+    b.style.background=A;b.style.color="#ffffff";
+    cur=R[b.dataset.k];box.style.color="#2d2d2d";box.textContent=cur;cp.style.display="inline-block";
+  });
+});
+cp.addEventListener("click",function(){copy(cur,cp,"📋 Copier la réponse");});
+
+var N={
+commercial:{n1:"01 99 00 10 01",n2:"01 99 00 10 02",sup:"01 99 00 10 09"},
+facturation:{n1:"01 99 00 20 01",n2:"01 99 00 20 02",sup:"01 99 00 20 09"},
+technique:{n1:"01 99 00 30 01",n2:"01 99 00 30 02",sup:"01 99 00 30 09"},
+reclamation:{n1:"01 99 00 40 01",n2:"01 99 00 40 02",sup:"01 99 00 40 09"}};
+var S={commercial:"Service Commercial",facturation:"Service Facturation",technique:"Support technique",reclamation:"Service Réclamations"};
+var P=document.getElementById("ann-profil"),U=document.getElementById("ann-sujet"),C=document.getElementById("ann-niveau"),res=document.getElementById("ann-res");
+function maj(){
+  if(!P.value||!U.value||!C.value){res.style.color="#777777";res.textContent="Répondez aux 3 questions pour afficher le numéro.";return;}
+  var n=N[U.value][C.value];
+  res.style.color="#2d2d2d";res.innerHTML="";
+  var l=document.createElement("div");l.innerHTML="Transférer vers : <b>"+S[U.value]+" · "+C.options[C.selectedIndex].text+"</b>";
+  var v=document.createElement("div");v.style.cssText="font-size:20px;font-weight:bold;color:"+A+";margin:6px 0;";v.textContent=n;
+  var b=document.createElement("button");b.type="button";b.textContent="📋 Copier le numéro";
+  b.style.cssText="cursor:pointer;background:"+A+";color:#ffffff;border:0;border-radius:4px;padding:8px 12px;font:inherit;font-weight:bold;";
+  b.addEventListener("click",function(){copy(n,b,"📋 Copier le numéro");});
+  res.appendChild(l);res.appendChild(v);res.appendChild(b);
+}
+[P,U,C].forEach(function(s){s.addEventListener("change",maj);});
+})();
+</script>
+</body>
+</html>
