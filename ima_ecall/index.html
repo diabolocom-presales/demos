@@ -45,6 +45,8 @@ dt{color:#6b7385}dd{font-weight:600;word-break:break-word}
 .conf button.blue{border-color:#b9c6e4;background:#EEF2FB;color:#1D2A4A}.conf button.blue small{color:#4a5a80}
 .conf button.done{background:#2E7D32;border-color:#2E7D32;color:#fff}.conf button.done small{color:#dff0e0}
 .conf button.hl{outline:2px solid #F9A825}
+.reco{background:#FFF8E1;border-left:3px solid #F9A825;padding:4px 6px;font-size:11px;margin:3px 0;min-height:18px}
+.dict{background:#F4F6FA;border:1px solid #d9dfea;border-radius:4px;padding:5px 6px;font-size:11px;line-height:1.4;white-space:pre-line}
 .chk{display:flex;align-items:flex-start;gap:6px;margin:3px 0;cursor:pointer}
 .chk input{margin-top:2px}
 #journal{font-family:Consolas,monospace;font-size:10.5px;background:#f6f8fb;border-radius:4px;padding:5px;height:64px;overflow-y:auto;white-space:pre-wrap}
@@ -113,14 +115,17 @@ textarea{width:100%;height:40px;resize:none;border:1px solid #c9d0dd;border-radi
         <div class="q"><span>Danger immédiat (feu, voie) ?</span><div class="seg" data-q="danger"><button data-v="Oui" class="alert">Oui</button><button data-v="Non">Non</button></div></div>
         <div class="q"><span>Langue de l'appelant</span><div class="seg" data-q="langue"><button data-v="Français">FR</button><button data-v="Autre langue" class="alert">Autre</button></div></div>
 
-        <h2 style="margin-top:6px"><span class="n">4</span>Conférence <span class="muted" style="text-transform:none;letter-spacing:0">– le client reste en ligne</span></h2>
+        <h2 style="margin-top:6px"><span class="n">4</span>Orientation &amp; conférence <span class="muted" style="text-transform:none;letter-spacing:0">– via l'annuaire du bandeau Diabolocom</span></h2>
+        <div class="reco" id="reco">Qualifiez l'appel ci-dessus pour obtenir l'orientation recommandée.</div>
         <div class="conf" id="conf"></div>
+        <p class="muted">Cochez l'interlocuteur une fois mis en conférence depuis le bandeau (le client reste en ligne).</p>
 
-        <h2 style="margin-top:6px"><span class="n">5</span>Fin de prise en charge</h2>
+        <h2 style="margin-top:6px"><span class="n">5</span>Transmission aux secours <button class="btn" style="margin-left:auto;padding:1px 6px" onclick="copy($('dict').textContent,'Fiche copiée')">Copier</button></h2>
+        <div class="dict" id="dict"></div>
+
+        <h2 style="margin-top:6px"><span class="n">6</span>Fin de prise en charge</h2>
         <label class="chk"><input type="checkbox" id="auth"> <span>Les secours autorisent le chargé à quitter la conférence</span></label>
-        <div class="row" style="margin:3px 0 6px">
-          <button class="btn red" id="leave" disabled onclick="leave()">Quitter – laisser secours et client en ligne</button>
-        </div>
+        <p class="muted" style="margin:2px 0 6px">Raccrochez depuis le bandeau : secours et client restent en communication.</p>
         <div id="journal"></div>
         <div class="row" style="margin-top:5px;align-items:stretch">
           <textarea id="note" placeholder="Note complémentaire du chargé d'assistance…"></textarea>
@@ -134,16 +139,16 @@ textarea{width:100%;height:40px;resize:none;border:1px solid #c9d0dd;border-radi
 <div class="toast" id="toast"></div>
 
 <script>
-/* Numéros de DÉMO uniquement : ne jamais mettre les vrais 15 / 17 / 18 / 112 ici. */
+/* Libellés des entrées de l'annuaire Diabolocom (aucun numéro ici : l'appel se fait depuis le bandeau). */
 const ANNUAIRE = [
-  {id:'psap',  label:'112 / PSAP',      num:'+33 1 00 00 01 12'},
-  {id:'samu',  label:'SAMU',            num:'+33 1 00 00 00 15'},
-  {id:'sdis',  label:'SDIS (pompiers)', num:'+33 1 00 00 00 18'},
-  {id:'police',label:'Police / Gend.',  num:'+33 1 00 00 00 17'},
-  {id:'pc',    label:'PC autoroutier',  num:'+33 1 00 00 02 00'},
-  {id:'lang',  label:'Support linguist.',num:'+33 1 00 00 03 00', blue:true},
-  {id:'depan', label:'Partenaire dépann.',num:'+33 1 00 00 04 00', blue:true},
-  {id:'sup',   label:'Superviseur',     num:'+33 1 00 00 05 00', blue:true}
+  {id:'psap',  label:'112 / PSAP'},
+  {id:'samu',  label:'SAMU'},
+  {id:'sdis',  label:'SDIS (pompiers)'},
+  {id:'police',label:'Police / Gend.'},
+  {id:'pc',    label:'PC autoroutier'},
+  {id:'lang',  label:'Support linguist.', blue:true},
+  {id:'depan', label:'Partenaire dépann.', blue:true},
+  {id:'sup',   label:'Superviseur', blue:true}
 ];
 const DEFAUT = {declenchement:"Automatique (airbag)",canal:"eCall 112 via UDA",vin:"VF3MCYHZRLS123456",immatriculation:"GH-123-KL",
   vehicule:"Peugeot 3008 gris",latitude:"47.4436",longitude:"0.6967",localisation:"A10, sens Paris vers Bordeaux, PK 232, sortie Tours-Nord",
@@ -165,7 +170,7 @@ function render(){
   $('d-veh').textContent=D.vehicule; $('d-immat').textContent=D.immatriculation; $('d-vin').textContent=D.vin;
   $('d-pax').textContent=D.passagers; $('d-loc').textContent=D.localisation;
   $('d-client').textContent=(D.prenom+' '+D.nom).trim(); $('d-crm').href=CRM+D.contactid+CRM_SUFFIX;
-  $('d-gps').textContent=gpsText();
+  $('d-gps').textContent=gpsText(); dict();
   $('d-gmaps').href='https://www.google.com/maps/dir/?api=1&destination='+D.latitude+','+D.longitude;
   const la=parseFloat(D.latitude), lo=parseFloat(D.longitude), e=0.012;
   $('map').src='https://www.openstreetmap.org/export/embed.html?bbox='+(lo-e)+','+(la-e/1.6)+','+(lo+e)+','+(la+e/1.6)+'&layer=mapnik&marker='+la+','+lo;
@@ -175,8 +180,8 @@ function buildConf(){
   const c=$('conf');
   ANNUAIRE.forEach(a=>{
     const b=document.createElement('button'); b.id='c-'+a.id; if(a.blue) b.classList.add('blue');
-    b.innerHTML=a.label+'<small>'+a.num+'</small>';
-    b.onclick=()=>{ b.classList.add('done'); copy(a.num.replace(/\s/g,''),'N° '+a.label+' copié – lancez la conférence depuis le bandeau'); log('Conférence '+a.label+' ('+a.num+')'); };
+    b.innerHTML=a.label+'<small>annuaire Diabolocom</small>';
+    b.onclick=()=>{ const on=b.classList.toggle('done'); b.querySelector('small').textContent=on?'en conférence ✓':'annuaire Diabolocom'; log((on?'Conférence avec ':'Fin de conférence ')+a.label+' (annuaire Diabolocom)'); };
     c.appendChild(b);
   });
 }
@@ -188,10 +193,27 @@ document.querySelectorAll('.seg').forEach(s=>s.querySelectorAll('button').forEac
   if(q==='blesses'){ hl('samu',b.dataset.v!=='Non'); hl('psap',b.dataset.v!=='Non'); }
   if(q==='danger'){ hl('sdis',b.dataset.v==='Oui'); hl('pc',b.dataset.v==='Oui'); }
   if(q==='langue'){ hl('lang',b.dataset.v!=='Français'); }
+  reco();
 }));
 
-$('auth').onchange=e=>{ $('leave').disabled=!e.target.checked; if(e.target.checked) log('Autorisation des secours obtenue pour quitter la conférence'); };
-function leave(){ log('Chargé sorti de la conférence – secours et client restent en ligne'); $('leave').disabled=true; $('leave').textContent='Conférence quittée ✓'; toast('Raccrochez côté bandeau : la conférence reste active'); }
+function reco(){
+  const r=[], bl=answers.blesses, dg=answers.danger, autoroute=/^A\d|autoroute/i.test(D.localisation);
+  if(bl&&bl!=='Non') r.push(bl==='Pas de réponse'?'112 / PSAP immédiatement (appelant muet)':'112 / PSAP puis SAMU');
+  if(dg==='Oui') r.push('SDIS'+(autoroute?' + PC autoroutier':''));
+  if(answers.langue==='Autre langue') r.push('Support linguistique en premier');
+  if(bl==='Non'&&dg==='Non') r.push('Pas de secours requis – partenaire dépannage');
+  $('reco').innerHTML=r.length?'➜ <b>'+r.join(' · ')+'</b>':'Qualifiez l\'appel ci-dessus pour obtenir l\'orientation recommandée.';
+  dict();
+}
+function dict(){
+  $('dict').textContent=['eCall '+D.canal+' – déclenchement '+D.declenchement,
+    'Position : '+D.localisation, 'GPS : '+gpsText(),
+    'Véhicule : '+D.vehicule+' – '+D.immatriculation+' (VIN '+D.vin+')',
+    'Occupants : '+D.passagers+' · Blessés : '+(answers.blesses||'?')+' · Danger : '+(answers.danger||'?'),
+    'Langue : '+(answers.langue||'?')].join('\n');
+}
+
+$('auth').onchange=e=>{ if(e.target.checked){ log('Autorisation des secours obtenue – chargé quitte, secours et client restent en ligne'); toast('Raccrochez depuis le bandeau Diabolocom'); } };
 
 function buildNote(){
   const conf=ANNUAIRE.filter(a=>$('c-'+a.id).classList.contains('done')).map(a=>a.label).join(', ')||'aucune';
@@ -199,7 +221,7 @@ function buildNote(){
     'Véhicule : '+D.vehicule+' '+D.immatriculation+' (VIN '+D.vin+')',
     'Position : '+gpsText()+' – '+D.localisation,
     'Blessés : '+(answers.blesses||'non renseigné')+' · Danger : '+(answers.danger||'non renseigné')+' · Langue : '+(answers.langue||'non renseignée'),
-    'Conférences : '+conf, '', 'Journal :', $('journal').textContent.trim(), '', 'Note : '+($('note').value.trim()||'—')].join('\n');
+    'Conférences (annuaire Diabolocom) : '+conf, 'Sortie du chargé autorisée : '+($('auth').checked?'Oui':'Non'), '', 'Journal :', $('journal').textContent.trim(), '', 'Note : '+($('note').value.trim()||'—')].join('\n');
   copy(txt,'Note dossier copiée – collez-la dans Dynamics'); log('Note dossier générée');
 }
 
