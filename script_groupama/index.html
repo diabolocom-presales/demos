@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Assistant conseiller - Groupama</title>
+<title>Script conseiller - Groupama</title>
 <style>
 :root{
   --g:#00704A;--gd:#00513A;--gl:#EAF5EF;--gb:#C4E2D3;--ok:#00965A;
@@ -32,7 +32,6 @@ svg.s{width:13px;height:13px}
 .flags{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
 .flag{display:inline-flex;align-items:center;gap:5px;font-size:11px;border-radius:4px;padding:3px 7px;background:var(--bg);color:var(--gd)}
 .flag.inf{background:var(--infbg);color:var(--inf)}
-.flag.opp{background:#F4EEFB;color:#5B3A8C}
 
 /* onglets */
 .tabs{display:flex;gap:2px;background:#fff;border-radius:10px 10px 0 0;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:0 6px;border-bottom:1px solid var(--line)}
@@ -135,7 +134,7 @@ textarea{resize:vertical;min-height:58px;background:#FAFBFA}
 .tbl{width:100%;border-collapse:collapse;font-size:12px}
 .tbl td{padding:6px 4px;border-bottom:1px solid var(--line);vertical-align:top}
 .tbl td:first-child{width:28px;color:var(--g)}
-.tbl b{display:block}
+.tbl b,.tbl .mut{display:block}
 .tbl .r{text-align:right;white-space:nowrap}
 .kv{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;font-size:12px;margin-top:4px}
 .kv span{display:block;font-size:10.5px;color:var(--mut);text-transform:uppercase;letter-spacing:.6px}
@@ -229,7 +228,7 @@ textarea{resize:vertical;min-height:58px;background:#FAFBFA}
 <div class="cli">
   <div class="h">
     <div class="av">LD</div>
-    <div><div class="nm">Louis Dubois</div><div class="sb">N° 4512 8730 9 · depuis 2014</div></div>
+    <div><div class="nm">Louis Dubois</div><div class="sb">N° 4512 8730 9</div></div>
     <img class="logo" src="https://lareclame.fr/wp-content/uploads/2024/11/groupama-nouvelle-identite-viquelle-logo-top.jpg" alt="Groupama">
   </div>
   <div class="flags">
@@ -237,8 +236,6 @@ textarea{resize:vertical;min-height:58px;background:#FAFBFA}
     <span class="flag"><svg class="i s"><use href="#i-home"/></svg>Habitation</span>
     <span class="flag"><svg class="i s"><use href="#i-car"/></svg>Auto</span>
     <span class="flag"><svg class="i s"><use href="#i-heart"/></svg>Santé</span>
-    <span class="flag"><svg class="i s"><use href="#i-euro"/></svg>Cotisations à jour</span>
-    <span class="flag opp"><svg class="i s"><use href="#i-target"/></svg>Opportunité : prévoyance</span>
   </div>
 </div>
 
@@ -260,14 +257,13 @@ textarea{resize:vertical;min-height:58px;background:#FAFBFA}
   <section class="st open" data-s="0">
     <header><span class="num">1</span><span class="tt">Identification</span><span class="sum"></span><svg class="i chev"><use href="#i-down"/></svg></header>
     <div class="bd">
-      <div class="say"><svg class="i s"><use href="#i-say"/></svg><span>« Groupama bonjour Monsieur Dubois, que puis-je faire pour vous ? […] Pour sécuriser votre dossier, pouvez-vous me confirmer votre date de naissance et votre code postal ? »</span></div>
+      <div class="say"><svg class="i s"><use href="#i-say"/></svg><span>« Pouvez-vous me confirmer votre date de naissance et votre code postal ? »</span></div>
       <ul class="chk" id="idChk">
-        <li><span class="bx"><svg class="i"><use href="#i-check"/></svg></span>Numéro appelant reconnu<span class="v">06 12 34 56 78</span></li>
         <li><span class="bx"><svg class="i"><use href="#i-check"/></svg></span>Date de naissance<span class="v">12/03/1981</span></li>
-        <li><span class="bx"><svg class="i"><use href="#i-check"/></svg></span>Code postal du domicile<span class="v">45000</span></li>
-        <li><span class="bx"><svg class="i"><use href="#i-check"/></svg></span>Enregistrement de l'appel annoncé</li>
+        <li><span class="bx"><svg class="i"><use href="#i-check"/></svg></span>Code postal<span class="v">45000</span></li>
+        <li><span class="bx"><svg class="i"><use href="#i-check"/></svg></span>Enregistrement annoncé</li>
       </ul>
-      <div class="row"><span class="mut" style="font-size:11px">Ne jamais demander mot de passe, code SMS ou n° de carte.</span><button class="btn" id="idOk" disabled>Valider</button></div>
+      <div class="row"><span></span><button class="btn" id="idOk" disabled>Valider</button></div>
     </div>
   </section>
 
@@ -278,7 +274,7 @@ textarea{resize:vertical;min-height:58px;background:#FAFBFA}
       <div class="fld"><label>Motif</label><select id="motif"></select></div>
       <div id="fields"></div>
       <div class="say"><svg class="i s"><use href="#i-say"/></svg><span id="refo"></span></div>
-      <div class="row"><span></span><button class="btn" id="qOk">Valider la qualification</button></div>
+      <div class="row"><span></span><button class="btn" id="qOk">Valider</button></div>
     </div>
   </section>
 
@@ -288,7 +284,7 @@ textarea{resize:vertical;min-height:58px;background:#FAFBFA}
     <div class="bd">
       <ul class="cov" id="cov"></ul>
       <div class="say"><svg class="i s"><use href="#i-say"/></svg><span id="covSay"></span></div>
-      <div class="row"><span></span><button class="btn" id="cOk">Informé · passer aux actions</button></div>
+      <div class="row"><span></span><button class="btn" id="cOk">Continuer</button></div>
     </div>
   </section>
 
@@ -296,10 +292,9 @@ textarea{resize:vertical;min-height:58px;background:#FAFBFA}
   <section class="st" data-s="3">
     <header><span class="num">4</span><span class="tt">Actions</span><span class="sum"></span><svg class="i chev"><use href="#i-down"/></svg></header>
     <div class="bd">
-      <div class="lbl">Actions recommandées</div>
-      <div class="acts" id="acts"><div class="act mut" style="font-size:11.5px">Validez la qualification pour afficher les actions adaptées.</div></div>
+      <div class="acts" id="acts"><div class="act mut" style="font-size:11.5px">Choisissez d'abord un motif.</div></div>
       <div class="msg">
-        <div class="hd"><b><svg class="i s"><use href="#i-send"/></svg>Message au sociétaire</b>
+        <div class="hd"><b><svg class="i s"><use href="#i-send"/></svg>Message</b>
           <span class="pills" id="chan"><button class="pill on" data-c="sms">SMS</button><button class="pill" data-c="mail">E-mail</button></span>
           <span class="to" id="to">06 12 34 56 78</span></div>
         <textarea id="msgTxt" rows="3"></textarea>
@@ -313,33 +308,30 @@ textarea{resize:vertical;min-height:58px;background:#FAFBFA}
 <!-- ===== CONTRATS ===== -->
 <div class="view" id="v-cli">
   <table class="tbl">
-    <tr><td><svg class="i"><use href="#i-home"/></svg></td><td><b>Habitation · Formule Confort</b>Maison 5 pièces, Orléans · propriétaire occupant<br><span class="mut">Franchise 150 € · Recherche de fuite 1 500 € · Relogement 12 mois</span></td><td class="r">38,90 €/mois</td></tr>
-    <tr><td><svg class="i"><use href="#i-car"/></svg></td><td><b>Auto · Tous risques</b>Peugeot 3008 · bonus 0,50<br><span class="mut">Franchise 300 € · Assistance 0 km · Véhicule de remplacement 7 j</span></td><td class="r">64,20 €/mois</td></tr>
-    <tr><td><svg class="i"><use href="#i-heart"/></svg></td><td><b>Santé · Formule Famille</b>3 bénéficiaires<br><span class="mut">Tiers payant · Téléconsultation incluse</span></td><td class="r">142,60 €/mois</td></tr>
+    <tr><td><svg class="i"><use href="#i-home"/></svg></td><td><b>Habitation · Confort</b><span class="mut">Maison, Orléans · franchise 150 €</span></td><td class="r">38,90 €</td></tr>
+    <tr><td><svg class="i"><use href="#i-car"/></svg></td><td><b>Auto · Tous risques</b><span class="mut">Peugeot 3008 · franchise 300 €</span></td><td class="r">64,20 €</td></tr>
+    <tr><td><svg class="i"><use href="#i-heart"/></svg></td><td><b>Santé · Famille</b><span class="mut">3 bénéficiaires</span></td><td class="r">142,60 €</td></tr>
   </table>
   <div class="kv" style="margin-top:10px">
-    <div><span>Mobile</span>06 12 34 56 78 · SMS autorisés</div>
-    <div><span>E-mail</span>louis.dubois@email.fr · autorisé</div>
-    <div><span>Paiement</span>Prélèvement mensuel · FR76 •••• 4821</div>
+    <div><span>Mobile</span>06 12 34 56 78</div>
+    <div><span>E-mail</span>louis.dubois@email.fr</div>
+    <div><span>Paiement</span>Prélèvement mensuel</div>
     <div><span>Agence</span>Orléans Centre</div>
-    <div><span>Espace client / appli</span>Actif</div>
-    <div><span>Non équipé</span>Prévoyance, Garantie accidents de la vie</div>
   </div>
 </div>
 
 <!-- ===== HISTORIQUE ===== -->
 <div class="view" id="v-hist">
   <ul class="tl">
-    <li><span class="ic"><svg class="i s"><use href="#i-app"/></svg></span><div><b>Appli · Mémo véhicule assuré</b><span class="mut">Téléchargé en autonomie.</span></div><span class="w">Il y a 3 sem.</span></li>
-    <li><span class="ic"><svg class="i s"><use href="#i-mail"/></svg></span><div><b>E-mail · Avis d'échéance habitation</b><span class="mut">Ouvert.</span></div><span class="w">Il y a 2 mois</span></li>
-    <li><span class="ic"><svg class="i s"><use href="#i-build"/></svg></span><div><b>Agence · Changement de véhicule</b><span class="mut">Avenant auto signé, Peugeot 3008.</span></div><span class="w">Il y a 8 mois</span></li>
-    <li><span class="ic"><svg class="i s"><use href="#i-folder"/></svg></span><div><b>Sinistre auto · Bris de glace</b><span class="mut">Clos, réparation chez un partenaire, 0 € de franchise.</span></div><span class="w">Il y a 1 an</span></li>
+    <li><span class="ic"><svg class="i s"><use href="#i-app"/></svg></span><div><b>Mémo véhicule assuré</b><span class="mut">Appli</span></div><span class="w">3 sem.</span></li>
+    <li><span class="ic"><svg class="i s"><use href="#i-build"/></svg></span><div><b>Changement de véhicule</b><span class="mut">Agence</span></div><span class="w">8 mois</span></li>
+    <li><span class="ic"><svg class="i s"><use href="#i-folder"/></svg></span><div><b>Bris de glace · clos</b><span class="mut">Sinistre auto</span></div><span class="w">1 an</span></li>
   </ul>
 </div>
 
 <!-- ===== AIDE ===== -->
 <div class="view" id="v-kb">
-  <input type="text" id="kbq" placeholder="Rechercher : délai, IRSI, franchise, résiliation…">
+  <input type="text" id="kbq" placeholder="Rechercher…">
   <div id="kbl"></div>
 </div>
 
@@ -382,149 +374,137 @@ $$("#idChk li").forEach(function(li){li.addEventListener("click",function(){
 });});
 $("#idOk").addEventListener("click",function(){
   var b=$("#idb");b.classList.add("on");b.innerHTML=ico("shield","s")+"<span>Identité vérifiée</span>";
-  finish(0,"Identité vérifiée");toast("Identité du sociétaire vérifiée");
+  finish(0,"Vérifiée");toast("Identité vérifiée");
 });
 
 /* ---------- référentiel des motifs ---------- */
-var DLY={"Aujourd'hui":0,"Hier":1,"Il y a 2 à 5 jours":3,"Il y a plus de 5 jours":6};
-var SURV=["Aujourd'hui","Hier","Il y a 2 à 5 jours","Il y a plus de 5 jours"];
+var DLY={"Aujourd'hui":0,"Hier":1,"2 à 5 j":3,"+ de 5 j":6};
+var SURV=["Aujourd'hui","Hier","2 à 5 j","+ de 5 j"];
+var SD={"Aujourd'hui":"aujourd'hui","Hier":"hier","2 à 5 j":"il y a quelques jours","+ de 5 j":"il y a plus de 5 jours"};
+function delai(v,lim){return DLY[v.sv]>lim?["wa","Hors délai ("+lim+" jours ouvrés)"]:["ok","Déclaré dans les délais"];}
 var M={
-hab:{l:"Sinistre habitation",task:["Gestion sinistres habitation · relance sous 48 h","Expertise · suivi du rendez-vous"],
- f:[["sub","Nature",["Dégât des eaux","Incendie","Vol / cambriolage","Bris de glace","Catastrophe naturelle"],0],
-    ["sv","Survenance",SURV,1],
-    ["or","Origine",["Chez le sociétaire","Chez un voisin","Partie commune","Inconnue"],1,function(v){return v.sub==="Dégât des eaux";}],
-    ["fu","Fuite",["Réparée","Toujours active"],1,function(v){return v.sub==="Dégât des eaux";}],
+hab:{l:"Sinistre habitation",
+ f:[["sub","Nature",["Dégât des eaux","Incendie","Vol","Bris de glace","CatNat"],0],
+    ["sv","Date",SURV,1],
+    ["fu","Fuite",["Réparée","Active"],1,function(v){return v.sub==="Dégât des eaux";}],
+    ["or","Origine",["Logement","Voisin","Partie commune"],1,function(v){return v.sub==="Dégât des eaux";}],
     ["hb","Logement",["Habitable","Inhabitable"],0],
-    ["es","Estimation",["Moins de 1 600 € HT","Plus de 1 600 € HT","Ne sait pas"],0]],
- r:function(v){return "« Si je résume : "+v.sub.toLowerCase()+" à votre domicile, survenu "+v.sv.toLowerCase().replace("il y a","il y a")+(v.or?", origine "+v.or.toLowerCase():"")+". C'est bien cela ? »";},
- cov:function(v){var c=[],dde=v.sub==="Dégât des eaux",vol=v.sub==="Vol / cambriolage",cat=v.sub==="Catastrophe naturelle";
-  c.push(["ok",v.sub+" couvert · Habitation Formule Confort"]);
-  if(dde)c.push(["ok","Recherche de fuite prise en charge jusqu'à 1 500 €"]);
-  if(vol)c.push(["wa","Dépôt de plainte obligatoire · effraction à justifier"]);
-  if(cat)c.push(["in","Indemnisation après publication de l'arrêté CatNat · franchise légale 380 €"]);
-  else c.push(["in","Franchise contractuelle : 150 €"]);
-  var lim=vol?2:5;
-  if(!cat){if(DLY[v.sv]>lim)c.push(["wa","Délai de déclaration dépassé ("+lim+" jours ouvrés) : consigner le motif du retard"]);else c.push(["ok","Déclaration dans les délais ("+lim+" jours ouvrés)"]);}
-  if(v.hb==="Inhabitable")c.push(["ok","Frais de relogement couverts (jusqu'à 12 mois)"]);
-  if(dde&&v.es==="Moins de 1 600 € HT")c.push(["ok","Gestion sans expert · convention IRSI (moins de 1 600 € HT)"]);
-  else if(v.es==="Plus de 1 600 € HT")c.push(["in","Expertise nécessaire · rendez-vous à planifier"]);
-  else if(v.es==="Ne sait pas")c.push(["in","Expertise décidée à réception des devis"]);
-  if(v.or==="Chez un voisin"||v.or==="Partie commune")c.push(["in","Constat amiable dégât des eaux à établir avec "+(v.or==="Chez un voisin"?"le voisin":"le syndic")]);
+    ["es","Dégâts",["< 1 600 €","> 1 600 €"],0]],
+ r:function(v){return "« Si je résume : "+v.sub.toLowerCase().replace("catnat","catastrophe naturelle")+" chez vous, "+SD[v.sv]+". C'est bien cela ? »";},
+ cov:function(v){var c=[],dde=v.sub==="Dégât des eaux";
+  c.push(v.sub==="CatNat"?["in","Après arrêté CatNat · franchise 380 €"]:["ok","Garanti · franchise 150 €"]);
+  if(dde)c.push(["ok","Recherche de fuite incluse"]);
+  if(v.sub==="Vol")c.push(["wa","Dépôt de plainte obligatoire"]);
+  if(v.sub!=="CatNat")c.push(delai(v,v.sub==="Vol"?2:5));
+  if(v.hb==="Inhabitable")c.push(["ok","Relogement pris en charge"]);
+  if(v.es==="> 1 600 €")c.push(["in","Expert à missionner"]);else if(dde)c.push(["ok","Sans expert (convention IRSI)"]);
+  if(v.or==="Voisin"||v.or==="Partie commune")c.push(["in","Constat amiable à faire"]);
   return c;},
- say:function(v){return "« Bonne nouvelle, votre contrat couvre ce sinistre. Il reste une franchise de "+(v.sub==="Catastrophe naturelle"?"380":"150")+" €. Je vous ouvre le dossier et j'organise la suite. »";},
- a:function(v){var a=[],dde=v.sub==="Dégât des eaux";
-  a.push(["folder","Dossier sinistre","Gestion sinistres habitation","Créer","Dossier 26-H-458213 créé","dos"]);
-  if(dde&&v.fu==="Toujours active")a.push(["tool","Plombier","Recherche de fuite · sous 3 h","Missionner","Plombier missionné · rappel du prestataire sous 30 min",0,1]);
-  if(v.hb==="Inhabitable")a.push(["bed","Relogement","Hôtel · prise en charge directe","Organiser","Relogement réservé · 3 nuits, Orléans centre",0,1]);
-  if(v.sub==="Vol / cambriolage")a.push(["shield","Pré-plainte en ligne","Par SMS · "+TEL,"Envoyer","Lien de pré-plainte envoyé par SMS"]);
-  if(v.es==="Plus de 1 600 € HT")a.push(["cal","Visite de l'expert",null,"slots","Visite de l'expert planifiée"]);
-  if(v.or==="Chez un voisin"||v.or==="Partie commune")a.push(["file","Constat amiable","Dégât des eaux · par e-mail","Envoyer","Constat amiable envoyé par e-mail"]);
-  a.push(["camera","Photos et factures","Lien de dépôt par SMS","Envoyer","Lien de dépôt des justificatifs envoyé"]);
+ say:function(v){return "« Vous êtes bien couvert, avec une franchise de "+(v.sub==="CatNat"?"380":"150")+" €. J'ouvre votre dossier. »";},
+ a:function(v){var a=[["folder","Dossier sinistre","Gestion habitation","Créer","Dossier 26-H-458213 créé","dos"]];
+  if(v.fu==="Active")a.push(["tool","Plombier","Intervention sous 3 h","Missionner","Plombier missionné"]);
+  if(v.hb==="Inhabitable")a.push(["bed","Relogement","Hôtel pris en charge","Réserver","Hôtel réservé · 3 nuits"]);
+  if(v.sub==="Vol")a.push(["shield","Pré-plainte","Lien par SMS","Envoyer","Lien de pré-plainte envoyé"]);
+  if(v.es==="> 1 600 €")a.push(["cal","Visite de l'expert",null,"slots","Expert planifié"]);
+  if(v.or==="Voisin"||v.or==="Partie commune")a.push(["file","Constat amiable","Par e-mail","Envoyer","Constat amiable envoyé"]);
+  a.push(["camera","Photos et factures","Lien par SMS","Envoyer","Lien photos envoyé"]);
   return a;},
- m:"Groupama : votre dossier sinistre {dos} est ouvert. Déposez vos photos et factures dans l'appli Groupama, rubrique Sinistres. Un gestionnaire revient vers vous sous 48 h."},
+ m:"Groupama : votre dossier {dos} est ouvert. Déposez vos photos dans l'appli, rubrique Sinistres. Un gestionnaire vous recontacte sous 48 h."},
 
-auto:{l:"Sinistre auto",task:["Gestion sinistres auto · relance sous 48 h","Gestion corporelle · prise de contact"],
- f:[["sub","Nature",["Accident avec tiers","Accident sans tiers","Bris de glace","Vol du véhicule"],0],
-    ["sv","Survenance",SURV,0],
+auto:{l:"Sinistre auto",
+ f:[["sub","Nature",["Accident avec tiers","Accident seul","Bris de glace","Vol"],0],
+    ["sv","Date",SURV,0],
     ["bl","Blessés",["Non","Oui"],0,function(v){return v.sub.indexOf("Accident")===0;}],
-    ["co","Constat",["E-constat","Constat papier","Aucun"],0,function(v){return v.sub==="Accident avec tiers";}],
-    ["vr","Véhicule",["Roulant","Non roulant"],0,function(v){return v.sub!=="Vol du véhicule";}]],
- r:function(v){return "« Si je résume : "+v.sub.toLowerCase()+" avec votre Peugeot 3008, "+v.sv.toLowerCase()+(v.vr?", véhicule "+v.vr.toLowerCase():"")+". C'est bien cela ? »";},
+    ["co","Constat",["Fait","À faire"],0,function(v){return v.sub==="Accident avec tiers";}],
+    ["vr","Véhicule",["Roulant","Immobilisé"],0,function(v){return v.sub!=="Vol";}]],
+ r:function(v){return "« Si je résume : "+v.sub.toLowerCase()+" avec votre Peugeot 3008, "+SD[v.sv]+". C'est bien cela ? »";},
  cov:function(v){var c=[];
-  if(v.bl==="Oui")c.push(["wa","Victime corporelle : transfert vers la gestion corporelle"]);
-  c.push(["ok","Dommages au véhicule couverts · Tous risques"]);
-  if(v.sub==="Bris de glace")c.push(["ok","Franchise 0 € en cas de réparation chez un partenaire"]);
-  else c.push(["in","Franchise : 300 €"]);
-  if(v.sub==="Accident avec tiers")c.push(["in","Responsabilité déterminée selon le constat · bonus actuel 0,50"]);
-  if(v.sub==="Vol du véhicule")c.push(["wa","Dépôt de plainte sous 24 h · indemnisation après 30 jours sans découverte"]);
-  var lim=v.sub==="Vol du véhicule"?2:5;
-  if(DLY[v.sv]>lim)c.push(["wa","Délai de déclaration dépassé ("+lim+" jours ouvrés)"]);else c.push(["ok","Déclaration dans les délais ("+lim+" jours ouvrés)"]);
-  if(v.vr==="Non roulant")c.push(["ok","Assistance 0 km et véhicule de remplacement 7 jours inclus"]);
+  if(v.bl==="Oui")c.push(["wa","Blessé : gestion corporelle"]);
+  c.push(v.sub==="Bris de glace"?["ok","Garanti · 0 € chez un partenaire"]:["ok","Tous risques · franchise 300 €"]);
+  if(v.sub==="Vol")c.push(["wa","Dépôt de plainte sous 24 h"]);
+  c.push(delai(v,v.sub==="Vol"?2:5));
+  if(v.vr==="Immobilisé")c.push(["ok","Dépannage et véhicule de remplacement inclus"]);
   return c;},
- say:function(v){return v.sub==="Bris de glace"?"« Votre bris de glace est couvert, sans franchise si vous passez par l'un de nos réparateurs partenaires. »":"« Votre contrat Tous risques couvre les dommages, avec une franchise de 300 €. Je m'occupe de la suite. »";},
- a:function(v){var a=[];
-  a.push(["folder","Dossier sinistre","Gestion sinistres auto","Créer","Dossier 26-A-731045 créé","dos"]);
-  if(v.bl==="Oui")a.push(["transfer","Gestion corporelle","Transfert accompagné","Transférer","Appel transféré · gestion corporelle",0,1]);
-  if(v.co==="Aucun")a.push(["sms","Lien e-constat","Par SMS · "+TEL,"Envoyer","Lien e-constat envoyé par SMS"]);
-  if(v.vr==="Non roulant"){a.push(["truck","Dépannage","Assistance 24h/24","Déclencher","Dépanneuse en route · arrivée estimée 45 min",0,1]);
-    a.push(["car","Véhicule de remplacement","7 jours","Réserver","Véhicule de remplacement réservé"]);}
-  if(v.sub==="Bris de glace")a.push(["cal","Réparateur pare-brise",null,"slots","Rendez-vous pare-brise confirmé"]);
-  else if(v.sub!=="Vol du véhicule")a.push(["tool","Garage partenaire","Sans avance de frais","Orienter","Garage partenaire transmis par SMS"]);
+ say:function(v){return v.sub==="Bris de glace"?"« Votre pare-brise est couvert, sans franchise chez un partenaire. »":"« Vous êtes bien couvert, avec une franchise de 300 €. J'ouvre votre dossier. »";},
+ a:function(v){var a=[["folder","Dossier sinistre","Gestion auto","Créer","Dossier 26-A-731045 créé","dos"]];
+  if(v.bl==="Oui")a.push(["transfer","Gestion corporelle","Transfert de l'appel","Transférer","Appel transféré"]);
+  if(v.co==="À faire")a.push(["sms","E-constat","Lien par SMS","Envoyer","Lien e-constat envoyé"]);
+  if(v.vr==="Immobilisé"){a.push(["truck","Dépannage","24h/24","Envoyer","Dépanneuse en route · 45 min"]);
+    a.push(["car","Véhicule de remplacement","7 jours","Réserver","Véhicule réservé"]);}
+  if(v.sub==="Bris de glace")a.push(["cal","Réparateur pare-brise",null,"slots","Rendez-vous confirmé"]);
+  else if(v.sub!=="Vol")a.push(["tool","Garage partenaire","Sans avance de frais","Envoyer","Garage envoyé par SMS"]);
   return a;},
- m:"Groupama : votre dossier sinistre {dos} est ouvert. Suivez son avancement dans l'appli Groupama. Assistance 24h/24 au numéro figurant sur votre Mémo véhicule assuré."},
+ m:"Groupama : votre dossier {dos} est ouvert. Suivez-le dans l'appli Groupama. Assistance 24h/24 : voir votre Mémo véhicule assuré."},
 
-doc:{l:"Attestation / document",task:[],
- f:[["sub","Document",["Attestation habitation","Mémo véhicule assuré","Carte de tiers payant","Avis d'échéance"],0],
-    ["ca","Envoi",["E-mail","SMS (lien)","Courrier"],0]],
- r:function(v){return "« Vous avez besoin de votre "+v.sub.toLowerCase()+". Je vous l'envoie par "+v.ca.toLowerCase().replace(" (lien)","")+", c'est bien cela ? »";},
- cov:function(v){var c=[["ok","Contrat actif"],["ok","Cotisations à jour : document disponible immédiatement"]];
-  if(v.sub==="Mémo véhicule assuré")c.push(["in","La carte verte n'existe plus : le Mémo véhicule assuré la remplace"]);
-  if(v.sub==="Attestation habitation")c.push(["in","Mentionne la responsabilité civile (utile pour bailleur, école, location)"]);
-  c.push(["in","Le sociétaire a un espace client actif : document aussi dans l'appli"]);return c;},
- say:function(){return "« Votre contrat est bien à jour, je vous envoie le document tout de suite. Vous le retrouverez aussi dans votre appli Groupama. »";},
- a:function(v){var ch=v.ca==="E-mail"?MAIL:v.ca==="Courrier"?"Domicile, Orléans":TEL;
-  return [["file",v.sub,v.ca+" · "+ch,"Envoyer",v.sub+" envoyé"+(v.sub.indexOf("Attestation")===0||v.sub.indexOf("Carte")===0?"e":"")+" · "+v.ca.toLowerCase()],
-          ["app","Accès appli Groupama","Lien par SMS","Envoyer","Lien appli envoyé par SMS"]];},
- m:"Groupama : votre document est disponible. Retrouvez tous vos documents à tout moment dans l'appli Groupama, rubrique Mes contrats."},
+doc:{l:"Document",
+ f:[["sub","Document",["Attestation habitation","Mémo véhicule","Carte tiers payant","Avis d'échéance"],0],
+    ["ca","Envoi",["E-mail","SMS","Courrier"],0]],
+ r:function(v){return "« Je vous envoie votre "+v.sub.toLowerCase()+" par "+v.ca.toLowerCase()+". C'est bien cela ? »";},
+ cov:function(v){var c=[["ok","Contrat actif, cotisations à jour"]];
+  if(v.sub==="Mémo véhicule")c.push(["in","Remplace la carte verte"]);return c;},
+ say:function(){return "« Je vous l'envoie tout de suite. Vous le retrouvez aussi dans l'appli Groupama. »";},
+ a:function(v){return [["file",v.sub,v.ca==="E-mail"?MAIL:v.ca==="SMS"?TEL:"Domicile","Envoyer","Envoyé par "+v.ca.toLowerCase()],
+          ["app","Accès appli","Lien par SMS","Envoyer","Lien appli envoyé"]];},
+ m:"Groupama : votre document est disponible dans l'appli Groupama, rubrique Mes contrats."},
 
-cot:{l:"Cotisation / paiement",task:["Recouvrement · vérification du paiement"],
- f:[["sub","Demande",["Explication du montant","Changement de RIB","Échéance rejetée","Changement de périodicité"],0],
+cot:{l:"Cotisation",
+ f:[["sub","Demande",["Montant","RIB","Impayé","Périodicité"],0],
     ["ct","Contrat",["Auto","Habitation","Santé"],0]],
- r:function(v){return "« Vous avez une question concernant votre contrat "+v.ct.toLowerCase()+" : "+v.sub.toLowerCase()+". C'est bien cela ? »";},
- cov:function(v){var P={Auto:"64,20",Habitation:"38,90",Santé:"142,60"},c=[["in","Cotisation "+v.ct.toLowerCase()+" : "+P[v.ct]+" € par mois, prélèvement mensuel"]];
-  if(v.sub==="Échéance rejetée")c.push(["ok","Aucun rejet constaté sur le compte : vérifier avec le sociétaire"]);
-  if(v.sub==="Changement de RIB")c.push(["wa","Aucune coordonnée bancaire à l'oral : mandat SEPA électronique uniquement"]);
-  if(v.sub==="Changement de périodicité")c.push(["in","Passage en annuel possible à l'échéance principale, sans frais"]);
-  if(v.sub==="Explication du montant")c.push(["in","Évolution annuelle : indice du marché et évolution du risque"]);
+ r:function(v){var T={Montant:"le montant",RIB:"le changement de RIB",Impayé:"une échéance impayée",Périodicité:"la périodicité"};return "« Il s'agit de "+T[v.sub]+" de votre contrat "+v.ct.toLowerCase()+". C'est bien cela ? »";},
+ cov:function(v){var P={Auto:"64,20",Habitation:"38,90",Santé:"142,60"},c=[["in",v.ct+" : "+P[v.ct]+" € par mois"]];
+  if(v.sub==="RIB")c.push(["wa","Pas de RIB à l'oral : mandat SEPA"]);
+  if(v.sub==="Impayé")c.push(["ok","Aucun impayé constaté"]);
+  if(v.sub==="Périodicité")c.push(["in","Paiement annuel possible à l'échéance"]);
+  if(v.sub==="Montant")c.push(["in","Évolution liée à l'indice annuel"]);
   return c;},
- say:function(v){return "« Je regarde votre échéancier "+v.ct.toLowerCase()+". Je vous envoie tout de suite ce qu'il faut pour régler cela. »";},
- a:function(v){var a=[["file","Échéancier "+v.ct.toLowerCase(),"Par e-mail · "+MAIL,"Envoyer","Échéancier envoyé par e-mail"]];
-  if(v.sub==="Changement de RIB")a.unshift(["edit","Mandat SEPA","Signature électronique","Envoyer","Mandat SEPA envoyé pour signature"]);
-  if(v.sub==="Échéance rejetée")a.unshift(["card","Lien de paiement CB","Sécurisé, par SMS","Envoyer","Lien de paiement envoyé par SMS"]);
-  if(v.sub==="Changement de périodicité")a.unshift(["edit","Avenant de périodicité","Signature électronique","Envoyer","Avenant envoyé pour signature"]);
-  return a;},
- m:"Groupama : comme convenu, vous trouverez les éléments concernant votre cotisation dans votre espace client. Nous restons à votre disposition."},
-
-res:{l:"Résiliation",task:["Agence Orléans Centre · rappel de fidélisation sous 48 h"],
- f:[["sub","Raison",["Tarif","Déménagement","Vente du véhicule","Insatisfaction"],0],
-    ["ct","Contrat",["Auto","Habitation","Santé"],0]],
- r:function(v){return "« Vous envisagez de résilier votre contrat "+v.ct.toLowerCase()+" pour une raison de "+v.sub.toLowerCase()+". C'est bien cela ? »";},
- cov:function(v){var c=[["ok","Contrat de plus d'un an : résiliation possible à tout moment, effet sous 1 mois"],["in","Sociétaire fidèle depuis 2014 · 3 contrats · à fidéliser"]];
-  var A={"Tarif":"Proposer une révision des garanties ou de la franchise","Déménagement":"Transférer le contrat à la nouvelle adresse plutôt que résilier","Vente du véhicule":"Reporter le contrat sur le prochain véhicule","Insatisfaction":"Ouvrir une réclamation en parallèle"};
-  c.push(["wa","Alternative à proposer : "+A[v.sub]]);return c;},
- say:function(){return "« Avant d'enregistrer votre demande, je peux vous proposer une solution plus adaptée. Souhaitez-vous que nous regardions ensemble ? »";},
+ say:function(){return "« Je vous envoie tout de suite ce qu'il faut. »";},
  a:function(v){var a=[];
-  if(v.sub==="Tarif")a.push(["euro","Devis révisé","Franchise et garanties ajustées","Envoyer","Devis révisé envoyé par e-mail"]);
-  if(v.sub==="Déménagement")a.push(["home","Transfert d'adresse","Avenant à signer en ligne","Proposer","Avenant de transfert envoyé"]);
-  if(v.sub==="Vente du véhicule")a.push(["car","Suspension du contrat","En attente du prochain véhicule","Appliquer","Contrat suspendu en attente du prochain véhicule"]);
-  if(v.sub==="Insatisfaction")a.push(["alert","Réclamation","Service Réclamations","Ouvrir","Réclamation enregistrée · n° REC-77120"]);
-  a.push(["cal","Rendez-vous agence",null,"slots","Rendez-vous agence confirmé"]);
-  a.push(["exit","Demande de résiliation","Confirmation par e-mail","Enregistrer","Demande de résiliation enregistrée"]);
+  if(v.sub==="RIB")a.push(["edit","Mandat SEPA","Signature en ligne","Envoyer","Mandat SEPA envoyé"]);
+  if(v.sub==="Impayé")a.push(["card","Paiement CB","Lien sécurisé par SMS","Envoyer","Lien de paiement envoyé"]);
+  if(v.sub==="Périodicité")a.push(["edit","Avenant","Signature en ligne","Envoyer","Avenant envoyé"]);
+  a.push(["file","Échéancier","Par e-mail","Envoyer","Échéancier envoyé"]);
   return a;},
- m:"Groupama : suite à notre échange, votre agence Orléans Centre vous recontacte pour étudier une solution adaptée à votre situation."},
+ m:"Groupama : les informations sur votre cotisation sont disponibles dans votre espace client."},
 
-rec:{l:"Réclamation",task:["Service Réclamations · réponse sous 10 jours ouvrés"],
- f:[["sub","Objet",["Gestion d'un sinistre","Tarif","Qualité de service","Délai de traitement"],0],
-    ["nv","Niveau",["Premier contact","Relance","Menace de départ"],0]],
- r:function(v){return "« Je comprends votre mécontentement concernant "+v.sub.toLowerCase()+". Je l'enregistre pour qu'il soit traité. »";},
- cov:function(v){var c=[["in","Accusé de réception sous 10 jours ouvrés, réponse sous 2 mois maximum"]];
-  if(v.nv==="Relance")c.push(["wa","Relance : escalade au Service Réclamations (niveau 2)"]);
-  if(v.nv==="Menace de départ")c.push(["wa","Risque de départ : alerter l'agence"]);
-  c.push(["in","Après réponse : recours possible au médiateur de l'assurance"]);return c;},
- say:function(){return "« Votre réclamation est enregistrée. Vous recevrez un accusé de réception, puis une réponse écrite. »";},
- a:function(v){var a=[["alert","Réclamation","Service Réclamations","Enregistrer","Réclamation enregistrée · n° REC-77120","dos"],
-   ["mail","Accusé de réception","Par e-mail · "+MAIL,"Envoyer","Accusé de réception envoyé par e-mail"]];
-  if(v.nv==="Relance")a.push(["transfer","Escalade niveau 2","Service Réclamations","Escalader","Réclamation escaladée en niveau 2",0,1]);
-  if(v.nv==="Menace de départ")a.push(["build","Alerte agence","Risque de départ","Alerter","Agence alertée · rappel du sociétaire prévu"]);
+res:{l:"Résiliation",
+ f:[["sub","Raison",["Tarif","Déménagement","Vente véhicule","Insatisfaction"],0],
+    ["ct","Contrat",["Auto","Habitation","Santé"],0]],
+ r:function(v){return "« Vous souhaitez résilier votre contrat "+v.ct.toLowerCase()+". Qu'est-ce qui motive votre décision ? »";},
+ cov:function(v){var A={"Tarif":"devis révisé","Déménagement":"transfert d'adresse","Vente véhicule":"report sur le prochain véhicule","Insatisfaction":"réclamation"};
+  return [["ok","Résiliable à tout moment (plus d'un an)"],["wa","À proposer : "+A[v.sub]]];},
+ say:function(){return "« Avant d'enregistrer votre demande, puis-je vous proposer une solution ? »";},
+ a:function(v){var a=[];
+  if(v.sub==="Tarif")a.push(["euro","Devis révisé","Par e-mail","Envoyer","Devis envoyé"]);
+  if(v.sub==="Déménagement")a.push(["home","Transfert d'adresse","Avenant en ligne","Envoyer","Avenant envoyé"]);
+  if(v.sub==="Vente véhicule")a.push(["car","Suspension","Jusqu'au prochain véhicule","Appliquer","Contrat suspendu"]);
+  if(v.sub==="Insatisfaction")a.push(["alert","Réclamation","Service Réclamations","Ouvrir","Réclamation enregistrée"]);
+  a.push(["cal","Rendez-vous agence",null,"slots","Rendez-vous confirmé"]);
+  a.push(["exit","Résiliation","Confirmation par e-mail","Enregistrer","Résiliation enregistrée"]);
   return a;},
- m:"Groupama : votre réclamation {dos} est bien enregistrée. Vous recevrez une réponse écrite dans les meilleurs délais."}
+ m:"Groupama : suite à notre échange, votre agence vous recontacte pour étudier une solution adaptée."},
+
+rec:{l:"Réclamation",
+ f:[["sub","Objet",["Sinistre","Tarif","Service","Délai"],0],
+    ["nv","Niveau",["1er contact","Relance","Départ envisagé"],0]],
+ r:function(){return "« Je comprends votre mécontentement. Je l'enregistre pour qu'il soit traité. »";},
+ cov:function(v){var c=[["in","Réponse écrite sous 2 mois maximum"]];
+  if(v.nv==="Relance")c.push(["wa","Escalade en niveau 2"]);
+  if(v.nv==="Départ envisagé")c.push(["wa","Alerter l'agence"]);
+  return c;},
+ say:function(){return "« Votre réclamation est enregistrée. Vous recevrez une réponse écrite. »";},
+ a:function(v){var a=[["alert","Réclamation","Service Réclamations","Enregistrer","Réclamation REC-77120 créée","dos"],
+   ["mail","Accusé de réception","Par e-mail","Envoyer","Accusé envoyé"]];
+  if(v.nv==="Relance")a.push(["transfer","Niveau 2","Escalade","Escalader","Escaladée en niveau 2"]);
+  if(v.nv==="Départ envisagé")a.push(["build","Agence","Alerte départ","Alerter","Agence alertée"]);
+  return a;},
+ m:"Groupama : votre réclamation {dos} est enregistrée. Vous recevrez une réponse écrite."}
 };
 
 /* ---------- 2. qualification ---------- */
 var mk="",V={},dos="",done=[];
-(function(){var o=document.createElement("option");o.value="";o.textContent="Sélectionner le motif de l'appel";$("#motif").appendChild(o);})();
+(function(){var o=document.createElement("option");o.value="";o.textContent="Motif de l'appel";$("#motif").appendChild(o);})();
 Object.keys(M).forEach(function(k){var o=document.createElement("option");o.value=k;o.textContent=M[k].l;$("#motif").appendChild(o);});
-$("#motif").addEventListener("change",function(){mk=this.value;V={};dos="";done=[];initV();renderFields();reset();$("#acts").innerHTML="<div class=\"act mut\" style=\"font-size:11.5px\">Validez la qualification pour afficher les actions adaptées.</div>";$("#cov").innerHTML="";$("#covSay").textContent="";majMsg();});
+$("#motif").addEventListener("change",function(){mk=this.value;V={};dos="";done=[];initV();renderFields();reset();$("#acts").innerHTML="<div class=\"act mut\" style=\"font-size:11.5px\">Choisissez d'abord un motif.</div>";$("#cov").innerHTML="";$("#covSay").textContent="";majMsg();});
 function initV(){if(!mk)return;M[mk].f.forEach(function(f){if(!(f[0] in V))V[f[0]]=f[2][f[3]];});}
 function renderFields(){
   var box=$("#fields");box.innerHTML="";
@@ -555,8 +535,8 @@ $("#qOk").addEventListener("click",function(){
   $("#covSay").textContent=m.say(V);
   buildActs();
   var w=m.cov(V).filter(function(c){return c[0]==="wa";}).length;
-  finish(1,m.l+" · "+(V.sub||""));
-  steps[2].querySelector(".sum").textContent=w?w+" point(s) d'attention":"Contrat couvrant";
+  finish(1,m.l);
+  steps[2].querySelector(".sum").textContent=w?w+" alerte"+(w>1?"s":""):"Couvert";
 });
 $("#cOk").addEventListener("click",function(){finish(2,steps[2].querySelector(".sum").textContent);});
 
@@ -567,10 +547,10 @@ function buildActs(){
   M[mk].a(V).forEach(function(a){
     var d=document.createElement("div");d.className="act";
     d.innerHTML='<div class="ic">'+ico(a[0])+'</div><div class="tx"><b></b><span></span></div>';
-    d.querySelector("b").textContent=a[1];if(a[6])d.querySelector("b").insertAdjacentHTML("beforeend",'<i class="tag">Prioritaire</i>');
+    d.querySelector("b").textContent=a[1];
     var sp=d.querySelector(".tx span");
     if(a[3]==="slots"){
-      sp.textContent="Choisissez un créneau";
+      sp.textContent="Choisir un créneau";
       var sl=document.createElement("div");sl.className="slots";
       SLOTS.forEach(function(s){var b=document.createElement("button");b.className="pill";b.textContent=s;
         b.addEventListener("click",function(){if(d.classList.contains("done"))return;
@@ -586,7 +566,7 @@ function buildActs(){
   majMsg();
 }
 function actSum(){if(!doneSteps[3]){doneSteps[3]=1;steps[3].classList.add("done");steps[3].querySelector(".num").innerHTML=ico("check","s");prog();}
-  steps[3].querySelector(".sum").textContent=done.length+" action(s) réalisée(s)";}
+  steps[3].querySelector(".sum").textContent=done.length+" action"+(done.length>1?"s":"");}
 function doAct(d,btn,ok,isDos){
   if(btn){btn.disabled=true;btn.innerHTML='<i class="spin"></i>';}
   setTimeout(function(){
@@ -607,26 +587,26 @@ $$("#chan .pill").forEach(function(b){b.addEventListener("click",function(){
 function majMsg(){
   if(!mk){$("#msgTxt").value="";cnt();return;}
   var t=M[mk].m.replace("{dos}",dos||"[n° de dossier]");
-  if(chan==="mail")t="Bonjour Monsieur Dubois,\n\n"+t.replace("Groupama : ","")+"\n\nCordialement,\nVotre service Relation sociétaires Groupama";
+  if(chan==="mail")t="Bonjour Monsieur Dubois,\n\n"+t.replace("Groupama : ","")+"\n\nCordialement,\nGroupama";
   $("#msgTxt").value=t;cnt();$("#msgSend").disabled=false;$("#msgSend").innerHTML=ico("send","s")+"Envoyer";
 }
-function cnt(){var l=$("#msgTxt").value.length;$("#msgCnt").textContent=chan==="sms"?l+" car. · "+Math.ceil(l/160)+" SMS":"E-mail · modèle Relation sociétaires";}
+function cnt(){var l=$("#msgTxt").value.length;$("#msgCnt").textContent=chan==="sms"?l+" car. · "+Math.ceil(l/160)+" SMS":"E-mail";}
 $("#msgTxt").addEventListener("input",cnt);
 $("#msgSend").addEventListener("click",function(){
   var b=this;b.disabled=true;b.innerHTML='<i class="spin"></i>Envoi';
-  setTimeout(function(){b.innerHTML=ico("check","s")+(chan==="sms"?"SMS délivré":"E-mail envoyé");
-    var t=(chan==="sms"?"SMS de confirmation envoyé au ":"E-mail de confirmation envoyé à ")+(chan==="sms"?TEL:MAIL);done.push(t);toast(t);actSum();},900);
+  setTimeout(function(){b.innerHTML=ico("check","s")+(chan==="sms"?"Délivré":"Envoyé");
+    var t=chan==="sms"?"SMS envoyé":"E-mail envoyé";done.push(t);toast(t);actSum();},900);
 });
 
 /* ---------- aide ---------- */
 var KB=[
-["Délais de déclaration","5 jours ouvrés pour la plupart des sinistres, 2 jours ouvrés pour un vol, 30 jours après publication de l'arrêté pour une catastrophe naturelle."],
-["Convention IRSI (dégât des eaux)","Jusqu'à 1 600 € HT de dommages par local : l'assureur de l'occupant gère sans expertise. Au-delà : expertise."],
-["Franchises Groupama du sociétaire","Habitation : 150 €. Auto Tous risques : 300 €. Bris de glace : 0 € chez un réparateur partenaire. CatNat : franchise légale de 380 €."],
-["Mémo véhicule assuré","Remplace la carte verte. Disponible dans l'appli et l'espace client, envoi possible par e-mail."],
-["Résiliation à tout moment","Après un an de contrat (auto, habitation, santé), résiliation possible à tout moment, effet un mois après réception."],
-["Traitement des réclamations","Accusé de réception sous 10 jours ouvrés, réponse sous 2 mois maximum. Ensuite : médiateur de l'assurance."],
-["Données bancaires","Jamais de RIB ni de numéro de carte à l'oral : lien de paiement sécurisé ou mandat SEPA électronique."]
+["Délais de déclaration","5 jours ouvrés, 2 pour un vol, 30 jours après l'arrêté CatNat."],
+["Convention IRSI","Dégât des eaux sous 1 600 € HT : pas d'expert."],
+["Franchises","Habitation 150 € · Auto 300 € · Bris de glace 0 € chez un partenaire · CatNat 380 €."],
+["Mémo véhicule assuré","Remplace la carte verte. Disponible dans l'appli."],
+["Résiliation","Possible à tout moment après un an, effet sous un mois."],
+["Réclamations","Accusé sous 10 jours ouvrés, réponse sous 2 mois, puis médiateur."],
+["Sécurité","Jamais de mot de passe, code SMS ou n° de carte à l'oral."]
 ];
 function kb(q){var l=$("#kbl");l.innerHTML="";q=(q||"").toLowerCase();
   KB.filter(function(k){return !q||(k[0]+" "+k[1]).toLowerCase().indexOf(q)>-1;}).forEach(function(k){
