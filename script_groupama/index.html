@@ -19,13 +19,6 @@ svg.i{width:15px;height:15px;flex:none;fill:none;stroke:currentColor;stroke-widt
 svg.s{width:13px;height:13px}
 .mut{color:var(--mut)}
 
-/* barre d'appel */
-.bar{display:flex;align-items:center;gap:10px;margin-bottom:8px}
-.bar img{height:30px;width:auto;max-width:120px;object-fit:contain}
-.call{margin-left:auto;display:flex;align-items:center;gap:8px;background:var(--gd);color:#fff;border-radius:8px;padding:5px 10px;font-size:11.5px}
-.call .dot{width:7px;height:7px;border-radius:50%;background:#53E09B;box-shadow:0 0 0 3px rgba(83,224,155,.25)}
-.call b{font-variant-numeric:tabular-nums;letter-spacing:.3px}
-.call .sep{width:1px;height:14px;background:rgba(255,255,255,.25)}
 
 /* carte sociétaire */
 .cli{background:#fff;border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px 12px;margin-bottom:8px}
@@ -33,7 +26,8 @@ svg.s{width:13px;height:13px}
 .av{width:36px;height:36px;border-radius:50%;background:var(--g);color:#fff;font-weight:bold;display:flex;align-items:center;justify-content:center;flex:none}
 .cli .nm{font-size:14px;font-weight:bold}
 .cli .sb{font-size:11.5px;color:var(--mut)}
-.idb{margin-left:auto;display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:bold;border-radius:20px;padding:3px 9px;background:var(--wabg);color:var(--wa);white-space:nowrap}
+.logo{margin-left:auto;height:34px;width:auto;max-width:120px;object-fit:contain;flex:none}
+.idb{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:bold;border-radius:4px;padding:3px 7px;background:var(--wabg);color:var(--wa);white-space:nowrap}
 .idb.on{background:var(--gl);color:var(--ok)}
 .flags{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
 .flag{display:inline-flex;align-items:center;gap:5px;font-size:11px;border-radius:4px;padding:3px 7px;background:var(--bg);color:var(--gd)}
@@ -167,7 +161,6 @@ textarea{resize:vertical;min-height:58px;background:#FAFBFA}
   .fld{grid-template-columns:1fr;gap:3px}
   .fld>label{padding:0}
   .tabs .prog{display:none}
-  .call .sep,.call .ch{display:none}
 }
 </style>
 </head>
@@ -215,25 +208,19 @@ textarea{resize:vertical;min-height:58px;background:#FAFBFA}
 
 <div class="wrap">
 
-<!-- BARRE D'APPEL -->
-<div class="bar">
-  <img src="https://lareclame.fr/wp-content/uploads/2024/11/groupama-nouvelle-identite-viquelle-logo-top.jpg" alt="Groupama">
-  <div class="call"><span class="dot"></span><svg class="i s"><use href="#i-phone"/></svg><span>Appel entrant</span><span class="sep"></span><span class="ch">File Sinistres habitation</span><span class="sep"></span><b id="timer">00:00</b></div>
-</div>
-
 <!-- SOCIÉTAIRE -->
 <div class="cli">
   <div class="h">
     <div class="av">LD</div>
     <div><div class="nm">Louis Dubois</div><div class="sb">Sociétaire n° 4512 8730 9 · depuis 2014 · Orléans (45)</div></div>
-    <span class="idb" id="idb"><svg class="i s"><use href="#i-lock"/></svg><span>Identité à vérifier</span></span>
+    <img class="logo" src="https://lareclame.fr/wp-content/uploads/2024/11/groupama-nouvelle-identite-viquelle-logo-top.jpg" alt="Groupama">
   </div>
   <div class="flags">
+    <span class="idb" id="idb"><svg class="i s"><use href="#i-lock"/></svg><span>Identité à vérifier</span></span>
     <span class="flag"><svg class="i s"><use href="#i-home"/></svg>Habitation</span>
     <span class="flag"><svg class="i s"><use href="#i-car"/></svg>Auto</span>
     <span class="flag"><svg class="i s"><use href="#i-heart"/></svg>Santé</span>
     <span class="flag"><svg class="i s"><use href="#i-euro"/></svg>Cotisations à jour</span>
-    <span class="flag inf"><svg class="i s"><use href="#i-phone"/></svg>Serveur vocal : sinistre habitation</span>
     <span class="flag opp"><svg class="i s"><use href="#i-target"/></svg>Opportunité : prévoyance</span>
   </div>
 </div>
@@ -244,7 +231,7 @@ textarea{resize:vertical;min-height:58px;background:#FAFBFA}
   <button data-v="v-cli"><svg class="i s"><use href="#i-user"/></svg>Contrats</button>
   <button data-v="v-hist"><svg class="i s"><use href="#i-hist"/></svg>Historique</button>
   <button data-v="v-kb"><svg class="i s"><use href="#i-book"/></svg>Aide</button>
-  <span class="prog"><span id="progTxt">0/5</span><i><b id="progBar"></b></i></span>
+  <span class="prog"><span id="progTxt">0/4</span><i><b id="progBar"></b></i></span>
 </div>
 
 <div class="body">
@@ -256,7 +243,7 @@ textarea{resize:vertical;min-height:58px;background:#FAFBFA}
   <section class="st open" data-s="0">
     <header><span class="num">1</span><span class="tt">Identification</span><span class="sum"></span><svg class="i chev"><use href="#i-down"/></svg></header>
     <div class="bd">
-      <div class="say"><svg class="i s"><use href="#i-say"/></svg><span>« Groupama bonjour Monsieur Dubois. Pour sécuriser votre dossier, pouvez-vous me confirmer votre date de naissance et votre code postal ? »</span></div>
+      <div class="say"><svg class="i s"><use href="#i-say"/></svg><span>« Groupama bonjour Monsieur Dubois, que puis-je faire pour vous ? […] Pour sécuriser votre dossier, pouvez-vous me confirmer votre date de naissance et votre code postal ? »</span></div>
       <ul class="chk" id="idChk">
         <li><span class="bx"><svg class="i"><use href="#i-check"/></svg></span>Numéro appelant reconnu<span class="v">06 12 34 56 78</span></li>
         <li><span class="bx"><svg class="i"><use href="#i-check"/></svg></span>Date de naissance<span class="v">12/03/1981</span></li>
@@ -301,24 +288,9 @@ textarea{resize:vertical;min-height:58px;background:#FAFBFA}
         <textarea id="msgTxt" rows="3"></textarea>
         <div class="ft"><span class="cnt" id="msgCnt"></span><button class="btn" id="msgSend" style="margin-left:auto"><svg class="i s"><use href="#i-send"/></svg>Envoyer</button></div>
       </div>
-      <div class="row"><span></span><button class="btn" id="aOk">Passer à la clôture</button></div>
     </div>
   </section>
 
-  <!-- 5 -->
-  <section class="st" data-s="4">
-    <header><span class="num">5</span><span class="tt">Clôture</span><span class="sum"></span><svg class="i chev"><use href="#i-down"/></svg></header>
-    <div class="bd">
-      <div class="fld"><label>Résultat</label><div class="pills" id="res"><button class="pill" data-r="Traité">Traité</button><button class="pill" data-r="Suivi en cours">Suivi en cours</button><button class="pill" data-r="Transféré">Transféré</button></div></div>
-      <div class="fld"><label>Tâche de suivi</label><select id="task"><option value="">Aucune</option></select></div>
-      <div class="fld"><label>Opportunité</label><div class="pills" id="opp"><button class="pill" data-o="1">Bilan prévoyance à proposer par l'agence</button></div></div>
-      <div class="lbl">Synthèse (générée, modifiable)</div>
-      <textarea id="syn" rows="4"></textarea>
-      <div class="say"><svg class="i s"><use href="#i-say"/></svg><span>« Je récapitule : <span id="recap"></span>. Avez-vous d'autres questions ? Merci de votre confiance, bonne journée Monsieur Dubois. »</span></div>
-      <div class="row"><span></span><button class="btn" id="close">Clôturer l'interaction</button></div>
-      <div class="done-box" id="doneBox"><svg class="i"><use href="#i-checkc"/></svg><span id="doneTxt"></span></div>
-    </div>
-  </section>
 </div>
 
 <!-- ===== CONTRATS ===== -->
@@ -341,7 +313,6 @@ textarea{resize:vertical;min-height:58px;background:#FAFBFA}
 <!-- ===== HISTORIQUE ===== -->
 <div class="view" id="v-hist">
   <ul class="tl">
-    <li><span class="ic"><svg class="i s"><use href="#i-phone"/></svg></span><div><b>Serveur vocal · Sinistre habitation</b><span class="mut">Choix « déclarer un sinistre », puis « habitation ».</span></div><span class="w">À l'instant</span></li>
     <li><span class="ic"><svg class="i s"><use href="#i-app"/></svg></span><div><b>Appli · Mémo véhicule assuré</b><span class="mut">Téléchargé en autonomie.</span></div><span class="w">Il y a 3 sem.</span></li>
     <li><span class="ic"><svg class="i s"><use href="#i-mail"/></svg></span><div><b>E-mail · Avis d'échéance habitation</b><span class="mut">Ouvert.</span></div><span class="w">Il y a 2 mois</span></li>
     <li><span class="ic"><svg class="i s"><use href="#i-build"/></svg></span><div><b>Agence · Changement de véhicule</b><span class="mut">Avenant auto signé, Peugeot 3008.</span></div><span class="w">Il y a 8 mois</span></li>
@@ -367,9 +338,6 @@ function esc(t){var d=document.createElement("div");d.textContent=t;return d.inn
 var tT;function toast(t){var e=$("#toast");e.lastChild.textContent=t;e.classList.add("show");clearTimeout(tT);tT=setTimeout(function(){e.classList.remove("show");},2300);}
 var MAIL="louis.dubois@email.fr",TEL="06 12 34 56 78";
 
-/* ---------- chrono d'appel ---------- */
-var sec=0,tick=setInterval(function(){sec++;$("#timer").textContent=fmt(sec);},1000);
-function fmt(s){return ("0"+Math.floor(s/60)).slice(-2)+":"+("0"+s%60).slice(-2);}
 
 /* ---------- onglets ---------- */
 $$("#tabs button").forEach(function(b){b.addEventListener("click",function(){
@@ -386,8 +354,8 @@ steps.forEach(function(s,i){s.querySelector("header").addEventListener("click",f
 function finish(i,sum){
   doneSteps[i]=1;steps[i].classList.add("done");steps[i].querySelector(".num").innerHTML=ico("check","s");
   steps[i].querySelector(".sum").textContent=sum;
-  var n=Object.keys(doneSteps).length;$("#progTxt").textContent=n+"/5";$("#progBar").style.width=(n*20)+"%";
-  if(i<4)openStep(i+1);
+  prog();
+  if(i<3)openStep(i+1);
 }
 
 /* ---------- 1. identification ---------- */
@@ -536,12 +504,15 @@ rec:{l:"Réclamation",task:["Service Réclamations · réponse sous 10 jours ouv
 };
 
 /* ---------- 2. qualification ---------- */
-var mk="hab",V={},dos="",done=[],nba={};
+var mk="",V={},dos="",done=[];
+(function(){var o=document.createElement("option");o.value="";o.textContent="Sélectionner le motif de l'appel";$("#motif").appendChild(o);})();
 Object.keys(M).forEach(function(k){var o=document.createElement("option");o.value=k;o.textContent=M[k].l;$("#motif").appendChild(o);});
 $("#motif").addEventListener("change",function(){mk=this.value;V={};dos="";done=[];initV();renderFields();reset();});
-function initV(){M[mk].f.forEach(function(f){if(!(f[0] in V))V[f[0]]=f[2][f[3]];});}
+function initV(){if(!mk)return;M[mk].f.forEach(function(f){if(!(f[0] in V))V[f[0]]=f[2][f[3]];});}
 function renderFields(){
   var box=$("#fields");box.innerHTML="";
+  var has=!!mk;$("#refo").parentNode.style.display=has?"":"none";$("#qOk").disabled=!has;
+  if(!has)return;
   M[mk].f.forEach(function(f){
     if(f[4]&&!f[4](V)){delete V[f[0]];return;}
     if(!(f[0] in V))V[f[0]]=f[2][f[3]];
@@ -554,9 +525,10 @@ function renderFields(){
   $("#refo").textContent=M[mk].r(V);
 }
 function reset(){
-  [1,2,3,4].forEach(function(i){delete doneSteps[i];steps[i].classList.remove("done");steps[i].querySelector(".num").textContent=i+1;steps[i].querySelector(".sum").textContent="";});
-  var n=Object.keys(doneSteps).length;$("#progTxt").textContent=n+"/5";$("#progBar").style.width=(n*20)+"%";
+  [1,2,3].forEach(function(i){delete doneSteps[i];steps[i].classList.remove("done");steps[i].querySelector(".num").textContent=i+1;steps[i].querySelector(".sum").textContent="";});
+  prog();
 }
+function prog(){var n=Object.keys(doneSteps).length;$("#progTxt").textContent=n+"/4";$("#progBar").style.width=(n*25)+"%";}
 initV();renderFields();
 
 $("#qOk").addEventListener("click",function(){
@@ -564,7 +536,7 @@ $("#qOk").addEventListener("click",function(){
   var cov=$("#cov");cov.innerHTML="";var ic={ok:"checkc",wa:"warn",in:"info"};
   m.cov(V).forEach(function(c){var li=document.createElement("li");li.className=c[0];li.innerHTML=ico(ic[c[0]],"s")+"<span></span>";li.lastChild.textContent=c[1];cov.appendChild(li);});
   $("#covSay").textContent=m.say(V);
-  buildActs();buildTasks();
+  buildActs();
   var w=m.cov(V).filter(function(c){return c[0]==="wa";}).length;
   finish(1,m.l+" · "+(V.sub||""));
   steps[2].querySelector(".sum").textContent=w?w+" point(s) d'attention":"Contrat couvrant";
@@ -596,6 +568,8 @@ function buildActs(){
   });
   majMsg();
 }
+function actSum(){if(!doneSteps[3]){doneSteps[3]=1;steps[3].classList.add("done");steps[3].querySelector(".num").innerHTML=ico("check","s");prog();}
+  steps[3].querySelector(".sum").textContent=done.length+" action(s) réalisée(s)";}
 function doAct(d,btn,ok,isDos){
   if(btn){btn.disabled=true;btn.innerHTML='<i class="spin"></i>';}
   setTimeout(function(){
@@ -603,7 +577,7 @@ function doAct(d,btn,ok,isDos){
     d.querySelector(".tx span").textContent=ok;
     if(btn){btn.disabled=false;btn.innerHTML=ico("check","s")+"Fait";}
     if(isDos){var m=ok.match(/(\d\d-[AH]-\d+|REC-\d+)/);if(m)dos=m[1];majMsg();}
-    done.push(ok);toast(ok);majSyn();
+    done.push(ok);toast(ok);actSum();
   },800);
 }
 
@@ -623,35 +597,7 @@ $("#msgTxt").addEventListener("input",cnt);
 $("#msgSend").addEventListener("click",function(){
   var b=this;b.disabled=true;b.innerHTML='<i class="spin"></i>Envoi';
   setTimeout(function(){b.innerHTML=ico("check","s")+(chan==="sms"?"SMS délivré":"E-mail envoyé");
-    var t=(chan==="sms"?"SMS de confirmation envoyé au ":"E-mail de confirmation envoyé à ")+(chan==="sms"?TEL:MAIL);done.push(t);toast(t);majSyn();},900);
-});
-$("#aOk").addEventListener("click",function(){finish(3,done.length+" action(s) réalisée(s)");majSyn();});
-
-/* ---------- 5. clôture ---------- */
-var res="",opp=false;
-function buildTasks(){var s=$("#task");s.innerHTML='<option value="">Aucune</option>';M[mk].task.forEach(function(t){var o=document.createElement("option");o.textContent=t;s.appendChild(o);});if(M[mk].task.length)s.selectedIndex=1;majSyn();}
-$("#task").addEventListener("change",majSyn);
-$$("#res .pill").forEach(function(b){b.addEventListener("click",function(){$$("#res .pill").forEach(function(x){x.classList.remove("on");});b.classList.add("on");res=b.dataset.r;majSyn();});});
-$("#opp .pill").addEventListener("click",function(){opp=!opp;this.classList.toggle("on",opp);majSyn();});
-var closed=false;
-function majSyn(){
-  if(closed)return;
-  var q=Object.keys(V).map(function(k){return V[k];}).join(", ");
-  var t="Motif : "+M[mk].l+" ("+q+")"+(dos?"\nDossier : "+dos:"")+(done.length?"\nActions : "+done.join(" ; "):"")+($("#task").value?"\nTâche : "+$("#task").value:"")+(opp?"\nOpportunité : bilan prévoyance transmis à l'agence":"")+(res?"\nRésultat : "+res:"");
-  $("#syn").value=t;
-  $("#recap").textContent=done.length?done.slice(0,3).map(function(x){var s=x.split(" · ")[0];return s.charAt(0).toLowerCase()+s.slice(1);}).join(", "):"[demande, actions, prochaine étape]";
-}
-$("#close").addEventListener("click",function(){
-  if(!doneSteps[0]){toast("Identification du sociétaire à valider");openStep(0);return;}
-  if(!res){toast("Sélectionnez le résultat de l'interaction");return;}
-  var b=this;b.disabled=true;b.innerHTML='<i class="spin"></i>Enregistrement';
-  setTimeout(function(){
-    closed=true;clearInterval(tick);$("#syn").readOnly=true;
-    b.classList.add("fin");b.innerHTML=ico("check","s")+"Clôturée";
-    $("#doneTxt").innerHTML="<b>Interaction clôturée</b> · durée "+fmt(sec)+" · qualification et synthèse enregistrées"+($("#task").value?", tâche créée":"")+(opp?", piste transmise à l'agence":"")+".";
-    $("#doneBox").style.display="flex";finish(4,res);steps[4].classList.add("open");
-    toast("Interaction clôturée");
-  },900);
+    var t=(chan==="sms"?"SMS de confirmation envoyé au ":"E-mail de confirmation envoyé à ")+(chan==="sms"?TEL:MAIL);done.push(t);toast(t);actSum();},900);
 });
 
 /* ---------- aide ---------- */
