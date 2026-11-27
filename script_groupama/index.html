@@ -168,6 +168,11 @@ textarea{resize:vertical;min-height:58px;background:#FAFBFA}
   .tabs button svg{width:15px;height:15px}
   .cli .h{align-items:flex-start}
   .logo{height:26px;max-width:90px}
+  body{font-size:12px}
+  .pill{padding:3px 6px;font-size:11px}
+  .act .tx b{font-size:11.5px}
+  .tbl{font-size:11.5px}
+  .kv{font-size:11.5px}
   .act{gap:7px;padding:7px 6px}
   .act .ic{width:22px;height:22px}
   .act .go{min-width:0;padding:4px 7px}
@@ -224,7 +229,7 @@ textarea{resize:vertical;min-height:58px;background:#FAFBFA}
 <div class="cli">
   <div class="h">
     <div class="av">LD</div>
-    <div><div class="nm">Louis Dubois</div><div class="sb">Sociétaire n° 4512 8730 9 · depuis 2014 · Orléans (45)</div></div>
+    <div><div class="nm">Louis Dubois</div><div class="sb">N° 4512 8730 9 · depuis 2014</div></div>
     <img class="logo" src="https://lareclame.fr/wp-content/uploads/2024/11/groupama-nouvelle-identite-viquelle-logo-top.jpg" alt="Groupama">
   </div>
   <div class="flags">
@@ -260,7 +265,7 @@ textarea{resize:vertical;min-height:58px;background:#FAFBFA}
         <li><span class="bx"><svg class="i"><use href="#i-check"/></svg></span>Numéro appelant reconnu<span class="v">06 12 34 56 78</span></li>
         <li><span class="bx"><svg class="i"><use href="#i-check"/></svg></span>Date de naissance<span class="v">12/03/1981</span></li>
         <li><span class="bx"><svg class="i"><use href="#i-check"/></svg></span>Code postal du domicile<span class="v">45000</span></li>
-        <li><span class="bx"><svg class="i"><use href="#i-check"/></svg></span>Information sur l'enregistrement de l'appel donnée</li>
+        <li><span class="bx"><svg class="i"><use href="#i-check"/></svg></span>Enregistrement de l'appel annoncé</li>
       </ul>
       <div class="row"><span class="mut" style="font-size:11px">Ne jamais demander mot de passe, code SMS ou n° de carte.</span><button class="btn" id="idOk" disabled>Valider</button></div>
     </div>
@@ -279,7 +284,7 @@ textarea{resize:vertical;min-height:58px;background:#FAFBFA}
 
   <!-- 3 -->
   <section class="st" data-s="2">
-    <header><span class="num">3</span><span class="tt">Vérification du contrat</span><span class="sum"></span><svg class="i chev"><use href="#i-down"/></svg></header>
+    <header><span class="num">3</span><span class="tt">Couverture</span><span class="sum"></span><svg class="i chev"><use href="#i-down"/></svg></header>
     <div class="bd">
       <ul class="cov" id="cov"></ul>
       <div class="say"><svg class="i s"><use href="#i-say"/></svg><span id="covSay"></span></div>
@@ -292,7 +297,7 @@ textarea{resize:vertical;min-height:58px;background:#FAFBFA}
     <header><span class="num">4</span><span class="tt">Actions</span><span class="sum"></span><svg class="i chev"><use href="#i-down"/></svg></header>
     <div class="bd">
       <div class="lbl">Actions recommandées</div>
-      <div class="acts" id="acts"></div>
+      <div class="acts" id="acts"><div class="act mut" style="font-size:11.5px">Validez la qualification pour afficher les actions adaptées.</div></div>
       <div class="msg">
         <div class="hd"><b><svg class="i s"><use href="#i-send"/></svg>Message au sociétaire</b>
           <span class="pills" id="chan"><button class="pill on" data-c="sms">SMS</button><button class="pill" data-c="mail">E-mail</button></span>
@@ -408,13 +413,13 @@ hab:{l:"Sinistre habitation",task:["Gestion sinistres habitation · relance sous
   return c;},
  say:function(v){return "« Bonne nouvelle, votre contrat couvre ce sinistre. Il reste une franchise de "+(v.sub==="Catastrophe naturelle"?"380":"150")+" €. Je vous ouvre le dossier et j'organise la suite. »";},
  a:function(v){var a=[],dde=v.sub==="Dégât des eaux";
-  a.push(["folder","Créer le dossier sinistre","Gestion sinistres habitation","Créer","Dossier 26-H-458213 créé","dos"]);
-  if(dde&&v.fu==="Toujours active")a.push(["tool","Missionner un plombier","Recherche de fuite · intervention sous 3 h","Missionner","Plombier missionné · rappel du prestataire sous 30 min",0,1]);
-  if(v.hb==="Inhabitable")a.push(["bed","Organiser le relogement","Hôtel à proximité · prise en charge directe","Organiser","Relogement réservé · 3 nuits, Orléans centre",0,1]);
-  if(v.sub==="Vol / cambriolage")a.push(["shield","Envoyer le lien de pré-plainte en ligne","Par SMS · "+TEL,"Envoyer","Lien de pré-plainte envoyé par SMS"]);
-  if(v.es==="Plus de 1 600 € HT")a.push(["cal","Planifier la visite de l'expert",null,"slots","Visite de l'expert planifiée"]);
-  if(v.or==="Chez un voisin"||v.or==="Partie commune")a.push(["file","Envoyer le constat amiable dégât des eaux","Par e-mail · "+MAIL,"Envoyer","Constat amiable envoyé par e-mail"]);
-  a.push(["camera","Demander photos et factures","Lien de dépôt sécurisé par SMS","Envoyer","Lien de dépôt des justificatifs envoyé"]);
+  a.push(["folder","Dossier sinistre","Gestion sinistres habitation","Créer","Dossier 26-H-458213 créé","dos"]);
+  if(dde&&v.fu==="Toujours active")a.push(["tool","Plombier","Recherche de fuite · sous 3 h","Missionner","Plombier missionné · rappel du prestataire sous 30 min",0,1]);
+  if(v.hb==="Inhabitable")a.push(["bed","Relogement","Hôtel · prise en charge directe","Organiser","Relogement réservé · 3 nuits, Orléans centre",0,1]);
+  if(v.sub==="Vol / cambriolage")a.push(["shield","Pré-plainte en ligne","Par SMS · "+TEL,"Envoyer","Lien de pré-plainte envoyé par SMS"]);
+  if(v.es==="Plus de 1 600 € HT")a.push(["cal","Visite de l'expert",null,"slots","Visite de l'expert planifiée"]);
+  if(v.or==="Chez un voisin"||v.or==="Partie commune")a.push(["file","Constat amiable","Dégât des eaux · par e-mail","Envoyer","Constat amiable envoyé par e-mail"]);
+  a.push(["camera","Photos et factures","Lien de dépôt par SMS","Envoyer","Lien de dépôt des justificatifs envoyé"]);
   return a;},
  m:"Groupama : votre dossier sinistre {dos} est ouvert. Déposez vos photos et factures dans l'appli Groupama, rubrique Sinistres. Un gestionnaire revient vers vous sous 48 h."},
 
@@ -438,13 +443,13 @@ auto:{l:"Sinistre auto",task:["Gestion sinistres auto · relance sous 48 h","Ges
   return c;},
  say:function(v){return v.sub==="Bris de glace"?"« Votre bris de glace est couvert, sans franchise si vous passez par l'un de nos réparateurs partenaires. »":"« Votre contrat Tous risques couvre les dommages, avec une franchise de 300 €. Je m'occupe de la suite. »";},
  a:function(v){var a=[];
-  a.push(["folder","Créer le dossier sinistre","Gestion sinistres auto","Créer","Dossier 26-A-731045 créé","dos"]);
-  if(v.bl==="Oui")a.push(["transfer","Transférer vers la gestion corporelle","Transfert accompagné","Transférer","Appel transféré · gestion corporelle",0,1]);
-  if(v.co==="Aucun")a.push(["sms","Envoyer le lien e-constat","Par SMS · "+TEL,"Envoyer","Lien e-constat envoyé par SMS"]);
-  if(v.vr==="Non roulant"){a.push(["truck","Déclencher le dépannage","Groupama Assistance · 24h/24","Déclencher","Dépanneuse en route · arrivée estimée 45 min",0,1]);
-    a.push(["car","Réserver le véhicule de remplacement","7 jours · catégorie équivalente","Réserver","Véhicule de remplacement réservé"]);}
-  if(v.sub==="Bris de glace")a.push(["cal","Rendez-vous chez un réparateur partenaire",null,"slots","Rendez-vous pare-brise confirmé"]);
-  else if(v.sub!=="Vol du véhicule")a.push(["tool","Orienter vers un garage partenaire","Sans avance de frais hors franchise","Orienter","Garage partenaire transmis par SMS"]);
+  a.push(["folder","Dossier sinistre","Gestion sinistres auto","Créer","Dossier 26-A-731045 créé","dos"]);
+  if(v.bl==="Oui")a.push(["transfer","Gestion corporelle","Transfert accompagné","Transférer","Appel transféré · gestion corporelle",0,1]);
+  if(v.co==="Aucun")a.push(["sms","Lien e-constat","Par SMS · "+TEL,"Envoyer","Lien e-constat envoyé par SMS"]);
+  if(v.vr==="Non roulant"){a.push(["truck","Dépannage","Assistance 24h/24","Déclencher","Dépanneuse en route · arrivée estimée 45 min",0,1]);
+    a.push(["car","Véhicule de remplacement","7 jours","Réserver","Véhicule de remplacement réservé"]);}
+  if(v.sub==="Bris de glace")a.push(["cal","Réparateur pare-brise",null,"slots","Rendez-vous pare-brise confirmé"]);
+  else if(v.sub!=="Vol du véhicule")a.push(["tool","Garage partenaire","Sans avance de frais","Orienter","Garage partenaire transmis par SMS"]);
   return a;},
  m:"Groupama : votre dossier sinistre {dos} est ouvert. Suivez son avancement dans l'appli Groupama. Assistance 24h/24 au numéro figurant sur votre Mémo véhicule assuré."},
 
@@ -458,8 +463,8 @@ doc:{l:"Attestation / document",task:[],
   c.push(["in","Le sociétaire a un espace client actif : document aussi dans l'appli"]);return c;},
  say:function(){return "« Votre contrat est bien à jour, je vous envoie le document tout de suite. Vous le retrouverez aussi dans votre appli Groupama. »";},
  a:function(v){var ch=v.ca==="E-mail"?MAIL:v.ca==="Courrier"?"Domicile, Orléans":TEL;
-  return [["file","Envoyer : "+v.sub,v.ca+" · "+ch,"Envoyer",v.sub+" envoyé"+(v.sub.indexOf("Attestation")===0||v.sub.indexOf("Carte")===0?"e":"")+" · "+v.ca.toLowerCase()],
-          ["app","Rappeler l'accès à l'appli Groupama","Lien de connexion par SMS","Envoyer","Lien appli envoyé par SMS"]];},
+  return [["file",v.sub,v.ca+" · "+ch,"Envoyer",v.sub+" envoyé"+(v.sub.indexOf("Attestation")===0||v.sub.indexOf("Carte")===0?"e":"")+" · "+v.ca.toLowerCase()],
+          ["app","Accès appli Groupama","Lien par SMS","Envoyer","Lien appli envoyé par SMS"]];},
  m:"Groupama : votre document est disponible. Retrouvez tous vos documents à tout moment dans l'appli Groupama, rubrique Mes contrats."},
 
 cot:{l:"Cotisation / paiement",task:["Recouvrement · vérification du paiement"],
@@ -473,10 +478,10 @@ cot:{l:"Cotisation / paiement",task:["Recouvrement · vérification du paiement"
   if(v.sub==="Explication du montant")c.push(["in","Évolution annuelle : indice du marché et évolution du risque"]);
   return c;},
  say:function(v){return "« Je regarde votre échéancier "+v.ct.toLowerCase()+". Je vous envoie tout de suite ce qu'il faut pour régler cela. »";},
- a:function(v){var a=[["file","Envoyer l'échéancier "+v.ct.toLowerCase(),"Par e-mail · "+MAIL,"Envoyer","Échéancier envoyé par e-mail"]];
-  if(v.sub==="Changement de RIB")a.unshift(["edit","Envoyer le mandat SEPA","Signature électronique","Envoyer","Mandat SEPA envoyé pour signature"]);
-  if(v.sub==="Échéance rejetée")a.unshift(["card","Envoyer un lien de paiement CB","Paiement sécurisé par SMS","Envoyer","Lien de paiement envoyé par SMS"]);
-  if(v.sub==="Changement de périodicité")a.unshift(["edit","Envoyer l'avenant de périodicité","Signature électronique","Envoyer","Avenant envoyé pour signature"]);
+ a:function(v){var a=[["file","Échéancier "+v.ct.toLowerCase(),"Par e-mail · "+MAIL,"Envoyer","Échéancier envoyé par e-mail"]];
+  if(v.sub==="Changement de RIB")a.unshift(["edit","Mandat SEPA","Signature électronique","Envoyer","Mandat SEPA envoyé pour signature"]);
+  if(v.sub==="Échéance rejetée")a.unshift(["card","Lien de paiement CB","Sécurisé, par SMS","Envoyer","Lien de paiement envoyé par SMS"]);
+  if(v.sub==="Changement de périodicité")a.unshift(["edit","Avenant de périodicité","Signature électronique","Envoyer","Avenant envoyé pour signature"]);
   return a;},
  m:"Groupama : comme convenu, vous trouverez les éléments concernant votre cotisation dans votre espace client. Nous restons à votre disposition."},
 
@@ -489,12 +494,12 @@ res:{l:"Résiliation",task:["Agence Orléans Centre · rappel de fidélisation s
   c.push(["wa","Alternative à proposer : "+A[v.sub]]);return c;},
  say:function(){return "« Avant d'enregistrer votre demande, je peux vous proposer une solution plus adaptée. Souhaitez-vous que nous regardions ensemble ? »";},
  a:function(v){var a=[];
-  if(v.sub==="Tarif")a.push(["euro","Proposer un devis révisé","Ajustement franchise et garanties","Envoyer","Devis révisé envoyé par e-mail"]);
-  if(v.sub==="Déménagement")a.push(["home","Proposer le transfert à la nouvelle adresse","Avenant en signature électronique","Proposer","Avenant de transfert envoyé"]);
-  if(v.sub==="Vente du véhicule")a.push(["car","Mettre le contrat en attente du prochain véhicule","Suspension temporaire","Appliquer","Contrat suspendu en attente du prochain véhicule"]);
-  if(v.sub==="Insatisfaction")a.push(["alert","Ouvrir une réclamation","Service Réclamations","Ouvrir","Réclamation enregistrée · n° REC-77120"]);
-  a.push(["cal","Rendez-vous avec l'agence",null,"slots","Rendez-vous agence confirmé"]);
-  a.push(["exit","Enregistrer la demande de résiliation","Confirmation par e-mail","Enregistrer","Demande de résiliation enregistrée"]);
+  if(v.sub==="Tarif")a.push(["euro","Devis révisé","Franchise et garanties ajustées","Envoyer","Devis révisé envoyé par e-mail"]);
+  if(v.sub==="Déménagement")a.push(["home","Transfert d'adresse","Avenant à signer en ligne","Proposer","Avenant de transfert envoyé"]);
+  if(v.sub==="Vente du véhicule")a.push(["car","Suspension du contrat","En attente du prochain véhicule","Appliquer","Contrat suspendu en attente du prochain véhicule"]);
+  if(v.sub==="Insatisfaction")a.push(["alert","Réclamation","Service Réclamations","Ouvrir","Réclamation enregistrée · n° REC-77120"]);
+  a.push(["cal","Rendez-vous agence",null,"slots","Rendez-vous agence confirmé"]);
+  a.push(["exit","Demande de résiliation","Confirmation par e-mail","Enregistrer","Demande de résiliation enregistrée"]);
   return a;},
  m:"Groupama : suite à notre échange, votre agence Orléans Centre vous recontacte pour étudier une solution adaptée à votre situation."},
 
@@ -507,10 +512,10 @@ rec:{l:"Réclamation",task:["Service Réclamations · réponse sous 10 jours ouv
   if(v.nv==="Menace de départ")c.push(["wa","Risque de départ : alerter l'agence"]);
   c.push(["in","Après réponse : recours possible au médiateur de l'assurance"]);return c;},
  say:function(){return "« Votre réclamation est enregistrée. Vous recevrez un accusé de réception, puis une réponse écrite. »";},
- a:function(v){var a=[["alert","Enregistrer la réclamation","Service Réclamations","Enregistrer","Réclamation enregistrée · n° REC-77120","dos"],
-   ["mail","Envoyer l'accusé de réception","Par e-mail · "+MAIL,"Envoyer","Accusé de réception envoyé par e-mail"]];
-  if(v.nv==="Relance")a.push(["transfer","Escalader en niveau 2","Service Réclamations","Escalader","Réclamation escaladée en niveau 2",0,1]);
-  if(v.nv==="Menace de départ")a.push(["build","Alerter l'agence Orléans Centre","Risque de départ","Alerter","Agence alertée · rappel du sociétaire prévu"]);
+ a:function(v){var a=[["alert","Réclamation","Service Réclamations","Enregistrer","Réclamation enregistrée · n° REC-77120","dos"],
+   ["mail","Accusé de réception","Par e-mail · "+MAIL,"Envoyer","Accusé de réception envoyé par e-mail"]];
+  if(v.nv==="Relance")a.push(["transfer","Escalade niveau 2","Service Réclamations","Escalader","Réclamation escaladée en niveau 2",0,1]);
+  if(v.nv==="Menace de départ")a.push(["build","Alerte agence","Risque de départ","Alerter","Agence alertée · rappel du sociétaire prévu"]);
   return a;},
  m:"Groupama : votre réclamation {dos} est bien enregistrée. Vous recevrez une réponse écrite dans les meilleurs délais."}
 };
@@ -519,7 +524,7 @@ rec:{l:"Réclamation",task:["Service Réclamations · réponse sous 10 jours ouv
 var mk="",V={},dos="",done=[];
 (function(){var o=document.createElement("option");o.value="";o.textContent="Sélectionner le motif de l'appel";$("#motif").appendChild(o);})();
 Object.keys(M).forEach(function(k){var o=document.createElement("option");o.value=k;o.textContent=M[k].l;$("#motif").appendChild(o);});
-$("#motif").addEventListener("change",function(){mk=this.value;V={};dos="";done=[];initV();renderFields();reset();});
+$("#motif").addEventListener("change",function(){mk=this.value;V={};dos="";done=[];initV();renderFields();reset();$("#acts").innerHTML="<div class=\"act mut\" style=\"font-size:11.5px\">Validez la qualification pour afficher les actions adaptées.</div>";$("#cov").innerHTML="";$("#covSay").textContent="";majMsg();});
 function initV(){if(!mk)return;M[mk].f.forEach(function(f){if(!(f[0] in V))V[f[0]]=f[2][f[3]];});}
 function renderFields(){
   var box=$("#fields");box.innerHTML="";
@@ -600,6 +605,7 @@ $$("#chan .pill").forEach(function(b){b.addEventListener("click",function(){
   $("#to").textContent=chan==="sms"?TEL:MAIL;majMsg();
 });});
 function majMsg(){
+  if(!mk){$("#msgTxt").value="";cnt();return;}
   var t=M[mk].m.replace("{dos}",dos||"[n° de dossier]");
   if(chan==="mail")t="Bonjour Monsieur Dubois,\n\n"+t.replace("Groupama : ","")+"\n\nCordialement,\nVotre service Relation sociétaires Groupama";
   $("#msgTxt").value=t;cnt();$("#msgSend").disabled=false;$("#msgSend").innerHTML=ico("send","s")+"Envoyer";
