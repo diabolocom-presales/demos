@@ -6,376 +6,465 @@
 <title>Script conseiller - Groupama</title>
 <style>
 :root{
-  --g:#00704A;      /* vert Groupama */
-  --gd:#00513A;     /* vert foncé */
-  --gl:#E9F5EF;     /* vert très clair */
-  --gb:#B9DCCB;     /* bordure verte */
-  --acc:#00A65A;    /* vert vif (validation) */
-  --bg:#F5F7F6;
-  --card:#ffffff;
-  --txt:#1f2d27;
-  --mut:#64736c;
-  --line:#e3e9e6;
-  --warn:#B4541A;
+  --g:#00704A;--gd:#00513A;--gl:#EAF5EF;--gb:#C4E2D3;--ok:#00965A;
+  --bg:#F4F6F5;--txt:#1E2B25;--mut:#66756E;--line:#E2E8E5;--warn:#A75A12;--warnbg:#FDF5EC;
 }
 *{box-sizing:border-box}
-body{margin:0;padding:20px;background:var(--bg);font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.5;color:var(--txt)}
+html,body{margin:0}
+body{background:var(--bg);font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.45;color:var(--txt);padding:14px}
 .wrap{max-width:640px}
-button{font:inherit;cursor:pointer}
+button{font:inherit;cursor:pointer;color:inherit}
+svg.i{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle}
+svg.s{width:14px;height:14px}
 
 /* en-tête */
-.top{display:flex;align-items:center;gap:12px;padding:2px 0 12px}
-.top img{height:44px;width:auto;max-width:170px;object-fit:contain;display:block;border-radius:4px}
-.top .t{line-height:1.2}
-.top .t b{display:block;font-size:16px;color:var(--g)}
-.top .t span{font-size:11px;color:var(--mut)}
-.ban{background:linear-gradient(120deg,var(--g),var(--gd));border-radius:8px 8px 0 0;padding:14px 16px;color:#fff}
-.ban small{display:block;color:#c8ebd9;font-size:11px;letter-spacing:1.5px;text-transform:uppercase}
-.ban div{font-size:17px;font-weight:bold;margin-top:2px}
-.steps{display:flex;flex-wrap:wrap;gap:4px 6px;background:#fff;border-radius:0 0 8px 8px;padding:9px 16px;box-shadow:0 1px 4px rgba(0,0,0,.07);margin-bottom:16px;font-size:12px;color:var(--gd)}
-.steps span{display:inline-flex;align-items:center;gap:5px}
-.steps i{font-style:normal;width:16px;height:16px;border-radius:50%;background:var(--line);color:var(--mut);font-size:10px;font-weight:bold;display:inline-flex;align-items:center;justify-content:center;transition:.2s}
-.steps span.ok i{background:var(--acc);color:#fff}
-.steps em{font-style:normal;color:#c3ccc8}
+.top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.top img{height:32px;width:auto;max-width:130px;object-fit:contain}
+.top .t{font-weight:bold;color:var(--g);font-size:14px;line-height:1.1}
+.top .t span{display:block;font-weight:normal;color:var(--mut);font-size:11px}
+.live{margin-left:auto;display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:4px 10px;font-size:11.5px;color:var(--gd);font-weight:bold;white-space:nowrap}
+.live b{width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 3px rgba(0,150,90,.18);animation:p 1.6s infinite}
+@keyframes p{50%{box-shadow:0 0 0 6px rgba(0,150,90,0)}}
 
-/* fiche client */
-.client{background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.07);padding:12px 14px;margin-bottom:16px}
-.client .h{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.av{width:40px;height:40px;border-radius:50%;background:var(--gl);color:var(--g);font-weight:bold;display:flex;align-items:center;justify-content:center;flex:none;font-size:14px}
-.client .h b{font-size:15px;display:block}
-.client .h span{font-size:12px;color:var(--mut)}
-.tag{margin-left:auto;font-size:11px;font-weight:bold;color:var(--g);background:var(--gl);border-radius:20px;padding:3px 9px;white-space:nowrap}
-.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:6px 14px;font-size:12px}
-.kv div span{display:block;color:var(--mut);font-size:10.5px;text-transform:uppercase;letter-spacing:.8px}
-.ctr{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
-.ctr span{font-size:11.5px;border:1px solid var(--gb);border-radius:4px;padding:3px 8px;background:#fbfdfc}
+/* client */
+.cli{background:#fff;border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.07);padding:10px 12px;margin-bottom:10px}
+.cli .h{display:flex;align-items:center;gap:10px}
+.av{width:34px;height:34px;border-radius:50%;background:var(--g);color:#fff;font-weight:bold;display:flex;align-items:center;justify-content:center;flex:none;font-size:12.5px}
+.cli .h b{font-size:14px}
+.cli .h .sub{font-size:11.5px;color:var(--mut)}
+.vb{margin-left:auto;display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:bold;border-radius:20px;padding:3px 8px;background:#F1F3F2;color:var(--mut);white-space:nowrap;transition:.2s}
+.vb.on{background:var(--gl);color:var(--ok)}
+.meta{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.meta span{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;color:var(--gd);background:var(--bg);border-radius:4px;padding:3px 7px}
+.meta span svg{color:var(--g)}
+.svi{display:flex;align-items:center;gap:6px;margin-top:8px;padding:6px 8px;border-radius:6px;background:var(--gl);color:var(--gd);font-size:12px}
 
-/* sections */
-.sec{border-left:4px solid var(--g);background:#fff;border-radius:0 8px 8px 0;box-shadow:0 1px 4px rgba(0,0,0,.07);padding:12px 14px;margin-bottom:16px}
-.sec h2{margin:0 0 8px;font-size:14px;color:var(--g);display:flex;align-items:center;gap:8px}
-.sec h2 .n{width:20px;height:20px;border-radius:50%;background:var(--g);color:#fff;font-size:11px;display:inline-flex;align-items:center;justify-content:center}
-.lbl{font-size:10.5px;text-transform:uppercase;letter-spacing:1px;color:var(--mut);margin:8px 0 3px}
-.say{background:var(--bg);border:1px dashed var(--gb);border-radius:5px;padding:8px 10px}
-.hint{font-size:12px;color:var(--mut);margin-top:6px}
+/* stepper */
+.steps{display:flex;background:#fff;border-radius:10px 10px 0 0;box-shadow:0 1px 3px rgba(0,0,0,.07);overflow:hidden}
+.steps button{flex:1;border:0;background:none;padding:9px 2px 8px;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;color:var(--mut);border-bottom:2px solid var(--line);position:relative;min-width:0}
+.steps button svg{width:17px;height:17px}
+.steps button span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.steps button.done{color:var(--ok)}
+.steps button.act{color:var(--g);font-weight:bold;border-bottom-color:var(--g);background:var(--gl)}
+.steps .cnt{position:absolute;top:4px;right:calc(50% - 20px);min-width:15px;height:15px;border-radius:8px;background:var(--g);color:#fff;font-size:9.5px;font-weight:bold;display:none;align-items:center;justify-content:center;padding:0 4px}
+
+/* panneau */
+.panel{background:#fff;border-radius:0 0 10px 10px;box-shadow:0 1px 3px rgba(0,0,0,.07);padding:12px}
+.pane{display:none}
+.pane.on{display:block;animation:f .2s}
+@keyframes f{from{opacity:0;transform:translateY(4px)}}
+.lbl{font-size:10.5px;text-transform:uppercase;letter-spacing:.9px;color:var(--mut);margin:10px 0 4px;font-weight:bold}
+.lbl:first-child{margin-top:0}
+.say{position:relative;background:var(--bg);border-left:3px solid var(--g);border-radius:0 6px 6px 0;padding:8px 34px 8px 10px}
+.say .cp{position:absolute;top:6px;right:6px;border:0;background:none;color:var(--mut);padding:3px;border-radius:4px;display:flex}
+.say .cp:hover{color:var(--g);background:#fff}
+.seg{display:inline-flex;background:var(--bg);border-radius:6px;padding:2px;margin-bottom:6px}
+.seg button{border:0;background:none;padding:4px 10px;border-radius:5px;font-size:11.5px;color:var(--mut);display:inline-flex;align-items:center;gap:5px}
+.seg button.on{background:#fff;color:var(--g);font-weight:bold;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.note{display:flex;gap:6px;align-items:flex-start;font-size:11.5px;color:var(--mut);margin-top:8px}
+.note svg{margin-top:1px}
+.note.w{color:var(--warn);background:var(--warnbg);border-radius:6px;padding:6px 8px}
 
 /* checklist */
-.chk{list-style:none;margin:0;padding:0}
-.chk li{display:flex;align-items:flex-start;gap:8px;padding:6px 8px;border-radius:5px;cursor:pointer;user-select:none}
-.chk li:hover{background:var(--bg)}
-.chk li .bx{width:16px;height:16px;border:1.5px solid var(--gb);border-radius:3px;flex:none;margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;transition:.15s}
-.chk li.on .bx{background:var(--acc);border-color:var(--acc)}
-.chk li .v{margin-left:auto;font-size:11.5px;color:var(--mut);white-space:nowrap}
+.chk{list-style:none;margin:0;padding:0;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.chk li{display:flex;align-items:center;gap:8px;padding:7px 9px;cursor:pointer;user-select:none;border-bottom:1px solid var(--line);font-size:12.5px}
+.chk li:last-child{border:0}
+.chk li:hover{background:#FAFBFA}
+.chk .bx{width:16px;height:16px;border:1.5px solid #B9C6C0;border-radius:4px;flex:none;display:flex;align-items:center;justify-content:center;color:#fff;transition:.15s}
+.chk .bx svg{width:11px;height:11px;stroke-width:3;opacity:0}
+.chk li.on .bx{background:var(--ok);border-color:var(--ok)}
+.chk li.on .bx svg{opacity:1}
+.chk li.on .q{color:var(--mut)}
+.chk .v{margin-left:auto;font-size:11.5px;color:var(--mut);white-space:nowrap;padding-left:6px}
 
-/* boutons */
-.chips{display:flex;flex-wrap:wrap;gap:6px}
-.chip{background:#fff;color:var(--g);border:1px solid var(--g);border-radius:20px;padding:6px 11px;font-weight:bold;font-size:12px;transition:.15s}
-.chip:hover{background:var(--gl)}
-.chip.on{background:var(--g);color:#fff}
-.btn{background:var(--g);color:#fff;border:0;border-radius:5px;padding:8px 12px;font-weight:bold;font-size:12.5px;transition:.15s}
-.btn:hover{background:var(--gd)}
-.btn.ghost{background:#fff;color:var(--g);border:1px solid var(--g)}
-.btn.ghost:hover{background:var(--gl)}
-.btn:disabled{cursor:default}
+/* motifs */
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{display:inline-flex;align-items:center;gap:5px;background:#fff;border:1px solid var(--line);border-radius:6px;padding:5px 9px;font-size:12px;color:var(--txt);transition:.15s}
+.chip svg{color:var(--g)}
+.chip:hover{border-color:var(--g)}
+.chip.on{background:var(--g);border-color:var(--g);color:#fff}
+.chip.on svg{color:#fff}
 
 /* actions */
-.acts{display:grid;gap:8px}
-.act{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:6px;padding:9px 10px;background:#fff;transition:.2s}
-.act .ic{width:30px;height:30px;border-radius:6px;background:var(--gl);display:flex;align-items:center;justify-content:center;flex:none;font-size:15px}
-.act .tx{flex:1;min-width:0}
-.act .tx b{display:block;font-size:12.5px}
-.act .tx span{font-size:11.5px;color:var(--mut)}
-.act .btn{flex:none;min-width:92px}
-.act.done{border-color:var(--acc);background:#f3fbf6}
-.act.done .ic{background:var(--acc);color:#fff}
-.act.done .tx span{color:var(--gd)}
-.act.done .btn{background:var(--acc)}
-.act.run .btn{background:#7fa999}
-.empty{color:var(--mut);font-size:12.5px;padding:8px 10px;background:var(--bg);border-radius:5px}
+.acts{border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.act{display:flex;align-items:center;gap:9px;padding:8px 9px;border-bottom:1px solid var(--line);transition:background .2s}
+.act:last-child{border:0}
+.act .ic{width:28px;height:28px;border-radius:6px;background:var(--gl);color:var(--g);display:flex;align-items:center;justify-content:center;flex:none}
+.act .tx{flex:1;min-width:0;font-size:12.5px}
+.act .tx b{display:block;font-weight:bold}
+.act .tx span{display:block;font-size:11.5px;color:var(--mut);overflow:hidden;text-overflow:ellipsis}
+.act .go{flex:none;border:1px solid var(--g);background:#fff;color:var(--g);border-radius:6px;padding:5px 10px;font-size:12px;font-weight:bold;display:inline-flex;align-items:center;gap:5px;min-width:84px;justify-content:center}
+.act .go:hover{background:var(--gl)}
+.act.run .go{opacity:.6}
+.act.done{background:#F5FBF8}
+.act.done .ic{background:var(--ok);color:#fff}
+.act.done .tx span{color:var(--ok)}
+.act.done .go{background:var(--ok);border-color:var(--ok);color:#fff;cursor:default}
+.act select{margin-top:4px;width:100%;padding:4px 6px;border:1px solid var(--line);border-radius:5px;font:inherit;font-size:12px;background:#fff;color:var(--txt)}
+.spin{width:12px;height:12px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:r .7s linear infinite}
+@keyframes r{to{transform:rotate(360deg)}}
 
-select,textarea{width:100%;padding:7px 8px;border:1px solid #d3dcd8;border-radius:5px;font:inherit;background:#fff;color:var(--txt)}
-textarea{resize:vertical;min-height:70px}
-.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.row select{flex:1;min-width:130px;width:auto}
-
-/* journal */
+/* clôture */
 .log{list-style:none;margin:0;padding:0}
-.log li{display:flex;gap:8px;padding:5px 0;border-bottom:1px solid var(--line);font-size:12px}
-.log li:last-child{border:0}
-.log li b{color:var(--acc)}
-.closed{display:none;margin-top:10px;background:#f3fbf6;border:1px solid var(--acc);border-radius:6px;padding:10px 12px;color:var(--gd)}
-.closed b{display:block;font-size:13.5px;margin-bottom:2px}
+.log li{display:flex;gap:7px;align-items:flex-start;padding:4px 0;font-size:12px}
+.log li svg{color:var(--ok);margin-top:1px}
+.log .em{color:var(--mut)}
+textarea{width:100%;padding:7px 8px;border:1px solid var(--line);border-radius:6px;font:inherit;font-size:12px;resize:vertical;min-height:62px;color:var(--txt);background:#FAFBFA}
+.ok{display:none;align-items:center;gap:8px;margin-top:10px;background:var(--gl);border-radius:8px;padding:9px 10px;color:var(--gd);font-size:12.5px}
+.ok svg{color:var(--ok);width:20px;height:20px}
+
+/* nav */
+.nav{display:flex;gap:8px;margin-top:12px;padding-top:10px;border-top:1px solid var(--line)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:0;border-radius:7px;padding:8px 12px;font-weight:bold;font-size:12.5px;background:var(--g);color:#fff;transition:.15s}
+.btn:hover{background:var(--gd)}
+.btn.gh{background:#fff;color:var(--g);border:1px solid var(--line)}
+.btn.gh:hover{border-color:var(--g)}
+.btn:disabled{opacity:.5;cursor:default}
+.btn.fin:disabled{opacity:1;background:var(--ok)}
+.nav .btn:last-child{margin-left:auto}
 
 /* toast */
-.toast{position:fixed;left:50%;bottom:20px;transform:translate(-50%,20px);opacity:0;background:var(--gd);color:#fff;padding:10px 16px;border-radius:6px;font-size:12.5px;font-weight:bold;box-shadow:0 4px 14px rgba(0,0,0,.2);transition:.25s;pointer-events:none;max-width:calc(100% - 32px)}
+.toast{position:fixed;left:50%;top:14px;transform:translate(-50%,-16px);opacity:0;display:flex;align-items:center;gap:8px;background:var(--gd);color:#fff;padding:9px 14px;border-radius:8px;font-size:12.5px;box-shadow:0 6px 18px rgba(0,0,0,.18);transition:.25s;pointer-events:none;max-width:calc(100% - 28px)}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 
-@media (max-width:420px){
-  body{padding:12px}
+@media (max-width:380px){
+  body{padding:10px}
+  .steps button span{font-size:10px}
   .act{flex-wrap:wrap}
-  .act .btn{width:100%}
+  .act .go{width:100%;margin-left:37px}
 }
 </style>
 </head>
 <body>
+
+<!-- ICÔNES (trait monochrome) -->
+<svg width="0" height="0" style="position:absolute">
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+  <symbol id="i-hand" viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+  <symbol id="i-tool" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><path d="M4 22v-7"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-checkc" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></symbol>
+  <symbol id="i-sms" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4M16 13H8M16 17H8M10 9H8"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+  <symbol id="i-car" viewBox="0 0 24 24"><path d="M5 11l1.6-4.2A2 2 0 0 1 8.5 5.5h7a2 2 0 0 1 1.9 1.3L19 11"/><rect x="3" y="11" width="18" height="6" rx="2"/><path d="M6 17v2M18 17v2M7 14h.01M17 14h.01"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9v12h14V9"/><path d="M10 21v-6h4v6"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M3.22 12H9.5l.5-1 2 4.5 2-7 1.5 3.5h5.27"/></symbol>
+  <symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5S5 13 5 15a7 7 0 0 0 7 7z"/></symbol>
+  <symbol id="i-card" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></symbol>
+  <symbol id="i-warn" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4M12 17h.01"/></symbol>
+  <symbol id="i-exit" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5M21 12H9"/></symbol>
+  <symbol id="i-edit" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></symbol>
+  <symbol id="i-transfer" viewBox="0 0 24 24"><path d="m16 3 4 4-4 4M20 7H4M8 21l-4-4 4-4M4 17h16"/></symbol>
+  <symbol id="i-camera" viewBox="0 0 24 24"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></symbol>
+  <symbol id="i-truck" viewBox="0 0 24 24"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2M15 18H9M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.62l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="14" height="14" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></symbol>
+  <symbol id="i-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+  <symbol id="i-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+  <symbol id="i-mic" viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v3"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></symbol>
+  <symbol id="i-hist" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5M12 7v5l4 2"/></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></symbol>
+  <symbol id="i-euro" viewBox="0 0 24 24"><path d="M4 10h12M4 14h9"/><path d="M19 6a7.7 7.7 0 0 0-5.2-2A7.9 7.9 0 0 0 6 12c0 4.4 3.5 8 7.8 8 2 0 3.8-.8 5.2-2"/></symbol>
+</svg>
+
 <div class="wrap">
 
 <!-- EN-TÊTE -->
 <div class="top">
   <img src="https://lareclame.fr/wp-content/uploads/2024/11/groupama-nouvelle-identite-viquelle-logo-top.jpg" alt="Groupama">
-  <div class="t"><b>Espace conseiller</b><span>Assurance · Banque · Services</span></div>
-</div>
-<div class="ban">
-  <small>Script conseiller · tous canaux</small>
-  <div>Traitement de la demande sociétaire</div>
-</div>
-<div class="steps" id="steps">
-  <span data-s="1"><i>1</i>Accueillir</span><em>›</em>
-  <span data-s="2"><i>2</i>Identifier</span><em>›</em>
-  <span data-s="3"><i>3</i>Comprendre</span><em>›</em>
-  <span data-s="4"><i>4</i>Traiter</span><em>›</em>
-  <span data-s="5"><i>5</i>Conclure</span>
+  <div class="t">Script conseiller<span>Relation sociétaires</span></div>
+  <div class="live"><b></b><svg class="i s"><use href="#i-phone"/></svg>Appel entrant</div>
 </div>
 
 <!-- FICHE SOCIÉTAIRE -->
-<div class="client">
+<div class="cli">
   <div class="h">
     <div class="av">LD</div>
-    <div><b>Louis Dubois</b><span>Sociétaire depuis 2014 · Groupama Paris Val de Loire</span></div>
-    <span class="tag">Sociétaire</span>
+    <div><b>Louis Dubois</b><div class="sub">Sociétaire n° 4512 8730 9 · Agence Orléans Centre</div></div>
+    <span class="vb" id="vb"><svg class="i s"><use href="#i-lock"/></svg><span>À vérifier</span></span>
   </div>
-  <div class="kv">
-    <div><span>N° sociétaire</span>4512 8730 9</div>
-    <div><span>Agence de rattachement</span>Orléans Centre</div>
-    <div><span>Mobile</span>06 12 34 56 78</div>
-    <div><span>E-mail</span>louis.dubois@email.fr</div>
+  <div class="meta">
+    <span><svg class="i s"><use href="#i-home"/></svg>Habitation · Maison</span>
+    <span><svg class="i s"><use href="#i-car"/></svg>Auto · Tous risques</span>
+    <span><svg class="i s"><use href="#i-heart"/></svg>Santé · Famille</span>
+    <span><svg class="i s"><use href="#i-euro"/></svg>Cotisations à jour</span>
   </div>
-  <div class="ctr">
-    <span>🚗 Auto · Tous risques</span>
-    <span>🏠 Habitation · Maison</span>
-    <span>🩺 Santé · Formule famille</span>
-  </div>
+  <div class="svi"><svg class="i s"><use href="#i-info"/></svg><span>Motif sélectionné sur le serveur vocal : <b>Sinistre habitation</b></span></div>
 </div>
 
-<!-- 1. ACCUEILLIR -->
-<div class="sec">
-  <h2><span class="n">1</span>Accueillir</h2>
-  <div class="lbl">Voix</div>
-  <div class="say">« Groupama, bonjour Monsieur Dubois ! Je suis à votre écoute, que puis-je faire pour vous ? »</div>
-  <div class="lbl">Écrit (chat, e-mail, messagerie)</div>
-  <div class="say">« Bonjour Monsieur Dubois, merci pour votre message. Je prends en charge votre demande et je vous accompagne. »</div>
+<!-- ÉTAPES -->
+<div class="steps" id="steps">
+  <button data-p="0" class="act"><svg class="i"><use href="#i-hand"/></svg><span>Accueil</span></button>
+  <button data-p="1"><svg class="i"><use href="#i-shield"/></svg><span>Identité</span></button>
+  <button data-p="2"><svg class="i"><use href="#i-search"/></svg><span>Besoin</span></button>
+  <button data-p="3"><svg class="i"><use href="#i-tool"/></svg><span>Traitement</span><i class="cnt" id="cnt"></i></button>
+  <button data-p="4"><svg class="i"><use href="#i-flag"/></svg><span>Clôture</span></button>
 </div>
 
-<!-- 2. IDENTIFIER -->
-<div class="sec">
-  <h2><span class="n">2</span>Identifier le sociétaire</h2>
-  <ul class="chk" id="chk">
-    <li><span class="bx">✓</span><span><b>Nom et prénom</b></span><span class="v">Louis Dubois</span></li>
-    <li><span class="bx">✓</span><span><b>N° sociétaire</b> ou n° de contrat</span><span class="v">4512 8730 9</span></li>
-    <li><span class="bx">✓</span><span><b>Contrôle de sécurité</b> : date de naissance ou code postal</span><span class="v">45000</span></li>
-  </ul>
-  <div class="say" style="margin-top:8px">« Pour accéder à votre dossier, pouvez-vous me confirmer votre date de naissance et votre code postal, s'il vous plaît ? »</div>
-  <div class="hint">🔒 Ne demandez jamais de mot de passe ni de code reçu par SMS.</div>
-</div>
+<div class="panel">
 
-<!-- 3. COMPRENDRE -->
-<div class="sec">
-  <h2><span class="n">3</span>Comprendre la demande</h2>
-  <div style="margin-bottom:8px;color:var(--mut)">Sélectionnez le motif du contact :</div>
-  <div class="chips" id="motifs">
-    <button class="chip" data-m="sinistre">🚨 Sinistre</button>
-    <button class="chip" data-m="attestation">📄 Attestation</button>
-    <button class="chip" data-m="modif">✏️ Modification de contrat</button>
-    <button class="chip" data-m="devis">💡 Devis</button>
-    <button class="chip" data-m="cotis">💳 Cotisation / paiement</button>
-    <button class="chip" data-m="reclam">😠 Réclamation</button>
-    <button class="chip" data-m="resil">🚪 Résiliation</button>
-  </div>
-  <div class="lbl">Phrase suggérée</div>
-  <div class="say" id="phrase" style="color:var(--mut)">Aucun motif sélectionné.</div>
-  <div class="hint" id="conseil"></div>
-</div>
-
-<!-- 4. TRAITER -->
-<div class="sec">
-  <h2><span class="n">4</span>Traiter la demande</h2>
-  <div id="acts" class="acts"><div class="empty">Choisissez un motif à l'étape 3 pour afficher les actions recommandées.</div></div>
-
-  <div class="lbl" style="margin-top:14px">Actions transverses</div>
-  <div class="acts">
-    <div class="act" id="a-rappel">
-      <div class="ic">📞</div>
-      <div class="tx"><b>Planifier un rappel</b>
-        <div class="row" style="margin-top:4px">
-          <select id="creneau"><option>Demain · 9h – 12h</option><option>Demain · 14h – 17h</option><option>Lundi · 9h – 12h</option><option>Lundi · 17h – 19h</option></select>
-        </div>
-        <span></span>
-      </div>
-      <button class="btn" data-x="rappel">Planifier</button>
+  <!-- 1. ACCUEIL -->
+  <div class="pane on">
+    <div class="seg" id="canal">
+      <button class="on" data-c="voix"><svg class="i s"><use href="#i-phone"/></svg>Voix</button>
+      <button data-c="ecrit"><svg class="i s"><use href="#i-sms"/></svg>Écrit</button>
     </div>
-    <div class="act" id="a-transfert">
-      <div class="ic">🔀</div>
-      <div class="tx"><b>Transférer la demande</b>
-        <div class="row" style="margin-top:4px">
-          <select id="service"><option value="Agence Orléans Centre">Agence Orléans Centre</option><option value="Service Sinistres">Service Sinistres</option><option value="Service Santé">Service Santé</option><option value="Service Recouvrement">Service Recouvrement</option><option value="Service Réclamations">Service Réclamations</option></select>
-        </div>
-        <span></span>
-      </div>
-      <button class="btn" data-x="transfert">Transférer</button>
+    <div class="say"><span id="accueil">« Groupama bonjour, Monsieur Dubois ! Je vois que vous nous appelez au sujet d'un sinistre sur votre habitation. Je suis là pour vous aider. »</span><button class="cp" title="Copier"><svg class="i s"><use href="#i-copy"/></svg></button></div>
+    <div class="note"><svg class="i s"><use href="#i-mic"/></svg><span>Si le message d'information n'a pas été diffusé : « Cet appel peut être enregistré à des fins de qualité et de formation. »</span></div>
+    <div class="note"><svg class="i s"><use href="#i-hist"/></svg><span>Dernier contact : demande d'attestation auto via l'appli Groupama, traitée.</span></div>
+  </div>
+
+  <!-- 2. IDENTITÉ -->
+  <div class="pane">
+    <div class="lbl">Vérifications obligatoires</div>
+    <ul class="chk" id="chk">
+      <li><span class="bx"><svg class="i"><use href="#i-check"/></svg></span><span class="q">Nom et prénom du titulaire</span><span class="v">Louis Dubois</span></li>
+      <li><span class="bx"><svg class="i"><use href="#i-check"/></svg></span><span class="q">Date de naissance</span><span class="v">12/03/1981</span></li>
+      <li><span class="bx"><svg class="i"><use href="#i-check"/></svg></span><span class="q">Code postal du domicile</span><span class="v">45000</span></li>
+    </ul>
+    <div class="lbl">À dire</div>
+    <div class="say">« Pour sécuriser l'accès à votre dossier, pouvez-vous me confirmer votre date de naissance et le code postal de votre domicile ? »<button class="cp" title="Copier"><svg class="i s"><use href="#i-copy"/></svg></button></div>
+    <div class="note w"><svg class="i s"><use href="#i-lock"/></svg><span>Ne demandez jamais de mot de passe, de code reçu par SMS ni de numéro de carte bancaire.</span></div>
+  </div>
+
+  <!-- 3. BESOIN -->
+  <div class="pane">
+    <div class="lbl">Motif du contact</div>
+    <div class="chips" id="motifs"></div>
+    <div class="lbl">Questions à poser</div>
+    <ul class="chk" id="qs"></ul>
+    <div class="lbl">Reformuler</div>
+    <div class="say"><span id="refo"></span><button class="cp" title="Copier"><svg class="i s"><use href="#i-copy"/></svg></button></div>
+  </div>
+
+  <!-- 4. TRAITEMENT -->
+  <div class="pane">
+    <div class="say"><span id="trt"></span><button class="cp" title="Copier"><svg class="i s"><use href="#i-copy"/></svg></button></div>
+    <div class="lbl">Actions recommandées</div>
+    <div class="acts" id="acts"></div>
+    <div class="note" id="savoir"></div>
+    <div class="lbl">Si besoin</div>
+    <div class="acts" id="acts2"></div>
+  </div>
+
+  <!-- 5. CLÔTURE -->
+  <div class="pane">
+    <div class="say">« Pour récapituler, Monsieur Dubois : <span id="recapTxt">[demande, action réalisée, prochaine étape]</span>. Avez-vous d'autres questions ? Merci de votre confiance et bonne journée. »<button class="cp" title="Copier"><svg class="i s"><use href="#i-copy"/></svg></button></div>
+    <div class="lbl">Actions réalisées</div>
+    <ul class="log" id="log"><li class="em">Aucune action réalisée.</li></ul>
+    <div class="lbl">Résultat</div>
+    <div class="chips" id="res">
+      <button class="chip" data-r="Traité au premier contact"><svg class="i s"><use href="#i-checkc"/></svg>Traité</button>
+      <button class="chip" data-r="Suivi en cours"><svg class="i s"><use href="#i-hist"/></svg>Suivi en cours</button>
+      <button class="chip" data-r="Transféré"><svg class="i s"><use href="#i-transfer"/></svg>Transféré</button>
     </div>
+    <div class="lbl">Synthèse (enregistrée dans la fiche)</div>
+    <textarea id="note"></textarea>
+    <div class="ok" id="ok"><svg class="i"><use href="#i-checkc"/></svg><span><b>Interaction clôturée.</b> Synthèse enregistrée dans la fiche de Louis Dubois.</span></div>
+  </div>
+
+  <div class="nav">
+    <button class="btn gh" id="prev"><svg class="i s"><use href="#i-left"/></svg>Précédent</button>
+    <button class="btn" id="next">Suivant<svg class="i s"><use href="#i-right"/></svg></button>
   </div>
 </div>
 
-<!-- 5. CONCLURE -->
-<div class="sec">
-  <h2><span class="n">5</span>Conclure</h2>
-  <div class="say">« Pour résumer, Monsieur Dubois : <i>[demande, action réalisée, prochaine étape]</i>. Puis-je faire autre chose pour vous ? Merci de votre confiance et très bonne journée ! »</div>
-
-  <div class="lbl">Actions réalisées</div>
-  <ul class="log" id="log"><li style="color:var(--mut)">Aucune action pour le moment.</li></ul>
-
-  <div class="lbl">Résultat de l'interaction</div>
-  <div class="chips" id="res">
-    <button class="chip" data-r="Demande traitée">✅ Demande traitée</button>
-    <button class="chip" data-r="Suivi en cours">⏳ Suivi en cours</button>
-    <button class="chip" data-r="Transférée">🔀 Transférée</button>
-  </div>
-
-  <div class="lbl">Synthèse</div>
-  <textarea id="note" placeholder="La synthèse se complète automatiquement avec les actions réalisées."></textarea>
-
-  <div class="row" style="margin-top:10px">
-    <button class="btn ghost" id="recap">✉️ Envoyer le récapitulatif au client</button>
-    <button class="btn" id="cloture">Clôturer l'interaction</button>
-  </div>
-  <div class="closed" id="closed"><b>✅ Interaction clôturée</b><span id="closedTxt"></span></div>
 </div>
-
-</div>
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast"><svg class="i"><use href="#i-checkc"/></svg><span></span></div>
 
 <script>
 (function(){
-var $=function(s){return document.querySelector(s);};
-var toastT;
-function toast(t){var e=$("#toast");e.textContent=t;e.classList.add("show");clearTimeout(toastT);toastT=setTimeout(function(){e.classList.remove("show");},2400);}
-function step(n){var s=document.querySelector('#steps span[data-s="'+n+'"]');if(s)s.classList.add("ok");}
-step(1);
+var $=function(s){return document.querySelector(s);},$$=function(s){return [].slice.call(document.querySelectorAll(s));};
+function ico(n,c){return '<svg class="i'+(c?' '+c:'')+'"><use href="#i-'+n+'"/></svg>';}
+var tT;function toast(t){var e=$("#toast");e.lastChild.textContent=t;e.classList.add("show");clearTimeout(tT);tT=setTimeout(function(){e.classList.remove("show");},2300);}
 
-/* --- journal --- */
-var done=[];
-function log(t){
-  done.push(t);
-  var ul=$("#log");ul.innerHTML="";
-  done.forEach(function(d){var li=document.createElement("li");li.innerHTML="<b>✓</b><span></span>";li.lastChild.textContent=d;ul.appendChild(li);});
-  majNote();step(4);
-}
-var motifTxt="",resTxt="";
-function majNote(){
-  var t="Motif : "+(motifTxt||"—")+"\n";
-  if(done.length)t+="Actions : "+done.join(" ; ")+"\n";
-  if(resTxt)t+="Résultat : "+resTxt;
-  $("#note").value=t.trim();
-}
+var MAIL="louis.dubois@email.fr",TEL="06 12 34 56 78";
 
-/* --- identification --- */
-var items=document.querySelectorAll("#chk li");
-items.forEach(function(li){li.addEventListener("click",function(){
-  li.classList.toggle("on");
-  var all=[].every.call(items,function(x){return x.classList.contains("on");});
-  var s=document.querySelector('#steps span[data-s="2"]');
-  if(all){s.classList.add("ok");toast("Identité du sociétaire vérifiée");}else s.classList.remove("ok");
-});});
-
-/* --- motifs --- */
+/* ---------- motifs ---------- */
 var M={
-sinistre:{l:"Sinistre",p:"« Je suis désolé pour ce qui vous arrive, Monsieur Dubois. Avant tout, tout le monde va bien ? Je vais ouvrir votre déclaration et vous guider pour la suite. »",c:"Précisez : date, lieu, circonstances, tiers impliqué, photos disponibles.",
- a:[["📝","Ouvrir la déclaration de sinistre","Auto · Tous risques","Ouvrir","Déclaration ouverte · dossier n° SIN-458 213"],
-    ["💬","Envoyer le lien de suivi par SMS","Au 06 12 34 56 78","Envoyer","SMS envoyé au 06 12 34 56 78"],
-    ["🔧","Proposer un réparateur agréé","Garage partenaire le plus proche","Proposer","Coordonnées du réparateur envoyées par SMS"]]},
-attestation:{l:"Attestation",p:"« Bien sûr, je vous envoie votre attestation tout de suite. Vous la préférez par e-mail ou par SMS ? »",c:"L'attestation est aussi disponible dans l'espace client et l'application Groupama.",
- a:[["📧","Envoyer l'attestation par e-mail","louis.dubois@email.fr","Envoyer","Attestation envoyée à louis.dubois@email.fr"],
-    ["💬","Envoyer le lien de téléchargement par SMS","Au 06 12 34 56 78","Envoyer","Lien envoyé par SMS au 06 12 34 56 78"]]},
-modif:{l:"Modification de contrat",p:"« Je m'en occupe. Pouvez-vous me préciser ce qui change : adresse, véhicule, conducteur, garanties ? »",c:"Toute modification de garantie fait l'objet d'un avenant à signer.",
- a:[["🏷️","Mettre à jour les coordonnées","Adresse, téléphone, e-mail","Mettre à jour","Coordonnées mises à jour dans la fiche"],
-    ["✍️","Envoyer l'avenant en signature électronique","Par e-mail à louis.dubois@email.fr","Envoyer","Avenant envoyé pour signature électronique"]]},
-devis:{l:"Devis",p:"« Avec plaisir. Je vous prépare une proposition adaptée à votre situation. Quel est votre besoin exactement ? »",c:"Pensez au multi-équipement : Louis Dubois détient déjà 3 contrats.",
- a:[["💡","Générer et envoyer le devis par e-mail","louis.dubois@email.fr","Envoyer","Devis envoyé à louis.dubois@email.fr"],
-    ["📅","Proposer un rendez-vous en agence","Agence Orléans Centre","Proposer","Invitation au rendez-vous envoyée par e-mail"]]},
-cotis:{l:"Cotisation / paiement",p:"« Je regarde votre situation. Je peux vous renvoyer votre échéancier ou vous proposer un paiement en ligne sécurisé. »",c:"Ne prenez jamais de coordonnées bancaires à l'oral : utilisez le lien sécurisé.",
- a:[["📊","Envoyer l'échéancier par e-mail","louis.dubois@email.fr","Envoyer","Échéancier envoyé par e-mail"],
-    ["🔐","Envoyer un lien de paiement sécurisé","Par SMS au 06 12 34 56 78","Envoyer","Lien de paiement envoyé par SMS"],
-    ["🏦","Envoyer un mandat SEPA (changement de RIB)","Signature électronique","Envoyer","Mandat SEPA envoyé pour signature"]]},
-reclam:{l:"Réclamation",p:"« Je comprends votre mécontentement et je vous remercie de nous en faire part. Je prends en charge votre réclamation : pouvez-vous me décrire la situation ? »",c:"Écouter, reformuler, ne pas se justifier. Accusé de réception sous 48 h ouvrées.",
- a:[["📂","Ouvrir une réclamation","Service Réclamations","Ouvrir","Réclamation enregistrée · n° REC-77 120"],
-    ["📧","Envoyer l'accusé de réception","louis.dubois@email.fr","Envoyer","Accusé de réception envoyé par e-mail"]]},
-resil:{l:"Résiliation",p:"« Je prends note de votre souhait. Puis-je vous demander ce qui motive votre décision ? Nous avons peut-être une solution plus adaptée. »",c:"Identifiez le motif (tarif, service, déménagement) avant d'enregistrer la demande.",
- a:[["🤝","Proposer un rendez-vous avec le conseiller agence","Étude de l'offre personnalisée","Proposer","Rendez-vous proposé par e-mail"],
-    ["📝","Enregistrer la demande de résiliation","Confirmation par e-mail","Enregistrer","Demande enregistrée · confirmation envoyée par e-mail"]]}
+hab:{l:"Sinistre habitation",i:"drop",
+ q:["Date et heure de la découverte","Nature : dégât des eaux, incendie, vol, bris de glace…","Origine identifiée (fuite chez vous, chez un voisin) ?","Mesures prises : arrivée d'eau coupée, logement habitable ?","Photos et factures disponibles ?"],
+ r:"« Si je résume, vous avez constaté un dégât des eaux à votre domicile et vous souhaitez le déclarer. C'est bien cela ? »",
+ t:"« Je vous ouvre la déclaration maintenant. Je vous envoie ensuite le constat amiable et un lien pour déposer vos photos. Si la fuite n'est pas réparée, je peux vous envoyer un plombier. »",
+ s:"Déclaration sous 5 jours ouvrés (2 jours pour un vol). Dommages jusqu'à 1 600 € HT : pas d'expert en général (convention IRSI).",
+ a:[["file","Ouvrir la déclaration de sinistre","Contrat Habitation · Maison","Ouvrir","Déclaration ouverte · dossier n° 26-H-458213"],
+    ["tool","Missionner un plombier (assistance)","Intervention sous 3 h, 24h/24","Missionner","Plombier missionné · rappel du prestataire sous 30 min"],
+    ["mail","Envoyer le constat amiable dégât des eaux","Par e-mail · "+MAIL,"Envoyer","Constat amiable envoyé à "+MAIL],
+    ["camera","Envoyer le lien de dépôt des photos","Par SMS · "+TEL,"Envoyer","Lien de dépôt des photos envoyé par SMS"]]},
+auto:{l:"Sinistre auto",i:"car",
+ q:["Personne blessée ?","Lieu, date et circonstances de l'accident","Tiers impliqué : constat amiable ou e-constat rempli ?","Véhicule en état de rouler ?","Besoin d'un véhicule de remplacement ?"],
+ r:"« Si je comprends bien, vous avez eu un accident avec votre Peugeot 3008 et vous souhaitez le déclarer. C'est bien cela ? »",
+ t:"« Je déclare le sinistre tout de suite. Si votre véhicule ne roule pas, je vous envoie une dépanneuse et je vous oriente vers un garage partenaire, sans avance de frais. »",
+ s:"Déclaration sous 5 jours ouvrés. Garage partenaire : pas d'avance de frais, hors franchise.",
+ a:[["file","Ouvrir la déclaration de sinistre","Contrat Auto · Tous risques","Ouvrir","Déclaration ouverte · dossier n° 26-A-731045"],
+    ["truck","Envoyer un dépanneur","Groupama Assistance, 24h/24","Envoyer","Dépannage déclenché · arrivée estimée 45 min"],
+    ["tool","Orienter vers un garage partenaire","Adresse envoyée par SMS","Orienter","Coordonnées du garage partenaire envoyées par SMS"],
+    ["car","Réserver un véhicule de remplacement","Selon garanties du contrat","Réserver","Véhicule de remplacement réservé"]]},
+att:{l:"Attestation",i:"file",
+ q:["Contrat concerné : habitation, auto, santé","Usage : bailleur, école, location, administration","Canal souhaité : e-mail ou SMS"],
+ r:"« Vous avez besoin d'une attestation pour votre contrat. C'est bien cela ? »",
+ t:"« Je vous l'envoie tout de suite. Vous la retrouverez aussi à tout moment dans votre espace client et l'appli Groupama. »",
+ s:"Auto : la carte verte n'existe plus, le Mémo véhicule assuré est envoyé à la place.",
+ a:[["home","Attestation habitation","Par e-mail · "+MAIL,"Envoyer","Attestation habitation envoyée par e-mail"],
+    ["car","Mémo véhicule assuré","Par e-mail · "+MAIL,"Envoyer","Mémo véhicule assuré envoyé par e-mail"],
+    ["sms","Lien vers l'espace client","Par SMS · "+TEL,"Envoyer","Lien espace client envoyé par SMS"]]},
+modif:{l:"Modification de contrat",i:"edit",
+ q:["Nature : déménagement, nouveau véhicule, conducteur, garanties","Date d'effet souhaitée","Impact sur la cotisation présenté au sociétaire"],
+ r:"« Vous souhaitez modifier votre contrat suite à un changement de situation. C'est bien cela ? »",
+ t:"« Je fais la modification et je vous envoie l'avenant à signer en ligne. Il prendra effet dès votre signature. »",
+ s:"Toute modification de garantie donne lieu à un avenant signé électroniquement.",
+ a:[["user","Mettre à jour la fiche sociétaire","Adresse, téléphone, e-mail","Mettre à jour","Fiche sociétaire mise à jour"],
+    ["edit","Envoyer l'avenant en signature électronique","Par e-mail · "+MAIL,"Envoyer","Avenant envoyé pour signature électronique"]]},
+cotis:{l:"Cotisation",i:"card",
+ q:["Échéance concernée et montant","Changement de RIB ou de mode de paiement ?","Difficulté de paiement passagère ?"],
+ r:"« Vous avez une question sur votre cotisation. C'est bien cela ? »",
+ t:"« Je regarde votre échéancier. Je peux vous envoyer un lien de paiement sécurisé ou mettre à jour votre prélèvement. »",
+ s:"Aucune coordonnée bancaire ne se prend à l'oral : utilisez le lien sécurisé ou le mandat SEPA.",
+ a:[["file","Envoyer l'échéancier","Par e-mail · "+MAIL,"Envoyer","Échéancier envoyé par e-mail"],
+    ["card","Lien de paiement sécurisé","Par SMS · "+TEL,"Envoyer","Lien de paiement envoyé par SMS"],
+    ["edit","Mandat SEPA (nouveau RIB)","Signature électronique","Envoyer","Mandat SEPA envoyé pour signature"]]},
+recl:{l:"Réclamation",i:"alert",
+ q:["Objet du mécontentement","Contrat ou dossier concerné","Attente du sociétaire"],
+ r:"« Je comprends votre mécontentement et je vous remercie de nous en faire part. Si je résume : [objet]. C'est bien cela ? »",
+ t:"« J'enregistre votre réclamation. Vous recevrez un accusé de réception, puis une réponse dans les meilleurs délais. »",
+ s:"Accusé de réception sous 10 jours ouvrés, réponse sous 2 mois maximum. Ensuite : recours au médiateur.",
+ a:[["alert","Enregistrer la réclamation","Service Réclamations","Enregistrer","Réclamation enregistrée · n° REC-77120"],
+    ["mail","Envoyer l'accusé de réception","Par e-mail · "+MAIL,"Envoyer","Accusé de réception envoyé par e-mail"]]},
+resil:{l:"Résiliation",i:"exit",
+ q:["Contrat concerné","Motif : tarif, déménagement, vente du véhicule, service","Ancienneté du contrat (plus d'un an : résiliation à tout moment)"],
+ r:"« Vous envisagez de résilier votre contrat. Puis-je vous demander ce qui motive votre décision ? »",
+ t:"« Avant d'enregistrer votre demande, je peux vous proposer un rendez-vous avec votre conseiller pour revoir votre contrat ensemble. »",
+ s:"Après un an de contrat (auto, habitation), la résiliation est possible à tout moment, effet sous 1 mois.",
+ a:[["cal","Proposer un rendez-vous en agence","Agence Orléans Centre","Proposer","Rendez-vous proposé · invitation envoyée par e-mail"],
+    ["exit","Enregistrer la demande de résiliation","Confirmation par e-mail","Enregistrer","Demande de résiliation enregistrée"]]}
 };
+var X=[
+ ["cal","Planifier un rappel",'<select id="cr"><option>Aujourd\'hui · 17h – 19h</option><option>Demain · 9h – 12h</option><option>Demain · 14h – 17h</option></select>',"Planifier",function(){return "Rappel planifié · "+$("#cr").value;}],
+ ["transfer","Transférer l'appel",'<select id="sv"><option>Agence Orléans Centre</option><option>Gestion sinistres</option><option>Groupama Assistance</option><option>Service Réclamations</option></select>',"Transférer",function(){return "Appel transféré · "+$("#sv").value;}]
+];
 
-function runAct(card,btn,okTxt,label){
-  if(card.classList.contains("done")||card.classList.contains("run"))return;
-  card.classList.add("run");btn.disabled=true;btn.textContent="⏳ En cours…";
-  setTimeout(function(){
-    card.classList.remove("run");card.classList.add("done");
-    btn.textContent="✅ Validé";
-    card.querySelector(".tx > span").textContent=okTxt;
-    card.querySelector(".ic").textContent="✓";
-    toast("✅ "+okTxt);log(okTxt);
-  },900);
+/* ---------- navigation ---------- */
+var cur=0,panes=$$(".pane"),tabs=$$("#steps button");
+function go(n){
+  cur=Math.max(0,Math.min(4,n));
+  panes.forEach(function(p,i){p.classList.toggle("on",i===cur);});
+  tabs.forEach(function(t,i){t.classList.toggle("act",i===cur);if(i<cur)t.classList.add("done");});
+  $("#prev").disabled=cur===0;
+  var nx=$("#next");
+  if(cur===4){nx.innerHTML=ico("flag","s")+"Clôturer l'interaction";}
+  else nx.innerHTML=["Identifier le sociétaire","Qualifier le besoin","Traiter la demande","Conclure"][cur]+ico("right","s");
+  if(closed){nx.disabled=true;nx.innerHTML=ico("check","s")+"Clôturée";}
+}
+tabs.forEach(function(t,i){t.addEventListener("click",function(){go(i);});});
+$("#prev").addEventListener("click",function(){go(cur-1);});
+$("#next").addEventListener("click",function(){if(cur<4)go(cur+1);else cloturer();});
+
+/* ---------- accueil ---------- */
+var ACC={voix:"« Groupama bonjour, Monsieur Dubois ! Je vois que vous nous appelez au sujet d'un sinistre sur votre habitation. Je suis là pour vous aider. »",
+ecrit:"« Bonjour Monsieur Dubois, merci pour votre message. Je prends en charge votre demande concernant votre sinistre habitation. »"};
+$$("#canal button").forEach(function(b){b.addEventListener("click",function(){
+  $$("#canal button").forEach(function(x){x.classList.remove("on");});b.classList.add("on");$("#accueil").textContent=ACC[b.dataset.c];
+});});
+
+/* ---------- copier ---------- */
+$$(".cp").forEach(function(b){b.addEventListener("click",function(){
+  var t=b.parentNode.textContent.trim();
+  try{navigator.clipboard.writeText(t);}catch(e){}
+  toast("Texte copié");
+});});
+
+/* ---------- identité ---------- */
+function bindChk(ul,cb){$$(ul+" li").forEach(function(li){li.addEventListener("click",function(){li.classList.toggle("on");if(cb)cb();});});}
+bindChk("#chk",function(){
+  var all=$$("#chk li").every(function(x){return x.classList.contains("on");});
+  var vb=$("#vb");vb.classList.toggle("on",all);
+  vb.innerHTML=all?ico("shield","s")+"<span>Identité vérifiée</span>":ico("lock","s")+"<span>À vérifier</span>";
+  if(all)toast("Identité du sociétaire vérifiée");
+});
+
+/* ---------- actions ---------- */
+var done=[],motif="hab",res="";
+function row(a,dyn){
+  var d=document.createElement("div");d.className="act";
+  d.innerHTML='<div class="ic">'+ico(a[0])+'</div><div class="tx"><b></b>'+(dyn?a[2]:"")+'<span></span></div><button class="go"></button>';
+  d.querySelector("b").textContent=a[1];
+  if(!dyn)d.querySelector(".tx span").textContent=a[2];
+  var btn=d.querySelector(".go");btn.textContent=a[3];
+  btn.addEventListener("click",function(){
+    if(d.classList.contains("done")||d.classList.contains("run"))return;
+    var ok=typeof a[4]==="function"?a[4]():a[4];
+    d.classList.add("run");btn.innerHTML='<i class="spin"></i>';
+    setTimeout(function(){
+      d.classList.remove("run");d.classList.add("done");
+      btn.innerHTML=ico("check","s")+"Fait";
+      var s=d.querySelector(".tx span");s.textContent=ok;
+      var sel=d.querySelector("select");if(sel)sel.style.display="none";
+      d.querySelector(".ic").innerHTML=ico("check");
+      done.push(ok);majLog();toast(ok);
+    },850);
+  });
+  return d;
+}
+X.forEach(function(a){$("#acts2").appendChild(row(a,true));});
+
+function majLog(){
+  var ul=$("#log");ul.innerHTML="";
+  if(!done.length){ul.innerHTML='<li class="em">Aucune action réalisée.</li>';}
+  done.forEach(function(t){var li=document.createElement("li");li.innerHTML=ico("check","s")+"<span></span>";li.lastChild.textContent=t;ul.appendChild(li);});
+  var c=$("#cnt");c.textContent=done.length;c.style.display=done.length?"inline-flex":"none";
+  majNote();
+}
+function majNote(){
+  if(closed)return;
+  var t="Motif : "+M[motif].l;
+  if(done.length)t+="\nActions : "+done.join(" ; ");
+  if(res)t+="\nRésultat : "+res;
+  $("#note").value=t;
+  $("#recapTxt").textContent=done.length?M[motif].l.toLowerCase()+", "+done.map(function(x){return x.split(" · ")[0].toLowerCase();}).join(", "):"[demande, action réalisée, prochaine étape]";
 }
 
-document.querySelectorAll("#motifs .chip").forEach(function(b){b.addEventListener("click",function(){
-  document.querySelectorAll("#motifs .chip").forEach(function(x){x.classList.remove("on");});
-  b.classList.add("on");
-  var m=M[b.dataset.m];motifTxt=m.l;
-  var p=$("#phrase");p.style.color="";p.textContent=m.p;
-  $("#conseil").textContent="💡 "+m.c;
-  var box=$("#acts");box.innerHTML="";
-  m.a.forEach(function(a){
-    var d=document.createElement("div");d.className="act";
-    d.innerHTML='<div class="ic"></div><div class="tx"><b></b><span></span></div><button class="btn"></button>';
-    d.querySelector(".ic").textContent=a[0];
-    d.querySelector("b").textContent=a[1];
-    d.querySelector(".tx > span").textContent=a[2];
-    var btn=d.querySelector("button");btn.textContent=a[3];
-    btn.addEventListener("click",function(){runAct(d,btn,a[4]);});
-    box.appendChild(d);
-  });
-  step(3);majNote();
+/* ---------- motif ---------- */
+Object.keys(M).forEach(function(k){
+  var b=document.createElement("button");b.className="chip";b.dataset.m=k;
+  b.innerHTML=ico(M[k].i,"s")+"<span></span>";b.lastChild.textContent=M[k].l;
+  b.addEventListener("click",function(){setMotif(k);});
+  $("#motifs").appendChild(b);
+});
+function setMotif(k){
+  motif=k;var m=M[k];
+  $$("#motifs .chip").forEach(function(c){c.classList.toggle("on",c.dataset.m===k);});
+  var q=$("#qs");q.innerHTML="";
+  m.q.forEach(function(t){var li=document.createElement("li");li.innerHTML='<span class="bx">'+ico("check")+'</span><span class="q"></span>';li.lastChild.textContent=t;q.appendChild(li);});
+  bindChk("#qs");
+  $("#refo").textContent=m.r;$("#trt").textContent=m.t;
+  $("#savoir").innerHTML=ico("info","s")+"<span></span>";$("#savoir").lastChild.textContent=m.s;
+  var a=$("#acts");a.innerHTML="";m.a.forEach(function(x){a.appendChild(row(x));});
+  majNote();
+}
+setMotif("hab");
+
+/* ---------- clôture ---------- */
+$$("#res .chip").forEach(function(b){b.addEventListener("click",function(){
+  $$("#res .chip").forEach(function(x){x.classList.remove("on");});b.classList.add("on");res=b.dataset.r;majNote();
 });});
-
-/* --- actions transverses --- */
-document.querySelector('[data-x="rappel"]').addEventListener("click",function(){
-  var c=$("#creneau");runAct($("#a-rappel"),this,"Rappel planifié · "+c.value);c.disabled=true;
-});
-document.querySelector('[data-x="transfert"]').addEventListener("click",function(){
-  var s=$("#service");runAct($("#a-transfert"),this,"Demande transférée · "+s.value);s.disabled=true;
-});
-
-/* --- conclusion --- */
-document.querySelectorAll("#res .chip").forEach(function(b){b.addEventListener("click",function(){
-  document.querySelectorAll("#res .chip").forEach(function(x){x.classList.remove("on");});
-  b.classList.add("on");resTxt=b.dataset.r;majNote();
-});});
-
-$("#recap").addEventListener("click",function(){
-  var b=this;if(b.disabled)return;b.disabled=true;b.textContent="⏳ Envoi…";
-  setTimeout(function(){b.textContent="✅ Récapitulatif envoyé";toast("✅ Récapitulatif envoyé à louis.dubois@email.fr");log("Récapitulatif envoyé par e-mail");},900);
-});
-
-$("#cloture").addEventListener("click",function(){
-  var b=this;
-  if(!resTxt){toast("Sélectionnez le résultat de l'interaction");return;}
-  if(b.disabled)return;b.disabled=true;b.textContent="⏳ Enregistrement…";
+var closed=false;
+function cloturer(){
+  if(!res){toast("Sélectionnez le résultat de l'interaction");return;}
+  var nx=$("#next");nx.disabled=true;nx.innerHTML='<i class="spin"></i>Enregistrement';
   setTimeout(function(){
-    b.textContent="✅ Clôturée";step(5);
-    $("#closedTxt").textContent="Synthèse enregistrée dans la fiche sociétaire de Louis Dubois · "+resTxt+".";
-    $("#closed").style.display="block";
-    $("#note").readOnly=true;
-    toast("✅ Interaction clôturée et synthèse enregistrée");
+    closed=true;$("#next").classList.add("fin");$("#note").readOnly=true;$("#ok").style.display="flex";
+    tabs[4].classList.add("done");go(4);toast("Interaction clôturée et synthèse enregistrée");
   },900);
-});
+}
+go(0);
 })();
 </script>
 </body>
