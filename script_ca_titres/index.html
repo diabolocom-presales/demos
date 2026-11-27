@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Script conseiller - Crédit Agricole Titres</title>
+<style>
+/* 40px entre chaque partie */
+body>div>div{margin-bottom:40px !important}
+body>div>div:last-child{margin-bottom:0 !important}
+/* en-tête : logo, titre et bandeau restent groupés */
+body>div>div:nth-child(1),body>div>div:nth-child(2){margin-bottom:0 !important}
+</style>
+</head>
+<body style="margin:0;padding:24px;background:#F7F7F7;">
+<div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.5;color:#26323a;background:#F7F7F7;max-width:640px;">
+
+<!-- EN-TÊTE -->
+<div style="padding:4px 0 12px;display:flex;align-items:center;gap:10px;">
+  <div style="width:38px;height:38px;border-radius:8px;background:#017F81;color:#ffffff;font-weight:bold;font-size:15px;display:flex;align-items:center;justify-content:center;">CA</div>
+  <div style="line-height:1.15;"><div style="font-weight:bold;font-size:16px;color:#017F81;">Crédit Agricole Titres</div><div style="font-size:11px;color:#6b7780;">Services titres &amp; bourse</div></div>
+</div>
+<div style="background:#017F81;border-radius:6px 6px 0 0;padding:14px 16px;">
+  <div style="color:#cdeaea;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;">Script conseiller · voix &amp; écrit</div>
+  <div style="color:#ffffff;font-size:17px;font-weight:bold;margin-top:2px;">Compte-titres, PEA &amp; opérations de bourse</div>
+</div>
+<div style="background:#ffffff;box-shadow:0 1px 4px rgba(0,0,0,.08);border-radius:0 0 6px 6px;padding:9px 16px;margin-bottom:14px;font-size:12px;color:#015f61;">
+  <b>Ordres de bourse</b> · <b>Conservation</b> · <b>Opérations sur titres</b> · <b>Fiscalité</b> · <b>Transferts</b>
+</div>
+
+<!-- 0. AVANT DE RÉPONDRE -->
+<div style="background:#ffffff;border:1px solid #017F81;border-radius:6px;padding:10px 14px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.08);">
+  <b style="color:#017F81;">👀 Avant de répondre</b><br>
+  Consultez la fiche client et l'historique : le motif du contact et les informations déjà collectées (SVI, bot, formulaire) y sont notés. Ne reposez pas les mêmes questions.<br>
+  <span style="color:#6b7780;font-size:12px;">🔒 Ne demandez jamais de code d'accès, mot de passe ou code de validation, quel que soit le canal.</span>
+</div>
+
+<!-- 1. ACCUEIL -->
+<div style="border-left:4px solid #017F81;background:#ffffff;box-shadow:0 1px 4px rgba(0,0,0,.08);border-radius:0 6px 6px 0;padding:12px 14px;margin-bottom:12px;">
+  <div style="color:#017F81;font-weight:bold;font-size:14px;margin-bottom:6px;">1 · Accueillir</div>
+  <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#6b7780;margin-bottom:2px;">Voix</div>
+  <div style="background:#F7F7F7;border:1px dashed #b7d6d6;border-radius:4px;padding:8px 10px;margin-bottom:8px;">
+    « Crédit Agricole Titres, <i>[Votre prénom]</i> à votre écoute, bonjour ! Que puis-je faire pour vous ? »
+  </div>
+  <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#6b7780;margin-bottom:2px;">Écrit (chat, e-mail, messagerie)</div>
+  <div style="background:#F7F7F7;border:1px dashed #b7d6d6;border-radius:4px;padding:8px 10px;">
+    « Bonjour <i>[Prénom]</i>, je suis <i>[Votre prénom]</i>, conseiller Crédit Agricole Titres. Merci pour votre message, je prends le relais pour vous accompagner. »
+  </div>
+</div>
+
+<!-- 2. IDENTIFIER -->
+<div style="border-left:4px solid #017F81;background:#ffffff;box-shadow:0 1px 4px rgba(0,0,0,.08);border-radius:0 6px 6px 0;padding:12px 14px;margin-bottom:12px;">
+  <div style="color:#017F81;font-weight:bold;font-size:14px;margin-bottom:6px;">2 · Identifier le client</div>
+  <div style="margin-bottom:6px;color:#015f61;">Si le client n'est pas reconnu automatiquement :</div>
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="font-size:13px;">
+    <tr><td style="padding:3px 0;width:22px;">☐</td><td><b>Nom et prénom</b> du titulaire (ou cotitulaires)</td></tr>
+    <tr><td style="padding:3px 0;">☐</td><td><b>Banque teneur de compte</b> : Caisse régionale ou LCL</td></tr>
+    <tr><td style="padding:3px 0;">☐</td><td><b>Numéro de compte</b> : compte-titres ordinaire ou PEA / PEA-PME</td></tr>
+    <tr><td style="padding:3px 0;">☐</td><td><b>Contrôle de sécurité</b> : date de naissance, code postal ou e-mail</td></tr>
+  </table>
+  <div style="background:#F7F7F7;border:1px dashed #b7d6d6;border-radius:4px;padding:8px 10px;margin-top:8px;">
+    « Pour accéder à votre compte, pouvez-vous me confirmer votre nom, votre banque et le numéro de votre compte-titres ou PEA, s'il vous plaît ? »
+  </div>
+</div>
+
+<!-- 3. COMPRENDRE -->
+<div style="border-left:4px solid #017F81;background:#ffffff;box-shadow:0 1px 4px rgba(0,0,0,.08);border-radius:0 6px 6px 0;padding:12px 14px;margin-bottom:12px;">
+  <div style="color:#017F81;font-weight:bold;font-size:14px;margin-bottom:6px;">3 · Comprendre la demande</div>
+  <div style="margin-bottom:6px;color:#015f61;">À compléter dans l'échange (sans tout demander d'un coup) :</div>
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="font-size:13px;">
+    <tr><td style="padding:3px 0;width:22px;">☐</td><td><b>Motif</b> : ordre, transfert, fiscalité, opération sur titres, succession…</td></tr>
+    <tr><td style="padding:3px 0;">☐</td><td><b>Support</b> : compte-titres, PEA, PEA-PME</td></tr>
+    <tr><td style="padding:3px 0;">☐</td><td><b>Valeur concernée</b> : nom ou code ISIN</td></tr>
+    <tr><td style="padding:3px 0;">☐</td><td><b>Date</b> de l'opération et <b>urgence</b></td></tr>
+  </table>
+  <div style="background:#F7F7F7;border:1px dashed #b7d6d6;border-radius:4px;padding:8px 10px;margin-top:8px;">
+    « Si je comprends bien, votre demande concerne <i>[reformulation]</i> sur votre <i>[compte-titres / PEA]</i>. C'est bien cela ? »
+  </div>
+</div>
+
+<!-- 4. TRAITER -->
+<div style="border-left:4px solid #017F81;background:#ffffff;box-shadow:0 1px 4px rgba(0,0,0,.08);border-radius:0 6px 6px 0;padding:12px 14px;margin-bottom:12px;">
+  <div style="color:#017F81;font-weight:bold;font-size:14px;margin-bottom:6px;">4 · Traiter selon le motif</div>
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="font-size:12.5px;background:#F7F7F7;border-radius:4px;">
+    <tr><td style="padding:6px 8px;color:#015f61;width:38%;border-bottom:1px solid #e6ecec;"><b>Ordre de bourse</b></td><td style="padding:6px 8px;border-bottom:1px solid #e6ecec;">Statut (en cours, exécuté, rejeté), motif de rejet, avis d'opéré</td></tr>
+    <tr><td style="padding:6px 8px;color:#015f61;border-bottom:1px solid #e6ecec;"><b>Transfert de compte / PEA</b></td><td style="padding:6px 8px;border-bottom:1px solid #e6ecec;">Étape du dossier, établissement d'origine ou de destination</td></tr>
+    <tr><td style="padding:6px 8px;color:#015f61;border-bottom:1px solid #e6ecec;"><b>Fiscalité</b></td><td style="padding:6px 8px;border-bottom:1px solid #e6ecec;">IFU, plus ou moins-values, dividendes : orienter vers les documents</td></tr>
+    <tr><td style="padding:6px 8px;color:#015f61;border-bottom:1px solid #e6ecec;"><b>Opérations sur titres</b></td><td style="padding:6px 8px;border-bottom:1px solid #e6ecec;">Dividende, division, OPA / OPE, augmentation de capital : échéance de réponse</td></tr>
+    <tr><td style="padding:6px 8px;color:#015f61;border-bottom:1px solid #e6ecec;"><b>Frais</b></td><td style="padding:6px 8px;border-bottom:1px solid #e6ecec;">Courtage, droits de garde : renvoyer à la brochure tarifaire</td></tr>
+    <tr><td style="padding:6px 8px;color:#015f61;"><b>Succession / clôture</b></td><td style="padding:6px 8px;">Transférer au service spécialisé (section 7)</td></tr>
+  </table>
+  <div style="margin-top:6px;font-size:12px;color:#6b7780;">⚠️ Aucun conseil en investissement : le conseiller ne recommande ni achat ni vente. Pour un conseil, orientez vers le conseiller bancaire.</div>
+</div>
+
+<!-- 5. RÉPONSES RAPIDES -->
+<div style="border-left:4px solid #017F81;background:#ffffff;box-shadow:0 1px 4px rgba(0,0,0,.08);border-radius:0 6px 6px 0;padding:12px 14px;margin-bottom:12px;">
+  <div style="color:#017F81;font-weight:bold;font-size:14px;margin-bottom:6px;">5 · Réponses rapides</div>
+  <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#6b7780;margin-bottom:2px;">Mise en attente</div>
+  <div style="background:#F7F7F7;border:1px dashed #b7d6d6;border-radius:4px;padding:7px 10px;margin-bottom:8px;">« Je consulte votre compte, pouvez-vous patienter quelques instants ? »</div>
+  <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#6b7780;margin-bottom:2px;">Demande de conseil</div>
+  <div style="background:#F7F7F7;border:1px dashed #b7d6d6;border-radius:4px;padding:7px 10px;margin-bottom:8px;">« Je ne peux pas vous conseiller sur l'achat ou la vente d'une valeur. Votre conseiller bancaire pourra étudier votre situation avec vous. »</div>
+  <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#6b7780;margin-bottom:2px;">Transfert</div>
+  <div style="background:#F7F7F7;border:1px dashed #b7d6d6;border-radius:4px;padding:7px 10px;margin-bottom:8px;">« Votre demande relève du service <i>[service]</i>. Je vous mets en relation et je lui transmets les éléments pour que vous n'ayez pas à les répéter. »</div>
+  <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#6b7780;margin-bottom:2px;">Conclure</div>
+  <div style="background:#F7F7F7;border:1px dashed #b7d6d6;border-radius:4px;padding:7px 10px;">« Pour résumer : <i>[demande, réponse, prochaine étape]</i>. Puis-je faire autre chose pour vous ? Merci <i>[Prénom]</i> et belle journée ! »</div>
+</div>
+
+<!-- 6. AIDE À LA DISCUSSION (interactif) -->
+<div style="border-left:4px solid #017F81;background:#ffffff;box-shadow:0 1px 4px rgba(0,0,0,.08);border-radius:0 6px 6px 0;padding:12px 14px;margin-bottom:12px;">
+  <div style="color:#017F81;font-weight:bold;font-size:14px;margin-bottom:6px;">6 · Aide à la discussion</div>
+  <div style="margin-bottom:8px;color:#015f61;">Cliquez sur le sujet évoqué par le client pour afficher une réponse suggérée :</div>
+  <div id="aide-choix" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;">
+    <button type="button" data-k="ordre" style="cursor:pointer;background:#ffffff;color:#017F81;border:1px solid #017F81;border-radius:4px;padding:7px 10px;font:inherit;font-weight:bold;">📈 Ordre non exécuté</button>
+    <button type="button" data-k="transfert" style="cursor:pointer;background:#ffffff;color:#017F81;border:1px solid #017F81;border-radius:4px;padding:7px 10px;font:inherit;font-weight:bold;">🔁 Transfert de PEA</button>
+    <button type="button" data-k="ifu" style="cursor:pointer;background:#ffffff;color:#017F81;border:1px solid #017F81;border-radius:4px;padding:7px 10px;font:inherit;font-weight:bold;">🧾 IFU / fiscalité</button>
+    <button type="button" data-k="ost" style="cursor:pointer;background:#ffffff;color:#017F81;border:1px solid #017F81;border-radius:4px;padding:7px 10px;font:inherit;font-weight:bold;">📬 Opération sur titres</button>
+    <button type="button" data-k="frais" style="cursor:pointer;background:#ffffff;color:#017F81;border:1px solid #017F81;border-radius:4px;padding:7px 10px;font:inherit;font-weight:bold;">💶 Frais / droits de garde</button>
+  </div>
+  <div id="aide-texte" style="background:#F7F7F7;border:1px dashed #b7d6d6;border-radius:4px;padding:8px 10px;color:#6b7780;">Aucun sujet sélectionné.</div>
+  <button type="button" id="aide-copier" style="cursor:pointer;background:#ffffff;color:#017F81;border:1px solid #017F81;border-radius:4px;padding:7px 10px;font:inherit;font-weight:bold;margin-top:8px;display:none;">📋 Copier la réponse</button>
+</div>
+
+<!-- 7. AIDE ANNUAIRE (interactif) -->
+<div style="border-left:4px solid #017F81;background:#ffffff;box-shadow:0 1px 4px rgba(0,0,0,.08);border-radius:0 6px 6px 0;padding:12px 14px;margin-bottom:12px;">
+  <div style="color:#017F81;font-weight:bold;font-size:14px;margin-bottom:6px;">7 · Aide annuaire : vers qui transférer ?</div>
+  <div style="margin-bottom:8px;color:#015f61;">Répondez aux questions pour obtenir le numéro du service à contacter :</div>
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="font-size:13px;">
+    <tr><td style="padding:3px 8px 3px 0;width:34%;"><b>Profil</b></td><td style="padding:3px 0;"><select id="ann-profil" style="width:100%;padding:7px 8px;border:1px solid #b7d6d6;border-radius:4px;font:inherit;background:#ffffff;color:#26323a;"><option value="">Choisir…</option><option value="particulier">Client particulier</option><option value="conseiller">Conseiller bancaire</option><option value="heritier">Héritier / notaire</option></select></td></tr>
+    <tr><td style="padding:3px 8px 3px 0;"><b>Sujet</b></td><td style="padding:3px 0;"><select id="ann-sujet" style="width:100%;padding:7px 8px;border:1px solid #b7d6d6;border-radius:4px;font:inherit;background:#ffffff;color:#26323a;"><option value="">Choisir…</option><option value="ordres">Ordres de bourse</option><option value="transferts">Transferts</option><option value="fiscalite">Fiscalité</option><option value="ost">Opérations sur titres</option><option value="succession">Succession</option></select></td></tr>
+    <tr><td style="padding:3px 8px 3px 0;"><b>Support</b></td><td style="padding:3px 0;"><select id="ann-support" style="width:100%;padding:7px 8px;border:1px solid #b7d6d6;border-radius:4px;font:inherit;background:#ffffff;color:#26323a;"><option value="">Choisir…</option><option value="cto">Compte-titres</option><option value="pea">PEA / PEA-PME</option></select></td></tr>
+  </table>
+  <div id="ann-res" style="margin-top:10px;background:#F7F7F7;border:1px dashed #b7d6d6;border-radius:4px;padding:10px;color:#6b7780;">Répondez aux 3 questions pour afficher le numéro.</div>
+  <div style="margin-top:6px;font-size:12px;color:#6b7780;">⚠️ Numéros fictifs, pour la démonstration.</div>
+</div>
+
+</div>
+<script>
+(function(){
+var A="#017F81";
+var R={
+ordre:"« Je consulte votre ordre. Il est actuellement [statut]. Un ordre peut ne pas être exécuté si la limite de prix n'est pas atteinte, si la provision est insuffisante ou si la valeur est suspendue. Souhaitez-vous que je vous précise le motif ? »",
+transfert:"« Votre demande de transfert de PEA est bien enregistrée. Elle est actuellement à l'étape [étape]. Le transfert conserve l'antériorité fiscale de votre PEA. Je vous tiens informé de la suite. »",
+ifu:"« Votre Imprimé Fiscal Unique (IFU) récapitule les revenus et cessions de l'année. Il est disponible dans votre espace en ligne [période]. Pour toute question sur votre déclaration, je vous invite à vous rapprocher de l'administration fiscale ou de votre conseiller. »",
+ost:"« Une opération sur titres est en cours sur [valeur]. Vous avez reçu un courrier détaillant les options. La date limite de réponse est le [date] ; sans réponse, l'option par défaut s'appliquera. »",
+frais:"« Les frais de courtage et droits de garde dépendent de votre offre. Le détail figure dans la brochure tarifaire de votre banque, que je peux vous indiquer. »"};
+var cur="";
+var box=document.getElementById("aide-texte"),cp=document.getElementById("aide-copier");
+function copy(txt,b,lab){
+  function ok(){b.textContent="✅ Copié";setTimeout(function(){b.textContent=lab;},1500);}
+  function fb(){var a=document.createElement("textarea");a.value=txt;document.body.appendChild(a);a.select();try{document.execCommand("copy");ok();}catch(e){}document.body.removeChild(a);}
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(ok,fb);}else{fb();}
+}
+document.querySelectorAll("#aide-choix button").forEach(function(b){
+  b.addEventListener("click",function(){
+    document.querySelectorAll("#aide-choix button").forEach(function(x){x.style.background="#ffffff";x.style.color=A;});
+    b.style.background=A;b.style.color="#ffffff";
+    cur=R[b.dataset.k];box.style.color="#26323a";box.textContent=cur;cp.style.display="inline-block";
+  });
+});
+cp.addEventListener("click",function(){copy(cur,cp,"📋 Copier la réponse");});
+
+var N={
+ordres:{cto:"01 99 00 11 01",pea:"01 99 00 11 02"},
+transferts:{cto:"01 99 00 22 01",pea:"01 99 00 22 02"},
+fiscalite:{cto:"01 99 00 33 01",pea:"01 99 00 33 01"},
+ost:{cto:"01 99 00 44 01",pea:"01 99 00 44 01"},
+succession:{cto:"01 99 00 55 01",pea:"01 99 00 55 01"}};
+var S={ordres:"Service Ordres de bourse",transferts:"Service Transferts",fiscalite:"Service Fiscalité",ost:"Service Opérations sur titres",succession:"Service Successions"};
+var P=document.getElementById("ann-profil"),U=document.getElementById("ann-sujet"),C=document.getElementById("ann-support"),res=document.getElementById("ann-res");
+function maj(){
+  if(!P.value||!U.value||!C.value){res.style.color="#6b7780";res.textContent="Répondez aux 3 questions pour afficher le numéro.";return;}
+  var n=N[U.value][C.value];
+  res.style.color="#26323a";res.innerHTML="";
+  var l=document.createElement("div");l.innerHTML="Transférer vers : <b>"+S[U.value]+" · "+C.options[C.selectedIndex].text+"</b>";
+  var v=document.createElement("div");v.style.cssText="font-size:20px;font-weight:bold;color:"+A+";margin:6px 0;";v.textContent=n;
+  var b=document.createElement("button");b.type="button";b.textContent="📋 Copier le numéro";
+  b.style.cssText="cursor:pointer;background:"+A+";color:#ffffff;border:0;border-radius:4px;padding:8px 12px;font:inherit;font-weight:bold;";
+  b.addEventListener("click",function(){copy(n,b,"📋 Copier le numéro");});
+  res.appendChild(l);res.appendChild(v);res.appendChild(b);
+}
+[P,U,C].forEach(function(s){s.addEventListener("change",maj);});
+})();
+</script>
+</body>
+</html>
