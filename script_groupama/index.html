@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Script conseiller - Groupama</title>
+<style>
+:root{
+  --g:#00704A;      /* vert Groupama */
+  --gd:#00513A;     /* vert foncé */
+  --gl:#E9F5EF;     /* vert très clair */
+  --gb:#B9DCCB;     /* bordure verte */
+  --acc:#00A65A;    /* vert vif (validation) */
+  --bg:#F5F7F6;
+  --card:#ffffff;
+  --txt:#1f2d27;
+  --mut:#64736c;
+  --line:#e3e9e6;
+  --warn:#B4541A;
+}
+*{box-sizing:border-box}
+body{margin:0;padding:20px;background:var(--bg);font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.5;color:var(--txt)}
+.wrap{max-width:640px}
+button{font:inherit;cursor:pointer}
+
+/* en-tête */
+.top{display:flex;align-items:center;gap:12px;padding:2px 0 12px}
+.top img{height:44px;width:auto;max-width:170px;object-fit:contain;display:block;border-radius:4px}
+.top .t{line-height:1.2}
+.top .t b{display:block;font-size:16px;color:var(--g)}
+.top .t span{font-size:11px;color:var(--mut)}
+.ban{background:linear-gradient(120deg,var(--g),var(--gd));border-radius:8px 8px 0 0;padding:14px 16px;color:#fff}
+.ban small{display:block;color:#c8ebd9;font-size:11px;letter-spacing:1.5px;text-transform:uppercase}
+.ban div{font-size:17px;font-weight:bold;margin-top:2px}
+.steps{display:flex;flex-wrap:wrap;gap:4px 6px;background:#fff;border-radius:0 0 8px 8px;padding:9px 16px;box-shadow:0 1px 4px rgba(0,0,0,.07);margin-bottom:16px;font-size:12px;color:var(--gd)}
+.steps span{display:inline-flex;align-items:center;gap:5px}
+.steps i{font-style:normal;width:16px;height:16px;border-radius:50%;background:var(--line);color:var(--mut);font-size:10px;font-weight:bold;display:inline-flex;align-items:center;justify-content:center;transition:.2s}
+.steps span.ok i{background:var(--acc);color:#fff}
+.steps em{font-style:normal;color:#c3ccc8}
+
+/* fiche client */
+.client{background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.07);padding:12px 14px;margin-bottom:16px}
+.client .h{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.av{width:40px;height:40px;border-radius:50%;background:var(--gl);color:var(--g);font-weight:bold;display:flex;align-items:center;justify-content:center;flex:none;font-size:14px}
+.client .h b{font-size:15px;display:block}
+.client .h span{font-size:12px;color:var(--mut)}
+.tag{margin-left:auto;font-size:11px;font-weight:bold;color:var(--g);background:var(--gl);border-radius:20px;padding:3px 9px;white-space:nowrap}
+.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:6px 14px;font-size:12px}
+.kv div span{display:block;color:var(--mut);font-size:10.5px;text-transform:uppercase;letter-spacing:.8px}
+.ctr{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.ctr span{font-size:11.5px;border:1px solid var(--gb);border-radius:4px;padding:3px 8px;background:#fbfdfc}
+
+/* sections */
+.sec{border-left:4px solid var(--g);background:#fff;border-radius:0 8px 8px 0;box-shadow:0 1px 4px rgba(0,0,0,.07);padding:12px 14px;margin-bottom:16px}
+.sec h2{margin:0 0 8px;font-size:14px;color:var(--g);display:flex;align-items:center;gap:8px}
+.sec h2 .n{width:20px;height:20px;border-radius:50%;background:var(--g);color:#fff;font-size:11px;display:inline-flex;align-items:center;justify-content:center}
+.lbl{font-size:10.5px;text-transform:uppercase;letter-spacing:1px;color:var(--mut);margin:8px 0 3px}
+.say{background:var(--bg);border:1px dashed var(--gb);border-radius:5px;padding:8px 10px}
+.hint{font-size:12px;color:var(--mut);margin-top:6px}
+
+/* checklist */
+.chk{list-style:none;margin:0;padding:0}
+.chk li{display:flex;align-items:flex-start;gap:8px;padding:6px 8px;border-radius:5px;cursor:pointer;user-select:none}
+.chk li:hover{background:var(--bg)}
+.chk li .bx{width:16px;height:16px;border:1.5px solid var(--gb);border-radius:3px;flex:none;margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;transition:.15s}
+.chk li.on .bx{background:var(--acc);border-color:var(--acc)}
+.chk li .v{margin-left:auto;font-size:11.5px;color:var(--mut);white-space:nowrap}
+
+/* boutons */
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{background:#fff;color:var(--g);border:1px solid var(--g);border-radius:20px;padding:6px 11px;font-weight:bold;font-size:12px;transition:.15s}
+.chip:hover{background:var(--gl)}
+.chip.on{background:var(--g);color:#fff}
+.btn{background:var(--g);color:#fff;border:0;border-radius:5px;padding:8px 12px;font-weight:bold;font-size:12.5px;transition:.15s}
+.btn:hover{background:var(--gd)}
+.btn.ghost{background:#fff;color:var(--g);border:1px solid var(--g)}
+.btn.ghost:hover{background:var(--gl)}
+.btn:disabled{cursor:default}
+
+/* actions */
+.acts{display:grid;gap:8px}
+.act{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:6px;padding:9px 10px;background:#fff;transition:.2s}
+.act .ic{width:30px;height:30px;border-radius:6px;background:var(--gl);display:flex;align-items:center;justify-content:center;flex:none;font-size:15px}
+.act .tx{flex:1;min-width:0}
+.act .tx b{display:block;font-size:12.5px}
+.act .tx span{font-size:11.5px;color:var(--mut)}
+.act .btn{flex:none;min-width:92px}
+.act.done{border-color:var(--acc);background:#f3fbf6}
+.act.done .ic{background:var(--acc);color:#fff}
+.act.done .tx span{color:var(--gd)}
+.act.done .btn{background:var(--acc)}
+.act.run .btn{background:#7fa999}
+.empty{color:var(--mut);font-size:12.5px;padding:8px 10px;background:var(--bg);border-radius:5px}
+
+select,textarea{width:100%;padding:7px 8px;border:1px solid #d3dcd8;border-radius:5px;font:inherit;background:#fff;color:var(--txt)}
+textarea{resize:vertical;min-height:70px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.row select{flex:1;min-width:130px;width:auto}
+
+/* journal */
+.log{list-style:none;margin:0;padding:0}
+.log li{display:flex;gap:8px;padding:5px 0;border-bottom:1px solid var(--line);font-size:12px}
+.log li:last-child{border:0}
+.log li b{color:var(--acc)}
+.closed{display:none;margin-top:10px;background:#f3fbf6;border:1px solid var(--acc);border-radius:6px;padding:10px 12px;color:var(--gd)}
+.closed b{display:block;font-size:13.5px;margin-bottom:2px}
+
+/* toast */
+.toast{position:fixed;left:50%;bottom:20px;transform:translate(-50%,20px);opacity:0;background:var(--gd);color:#fff;padding:10px 16px;border-radius:6px;font-size:12.5px;font-weight:bold;box-shadow:0 4px 14px rgba(0,0,0,.2);transition:.25s;pointer-events:none;max-width:calc(100% - 32px)}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+@media (max-width:420px){
+  body{padding:12px}
+  .act{flex-wrap:wrap}
+  .act .btn{width:100%}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- EN-TÊTE -->
+<div class="top">
+  <img src="https://lareclame.fr/wp-content/uploads/2024/11/groupama-nouvelle-identite-viquelle-logo-top.jpg" alt="Groupama">
+  <div class="t"><b>Espace conseiller</b><span>Assurance · Banque · Services</span></div>
+</div>
+<div class="ban">
+  <small>Script conseiller · tous canaux</small>
+  <div>Traitement de la demande sociétaire</div>
+</div>
+<div class="steps" id="steps">
+  <span data-s="1"><i>1</i>Accueillir</span><em>›</em>
+  <span data-s="2"><i>2</i>Identifier</span><em>›</em>
+  <span data-s="3"><i>3</i>Comprendre</span><em>›</em>
+  <span data-s="4"><i>4</i>Traiter</span><em>›</em>
+  <span data-s="5"><i>5</i>Conclure</span>
+</div>
+
+<!-- FICHE SOCIÉTAIRE -->
+<div class="client">
+  <div class="h">
+    <div class="av">LD</div>
+    <div><b>Louis Dubois</b><span>Sociétaire depuis 2014 · Groupama Paris Val de Loire</span></div>
+    <span class="tag">Sociétaire</span>
+  </div>
+  <div class="kv">
+    <div><span>N° sociétaire</span>4512 8730 9</div>
+    <div><span>Agence de rattachement</span>Orléans Centre</div>
+    <div><span>Mobile</span>06 12 34 56 78</div>
+    <div><span>E-mail</span>louis.dubois@email.fr</div>
+  </div>
+  <div class="ctr">
+    <span>🚗 Auto · Tous risques</span>
+    <span>🏠 Habitation · Maison</span>
+    <span>🩺 Santé · Formule famille</span>
+  </div>
+</div>
+
+<!-- 1. ACCUEILLIR -->
+<div class="sec">
+  <h2><span class="n">1</span>Accueillir</h2>
+  <div class="lbl">Voix</div>
+  <div class="say">« Groupama, bonjour Monsieur Dubois ! Je suis à votre écoute, que puis-je faire pour vous ? »</div>
+  <div class="lbl">Écrit (chat, e-mail, messagerie)</div>
+  <div class="say">« Bonjour Monsieur Dubois, merci pour votre message. Je prends en charge votre demande et je vous accompagne. »</div>
+</div>
+
+<!-- 2. IDENTIFIER -->
+<div class="sec">
+  <h2><span class="n">2</span>Identifier le sociétaire</h2>
+  <ul class="chk" id="chk">
+    <li><span class="bx">✓</span><span><b>Nom et prénom</b></span><span class="v">Louis Dubois</span></li>
+    <li><span class="bx">✓</span><span><b>N° sociétaire</b> ou n° de contrat</span><span class="v">4512 8730 9</span></li>
+    <li><span class="bx">✓</span><span><b>Contrôle de sécurité</b> : date de naissance ou code postal</span><span class="v">45000</span></li>
+  </ul>
+  <div class="say" style="margin-top:8px">« Pour accéder à votre dossier, pouvez-vous me confirmer votre date de naissance et votre code postal, s'il vous plaît ? »</div>
+  <div class="hint">🔒 Ne demandez jamais de mot de passe ni de code reçu par SMS.</div>
+</div>
+
+<!-- 3. COMPRENDRE -->
+<div class="sec">
+  <h2><span class="n">3</span>Comprendre la demande</h2>
+  <div style="margin-bottom:8px;color:var(--mut)">Sélectionnez le motif du contact :</div>
+  <div class="chips" id="motifs">
+    <button class="chip" data-m="sinistre">🚨 Sinistre</button>
+    <button class="chip" data-m="attestation">📄 Attestation</button>
+    <button class="chip" data-m="modif">✏️ Modification de contrat</button>
+    <button class="chip" data-m="devis">💡 Devis</button>
+    <button class="chip" data-m="cotis">💳 Cotisation / paiement</button>
+    <button class="chip" data-m="reclam">😠 Réclamation</button>
+    <button class="chip" data-m="resil">🚪 Résiliation</button>
+  </div>
+  <div class="lbl">Phrase suggérée</div>
+  <div class="say" id="phrase" style="color:var(--mut)">Aucun motif sélectionné.</div>
+  <div class="hint" id="conseil"></div>
+</div>
+
+<!-- 4. TRAITER -->
+<div class="sec">
+  <h2><span class="n">4</span>Traiter la demande</h2>
+  <div id="acts" class="acts"><div class="empty">Choisissez un motif à l'étape 3 pour afficher les actions recommandées.</div></div>
+
+  <div class="lbl" style="margin-top:14px">Actions transverses</div>
+  <div class="acts">
+    <div class="act" id="a-rappel">
+      <div class="ic">📞</div>
+      <div class="tx"><b>Planifier un rappel</b>
+        <div class="row" style="margin-top:4px">
+          <select id="creneau"><option>Demain · 9h – 12h</option><option>Demain · 14h – 17h</option><option>Lundi · 9h – 12h</option><option>Lundi · 17h – 19h</option></select>
+        </div>
+        <span></span>
+      </div>
+      <button class="btn" data-x="rappel">Planifier</button>
+    </div>
+    <div class="act" id="a-transfert">
+      <div class="ic">🔀</div>
+      <div class="tx"><b>Transférer la demande</b>
+        <div class="row" style="margin-top:4px">
+          <select id="service"><option value="Agence Orléans Centre">Agence Orléans Centre</option><option value="Service Sinistres">Service Sinistres</option><option value="Service Santé">Service Santé</option><option value="Service Recouvrement">Service Recouvrement</option><option value="Service Réclamations">Service Réclamations</option></select>
+        </div>
+        <span></span>
+      </div>
+      <button class="btn" data-x="transfert">Transférer</button>
+    </div>
+  </div>
+</div>
+
+<!-- 5. CONCLURE -->
+<div class="sec">
+  <h2><span class="n">5</span>Conclure</h2>
+  <div class="say">« Pour résumer, Monsieur Dubois : <i>[demande, action réalisée, prochaine étape]</i>. Puis-je faire autre chose pour vous ? Merci de votre confiance et très bonne journée ! »</div>
+
+  <div class="lbl">Actions réalisées</div>
+  <ul class="log" id="log"><li style="color:var(--mut)">Aucune action pour le moment.</li></ul>
+
+  <div class="lbl">Résultat de l'interaction</div>
+  <div class="chips" id="res">
+    <button class="chip" data-r="Demande traitée">✅ Demande traitée</button>
+    <button class="chip" data-r="Suivi en cours">⏳ Suivi en cours</button>
+    <button class="chip" data-r="Transférée">🔀 Transférée</button>
+  </div>
+
+  <div class="lbl">Synthèse</div>
+  <textarea id="note" placeholder="La synthèse se complète automatiquement avec les actions réalisées."></textarea>
+
+  <div class="row" style="margin-top:10px">
+    <button class="btn ghost" id="recap">✉️ Envoyer le récapitulatif au client</button>
+    <button class="btn" id="cloture">Clôturer l'interaction</button>
+  </div>
+  <div class="closed" id="closed"><b>✅ Interaction clôturée</b><span id="closedTxt"></span></div>
+</div>
+
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+var $=function(s){return document.querySelector(s);};
+var toastT;
+function toast(t){var e=$("#toast");e.textContent=t;e.classList.add("show");clearTimeout(toastT);toastT=setTimeout(function(){e.classList.remove("show");},2400);}
+function step(n){var s=document.querySelector('#steps span[data-s="'+n+'"]');if(s)s.classList.add("ok");}
+step(1);
+
+/* --- journal --- */
+var done=[];
+function log(t){
+  done.push(t);
+  var ul=$("#log");ul.innerHTML="";
+  done.forEach(function(d){var li=document.createElement("li");li.innerHTML="<b>✓</b><span></span>";li.lastChild.textContent=d;ul.appendChild(li);});
+  majNote();step(4);
+}
+var motifTxt="",resTxt="";
+function majNote(){
+  var t="Motif : "+(motifTxt||"—")+"\n";
+  if(done.length)t+="Actions : "+done.join(" ; ")+"\n";
+  if(resTxt)t+="Résultat : "+resTxt;
+  $("#note").value=t.trim();
+}
+
+/* --- identification --- */
+var items=document.querySelectorAll("#chk li");
+items.forEach(function(li){li.addEventListener("click",function(){
+  li.classList.toggle("on");
+  var all=[].every.call(items,function(x){return x.classList.contains("on");});
+  var s=document.querySelector('#steps span[data-s="2"]');
+  if(all){s.classList.add("ok");toast("Identité du sociétaire vérifiée");}else s.classList.remove("ok");
+});});
+
+/* --- motifs --- */
+var M={
+sinistre:{l:"Sinistre",p:"« Je suis désolé pour ce qui vous arrive, Monsieur Dubois. Avant tout, tout le monde va bien ? Je vais ouvrir votre déclaration et vous guider pour la suite. »",c:"Précisez : date, lieu, circonstances, tiers impliqué, photos disponibles.",
+ a:[["📝","Ouvrir la déclaration de sinistre","Auto · Tous risques","Ouvrir","Déclaration ouverte · dossier n° SIN-458 213"],
+    ["💬","Envoyer le lien de suivi par SMS","Au 06 12 34 56 78","Envoyer","SMS envoyé au 06 12 34 56 78"],
+    ["🔧","Proposer un réparateur agréé","Garage partenaire le plus proche","Proposer","Coordonnées du réparateur envoyées par SMS"]]},
+attestation:{l:"Attestation",p:"« Bien sûr, je vous envoie votre attestation tout de suite. Vous la préférez par e-mail ou par SMS ? »",c:"L'attestation est aussi disponible dans l'espace client et l'application Groupama.",
+ a:[["📧","Envoyer l'attestation par e-mail","louis.dubois@email.fr","Envoyer","Attestation envoyée à louis.dubois@email.fr"],
+    ["💬","Envoyer le lien de téléchargement par SMS","Au 06 12 34 56 78","Envoyer","Lien envoyé par SMS au 06 12 34 56 78"]]},
+modif:{l:"Modification de contrat",p:"« Je m'en occupe. Pouvez-vous me préciser ce qui change : adresse, véhicule, conducteur, garanties ? »",c:"Toute modification de garantie fait l'objet d'un avenant à signer.",
+ a:[["🏷️","Mettre à jour les coordonnées","Adresse, téléphone, e-mail","Mettre à jour","Coordonnées mises à jour dans la fiche"],
+    ["✍️","Envoyer l'avenant en signature électronique","Par e-mail à louis.dubois@email.fr","Envoyer","Avenant envoyé pour signature électronique"]]},
+devis:{l:"Devis",p:"« Avec plaisir. Je vous prépare une proposition adaptée à votre situation. Quel est votre besoin exactement ? »",c:"Pensez au multi-équipement : Louis Dubois détient déjà 3 contrats.",
+ a:[["💡","Générer et envoyer le devis par e-mail","louis.dubois@email.fr","Envoyer","Devis envoyé à louis.dubois@email.fr"],
+    ["📅","Proposer un rendez-vous en agence","Agence Orléans Centre","Proposer","Invitation au rendez-vous envoyée par e-mail"]]},
+cotis:{l:"Cotisation / paiement",p:"« Je regarde votre situation. Je peux vous renvoyer votre échéancier ou vous proposer un paiement en ligne sécurisé. »",c:"Ne prenez jamais de coordonnées bancaires à l'oral : utilisez le lien sécurisé.",
+ a:[["📊","Envoyer l'échéancier par e-mail","louis.dubois@email.fr","Envoyer","Échéancier envoyé par e-mail"],
+    ["🔐","Envoyer un lien de paiement sécurisé","Par SMS au 06 12 34 56 78","Envoyer","Lien de paiement envoyé par SMS"],
+    ["🏦","Envoyer un mandat SEPA (changement de RIB)","Signature électronique","Envoyer","Mandat SEPA envoyé pour signature"]]},
+reclam:{l:"Réclamation",p:"« Je comprends votre mécontentement et je vous remercie de nous en faire part. Je prends en charge votre réclamation : pouvez-vous me décrire la situation ? »",c:"Écouter, reformuler, ne pas se justifier. Accusé de réception sous 48 h ouvrées.",
+ a:[["📂","Ouvrir une réclamation","Service Réclamations","Ouvrir","Réclamation enregistrée · n° REC-77 120"],
+    ["📧","Envoyer l'accusé de réception","louis.dubois@email.fr","Envoyer","Accusé de réception envoyé par e-mail"]]},
+resil:{l:"Résiliation",p:"« Je prends note de votre souhait. Puis-je vous demander ce qui motive votre décision ? Nous avons peut-être une solution plus adaptée. »",c:"Identifiez le motif (tarif, service, déménagement) avant d'enregistrer la demande.",
+ a:[["🤝","Proposer un rendez-vous avec le conseiller agence","Étude de l'offre personnalisée","Proposer","Rendez-vous proposé par e-mail"],
+    ["📝","Enregistrer la demande de résiliation","Confirmation par e-mail","Enregistrer","Demande enregistrée · confirmation envoyée par e-mail"]]}
+};
+
+function runAct(card,btn,okTxt,label){
+  if(card.classList.contains("done")||card.classList.contains("run"))return;
+  card.classList.add("run");btn.disabled=true;btn.textContent="⏳ En cours…";
+  setTimeout(function(){
+    card.classList.remove("run");card.classList.add("done");
+    btn.textContent="✅ Validé";
+    card.querySelector(".tx > span").textContent=okTxt;
+    card.querySelector(".ic").textContent="✓";
+    toast("✅ "+okTxt);log(okTxt);
+  },900);
+}
+
+document.querySelectorAll("#motifs .chip").forEach(function(b){b.addEventListener("click",function(){
+  document.querySelectorAll("#motifs .chip").forEach(function(x){x.classList.remove("on");});
+  b.classList.add("on");
+  var m=M[b.dataset.m];motifTxt=m.l;
+  var p=$("#phrase");p.style.color="";p.textContent=m.p;
+  $("#conseil").textContent="💡 "+m.c;
+  var box=$("#acts");box.innerHTML="";
+  m.a.forEach(function(a){
+    var d=document.createElement("div");d.className="act";
+    d.innerHTML='<div class="ic"></div><div class="tx"><b></b><span></span></div><button class="btn"></button>';
+    d.querySelector(".ic").textContent=a[0];
+    d.querySelector("b").textContent=a[1];
+    d.querySelector(".tx > span").textContent=a[2];
+    var btn=d.querySelector("button");btn.textContent=a[3];
+    btn.addEventListener("click",function(){runAct(d,btn,a[4]);});
+    box.appendChild(d);
+  });
+  step(3);majNote();
+});});
+
+/* --- actions transverses --- */
+document.querySelector('[data-x="rappel"]').addEventListener("click",function(){
+  var c=$("#creneau");runAct($("#a-rappel"),this,"Rappel planifié · "+c.value);c.disabled=true;
+});
+document.querySelector('[data-x="transfert"]').addEventListener("click",function(){
+  var s=$("#service");runAct($("#a-transfert"),this,"Demande transférée · "+s.value);s.disabled=true;
+});
+
+/* --- conclusion --- */
+document.querySelectorAll("#res .chip").forEach(function(b){b.addEventListener("click",function(){
+  document.querySelectorAll("#res .chip").forEach(function(x){x.classList.remove("on");});
+  b.classList.add("on");resTxt=b.dataset.r;majNote();
+});});
+
+$("#recap").addEventListener("click",function(){
+  var b=this;if(b.disabled)return;b.disabled=true;b.textContent="⏳ Envoi…";
+  setTimeout(function(){b.textContent="✅ Récapitulatif envoyé";toast("✅ Récapitulatif envoyé à louis.dubois@email.fr");log("Récapitulatif envoyé par e-mail");},900);
+});
+
+$("#cloture").addEventListener("click",function(){
+  var b=this;
+  if(!resTxt){toast("Sélectionnez le résultat de l'interaction");return;}
+  if(b.disabled)return;b.disabled=true;b.textContent="⏳ Enregistrement…";
+  setTimeout(function(){
+    b.textContent="✅ Clôturée";step(5);
+    $("#closedTxt").textContent="Synthèse enregistrée dans la fiche sociétaire de Louis Dubois · "+resTxt+".";
+    $("#closed").style.display="block";
+    $("#note").readOnly=true;
+    toast("✅ Interaction clôturée et synthèse enregistrée");
+  },900);
+});
+})();
+</script>
+</body>
+</html>
