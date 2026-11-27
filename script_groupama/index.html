@@ -3,280 +3,359 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Script conseiller - Groupama</title>
+<title>Assistant conseiller - Groupama</title>
 <style>
 :root{
   --g:#00704A;--gd:#00513A;--gl:#EAF5EF;--gb:#C4E2D3;--ok:#00965A;
-  --bg:#F4F6F5;--txt:#1E2B25;--mut:#66756E;--line:#E2E8E5;--warn:#A75A12;--warnbg:#FDF5EC;
+  --bg:#F3F5F4;--txt:#1E2B25;--mut:#68766F;--line:#E1E7E4;
+  --wa:#9A5A10;--wabg:#FDF4E8;--inf:#2D5E86;--infbg:#EEF4F9;--red:#B3261E;
 }
 *{box-sizing:border-box}
 html,body{margin:0}
-body{background:var(--bg);font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.45;color:var(--txt);padding:14px}
-.wrap{max-width:640px}
+body{background:var(--bg);font-family:Arial,Helvetica,sans-serif;font-size:12.5px;line-height:1.45;color:var(--txt);padding:12px}
+.wrap{max-width:660px}
 button{font:inherit;cursor:pointer;color:inherit}
-svg.i{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle}
-svg.s{width:14px;height:14px}
+svg.i{width:15px;height:15px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+svg.s{width:13px;height:13px}
+.mut{color:var(--mut)}
 
-/* en-tête */
-.top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.top img{height:32px;width:auto;max-width:130px;object-fit:contain}
-.top .t{font-weight:bold;color:var(--g);font-size:14px;line-height:1.1}
-.top .t span{display:block;font-weight:normal;color:var(--mut);font-size:11px}
-.live{margin-left:auto;display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:4px 10px;font-size:11.5px;color:var(--gd);font-weight:bold;white-space:nowrap}
-.live b{width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 3px rgba(0,150,90,.18);animation:p 1.6s infinite}
-@keyframes p{50%{box-shadow:0 0 0 6px rgba(0,150,90,0)}}
+/* barre d'appel */
+.bar{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.bar img{height:30px;width:auto;max-width:120px;object-fit:contain}
+.call{margin-left:auto;display:flex;align-items:center;gap:8px;background:var(--gd);color:#fff;border-radius:8px;padding:5px 10px;font-size:11.5px}
+.call .dot{width:7px;height:7px;border-radius:50%;background:#53E09B;box-shadow:0 0 0 3px rgba(83,224,155,.25)}
+.call b{font-variant-numeric:tabular-nums;letter-spacing:.3px}
+.call .sep{width:1px;height:14px;background:rgba(255,255,255,.25)}
 
-/* client */
-.cli{background:#fff;border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.07);padding:10px 12px;margin-bottom:10px}
+/* carte sociétaire */
+.cli{background:#fff;border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px 12px;margin-bottom:8px}
 .cli .h{display:flex;align-items:center;gap:10px}
-.av{width:34px;height:34px;border-radius:50%;background:var(--g);color:#fff;font-weight:bold;display:flex;align-items:center;justify-content:center;flex:none;font-size:12.5px}
-.cli .h b{font-size:14px}
-.cli .h .sub{font-size:11.5px;color:var(--mut)}
-.vb{margin-left:auto;display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:bold;border-radius:20px;padding:3px 8px;background:#F1F3F2;color:var(--mut);white-space:nowrap;transition:.2s}
-.vb.on{background:var(--gl);color:var(--ok)}
-.meta{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
-.meta span{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;color:var(--gd);background:var(--bg);border-radius:4px;padding:3px 7px}
-.meta span svg{color:var(--g)}
-.svi{display:flex;align-items:center;gap:6px;margin-top:8px;padding:6px 8px;border-radius:6px;background:var(--gl);color:var(--gd);font-size:12px}
+.av{width:36px;height:36px;border-radius:50%;background:var(--g);color:#fff;font-weight:bold;display:flex;align-items:center;justify-content:center;flex:none}
+.cli .nm{font-size:14px;font-weight:bold}
+.cli .sb{font-size:11.5px;color:var(--mut)}
+.idb{margin-left:auto;display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:bold;border-radius:20px;padding:3px 9px;background:var(--wabg);color:var(--wa);white-space:nowrap}
+.idb.on{background:var(--gl);color:var(--ok)}
+.flags{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.flag{display:inline-flex;align-items:center;gap:5px;font-size:11px;border-radius:4px;padding:3px 7px;background:var(--bg);color:var(--gd)}
+.flag.inf{background:var(--infbg);color:var(--inf)}
+.flag.opp{background:#F4EEFB;color:#5B3A8C}
 
-/* stepper */
-.steps{display:flex;background:#fff;border-radius:10px 10px 0 0;box-shadow:0 1px 3px rgba(0,0,0,.07);overflow:hidden}
-.steps button{flex:1;border:0;background:none;padding:9px 2px 8px;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;color:var(--mut);border-bottom:2px solid var(--line);position:relative;min-width:0}
-.steps button svg{width:17px;height:17px}
-.steps button span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
-.steps button.done{color:var(--ok)}
-.steps button.act{color:var(--g);font-weight:bold;border-bottom-color:var(--g);background:var(--gl)}
-.steps .cnt{position:absolute;top:4px;right:calc(50% - 20px);min-width:15px;height:15px;border-radius:8px;background:var(--g);color:#fff;font-size:9.5px;font-weight:bold;display:none;align-items:center;justify-content:center;padding:0 4px}
+/* onglets */
+.tabs{display:flex;gap:2px;background:#fff;border-radius:10px 10px 0 0;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:0 6px;border-bottom:1px solid var(--line)}
+.tabs button{border:0;background:none;padding:9px 8px 8px;display:flex;align-items:center;gap:5px;font-size:12px;color:var(--mut);border-bottom:2px solid transparent;margin-bottom:-1px}
+.tabs button.on{color:var(--g);font-weight:bold;border-bottom-color:var(--g)}
+.tabs .prog{margin-left:auto;align-self:center;font-size:11px;color:var(--mut);display:flex;align-items:center;gap:6px}
+.tabs .prog i{display:block;width:60px;height:5px;border-radius:3px;background:var(--line);overflow:hidden}
+.tabs .prog i b{display:block;height:100%;width:0;background:var(--ok);transition:.3s}
+.body{background:#fff;border-radius:0 0 10px 10px;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:10px}
+.view{display:none}.view.on{display:block}
 
-/* panneau */
-.panel{background:#fff;border-radius:0 0 10px 10px;box-shadow:0 1px 3px rgba(0,0,0,.07);padding:12px}
-.pane{display:none}
-.pane.on{display:block;animation:f .2s}
-@keyframes f{from{opacity:0;transform:translateY(4px)}}
-.lbl{font-size:10.5px;text-transform:uppercase;letter-spacing:.9px;color:var(--mut);margin:10px 0 4px;font-weight:bold}
-.lbl:first-child{margin-top:0}
-.say{position:relative;background:var(--bg);border-left:3px solid var(--g);border-radius:0 6px 6px 0;padding:8px 34px 8px 10px}
-.say .cp{position:absolute;top:6px;right:6px;border:0;background:none;color:var(--mut);padding:3px;border-radius:4px;display:flex}
-.say .cp:hover{color:var(--g);background:#fff}
-.seg{display:inline-flex;background:var(--bg);border-radius:6px;padding:2px;margin-bottom:6px}
-.seg button{border:0;background:none;padding:4px 10px;border-radius:5px;font-size:11.5px;color:var(--mut);display:inline-flex;align-items:center;gap:5px}
-.seg button.on{background:#fff;color:var(--g);font-weight:bold;box-shadow:0 1px 2px rgba(0,0,0,.08)}
-.note{display:flex;gap:6px;align-items:flex-start;font-size:11.5px;color:var(--mut);margin-top:8px}
-.note svg{margin-top:1px}
-.note.w{color:var(--warn);background:var(--warnbg);border-radius:6px;padding:6px 8px}
+/* étapes (accordéon) */
+.st{border:1px solid var(--line);border-radius:8px;margin-bottom:6px;overflow:hidden;transition:border-color .2s}
+.st:last-child{margin-bottom:0}
+.st.open{border-color:var(--gb)}
+.st>header{display:flex;align-items:center;gap:9px;padding:8px 10px;cursor:pointer;user-select:none}
+.st>header:hover{background:#FAFBFA}
+.st .num{width:20px;height:20px;border-radius:50%;border:1.5px solid #B8C5BF;color:var(--mut);font-size:10.5px;font-weight:bold;display:flex;align-items:center;justify-content:center;flex:none}
+.st.open .num{border-color:var(--g);color:var(--g)}
+.st.done .num{background:var(--ok);border-color:var(--ok);color:#fff}
+.st .tt{font-weight:bold;font-size:12.5px}
+.st .sum{font-size:11.5px;color:var(--mut);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;min-width:0}
+.st.done .sum{color:var(--ok)}
+.st .chev{margin-left:auto;color:var(--mut);transition:.2s}
+.st.open .chev{transform:rotate(180deg)}
+.st>.bd{display:none;padding:2px 10px 10px}
+.st.open>.bd{display:block;animation:f .18s}
+@keyframes f{from{opacity:0}}
+
+.say{display:flex;gap:7px;align-items:flex-start;font-size:12px;color:var(--gd);background:var(--gl);border-radius:6px;padding:6px 8px;margin:6px 0}
+.say svg{margin-top:2px;color:var(--g)}
+.say span{font-style:italic}
+.lbl{font-size:10.5px;text-transform:uppercase;letter-spacing:.8px;color:var(--mut);margin:8px 0 4px;font-weight:bold}
+
+/* champs */
+.fld{display:grid;grid-template-columns:118px 1fr;gap:6px;align-items:start;padding:4px 0}
+.fld>label{font-size:11.5px;color:var(--mut);padding-top:4px}
+.pills{display:flex;flex-wrap:wrap;gap:4px}
+.pill{border:1px solid var(--line);background:#fff;border-radius:5px;padding:3px 8px;font-size:11.5px;transition:.12s}
+.pill:hover{border-color:var(--g)}
+.pill.on{background:var(--g);border-color:var(--g);color:#fff}
+select,textarea,input[type=text]{width:100%;padding:5px 7px;border:1px solid var(--line);border-radius:5px;font:inherit;font-size:12px;background:#fff;color:var(--txt)}
+textarea{resize:vertical;min-height:58px;background:#FAFBFA}
 
 /* checklist */
-.chk{list-style:none;margin:0;padding:0;border:1px solid var(--line);border-radius:8px;overflow:hidden}
-.chk li{display:flex;align-items:center;gap:8px;padding:7px 9px;cursor:pointer;user-select:none;border-bottom:1px solid var(--line);font-size:12.5px}
-.chk li:last-child{border:0}
-.chk li:hover{background:#FAFBFA}
-.chk .bx{width:16px;height:16px;border:1.5px solid #B9C6C0;border-radius:4px;flex:none;display:flex;align-items:center;justify-content:center;color:#fff;transition:.15s}
-.chk .bx svg{width:11px;height:11px;stroke-width:3;opacity:0}
+.chk{list-style:none;margin:0;padding:0}
+.chk li{display:flex;align-items:center;gap:8px;padding:5px 2px;cursor:pointer;user-select:none;font-size:12px}
+.chk .bx{width:15px;height:15px;border:1.5px solid #B8C5BF;border-radius:3px;flex:none;display:flex;align-items:center;justify-content:center;color:#fff}
+.chk .bx svg{width:10px;height:10px;stroke-width:3;opacity:0}
 .chk li.on .bx{background:var(--ok);border-color:var(--ok)}
 .chk li.on .bx svg{opacity:1}
-.chk li.on .q{color:var(--mut)}
-.chk .v{margin-left:auto;font-size:11.5px;color:var(--mut);white-space:nowrap;padding-left:6px}
+.chk .v{margin-left:auto;color:var(--mut);font-size:11.5px}
 
-/* motifs */
-.chips{display:flex;flex-wrap:wrap;gap:5px}
-.chip{display:inline-flex;align-items:center;gap:5px;background:#fff;border:1px solid var(--line);border-radius:6px;padding:5px 9px;font-size:12px;color:var(--txt);transition:.15s}
-.chip svg{color:var(--g)}
-.chip:hover{border-color:var(--g)}
-.chip.on{background:var(--g);border-color:var(--g);color:#fff}
-.chip.on svg{color:#fff}
+/* garanties */
+.cov{list-style:none;margin:0;padding:0}
+.cov li{display:flex;gap:8px;align-items:flex-start;padding:5px 0;border-bottom:1px dashed var(--line);font-size:12px}
+.cov li:last-child{border:0}
+.cov li svg{margin-top:1px}
+.cov .ok svg{color:var(--ok)}
+.cov .wa svg{color:var(--wa)}.cov .wa{color:var(--wa)}
+.cov .in svg{color:var(--inf)}
 
 /* actions */
-.acts{border:1px solid var(--line);border-radius:8px;overflow:hidden}
-.act{display:flex;align-items:center;gap:9px;padding:8px 9px;border-bottom:1px solid var(--line);transition:background .2s}
+.acts{border:1px solid var(--line);border-radius:7px;overflow:hidden}
+.act{display:flex;align-items:center;gap:9px;padding:7px 8px;border-bottom:1px solid var(--line)}
 .act:last-child{border:0}
-.act .ic{width:28px;height:28px;border-radius:6px;background:var(--gl);color:var(--g);display:flex;align-items:center;justify-content:center;flex:none}
-.act .tx{flex:1;min-width:0;font-size:12.5px}
-.act .tx b{display:block;font-weight:bold}
-.act .tx span{display:block;font-size:11.5px;color:var(--mut);overflow:hidden;text-overflow:ellipsis}
-.act .go{flex:none;border:1px solid var(--g);background:#fff;color:var(--g);border-radius:6px;padding:5px 10px;font-size:12px;font-weight:bold;display:inline-flex;align-items:center;gap:5px;min-width:84px;justify-content:center}
+.act .ic{width:26px;height:26px;border-radius:6px;background:var(--gl);color:var(--g);display:flex;align-items:center;justify-content:center;flex:none}
+.act .tx{flex:1;min-width:0}
+.act .tx b{display:block;font-size:12px}
+.act .tx span{display:block;font-size:11px;color:var(--mut)}
+.act .tag{font-size:9.5px;font-weight:bold;text-transform:uppercase;letter-spacing:.5px;color:var(--g);background:var(--gl);border-radius:3px;padding:1px 4px;margin-left:4px;vertical-align:1px}
+.act .go{flex:none;border:1px solid var(--g);background:#fff;color:var(--g);border-radius:5px;padding:4px 9px;font-size:11.5px;font-weight:bold;min-width:74px;display:inline-flex;align-items:center;justify-content:center;gap:4px}
 .act .go:hover{background:var(--gl)}
-.act.run .go{opacity:.6}
-.act.done{background:#F5FBF8}
+.act.done{background:#F6FBF8}
 .act.done .ic{background:var(--ok);color:#fff}
 .act.done .tx span{color:var(--ok)}
 .act.done .go{background:var(--ok);border-color:var(--ok);color:#fff;cursor:default}
-.act select{margin-top:4px;width:100%;padding:4px 6px;border:1px solid var(--line);border-radius:5px;font:inherit;font-size:12px;background:#fff;color:var(--txt)}
-.spin{width:12px;height:12px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:r .7s linear infinite}
+.slots{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.spin{width:11px;height:11px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:r .7s linear infinite}
 @keyframes r{to{transform:rotate(360deg)}}
 
-/* clôture */
-.log{list-style:none;margin:0;padding:0}
-.log li{display:flex;gap:7px;align-items:flex-start;padding:4px 0;font-size:12px}
-.log li svg{color:var(--ok);margin-top:1px}
-.log .em{color:var(--mut)}
-textarea{width:100%;padding:7px 8px;border:1px solid var(--line);border-radius:6px;font:inherit;font-size:12px;resize:vertical;min-height:62px;color:var(--txt);background:#FAFBFA}
-.ok{display:none;align-items:center;gap:8px;margin-top:10px;background:var(--gl);border-radius:8px;padding:9px 10px;color:var(--gd);font-size:12.5px}
-.ok svg{color:var(--ok);width:20px;height:20px}
+/* message */
+.msg{border:1px solid var(--line);border-radius:7px;padding:8px;margin-top:8px}
+.msg .hd{display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap}
+.msg .hd b{font-size:12px;display:flex;align-items:center;gap:6px}
+.msg .to{font-size:11px;color:var(--mut)}
+.msg .ft{display:flex;align-items:center;gap:8px;margin-top:6px}
+.msg .ft .cnt{font-size:11px;color:var(--mut)}
 
-/* nav */
-.nav{display:flex;gap:8px;margin-top:12px;padding-top:10px;border-top:1px solid var(--line)}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:0;border-radius:7px;padding:8px 12px;font-weight:bold;font-size:12.5px;background:var(--g);color:#fff;transition:.15s}
+/* boutons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:5px;border:0;border-radius:6px;padding:6px 11px;font-weight:bold;font-size:12px;background:var(--g);color:#fff}
 .btn:hover{background:var(--gd)}
-.btn.gh{background:#fff;color:var(--g);border:1px solid var(--line)}
-.btn.gh:hover{border-color:var(--g)}
-.btn:disabled{opacity:.5;cursor:default}
-.btn.fin:disabled{opacity:1;background:var(--ok)}
-.nav .btn:last-child{margin-left:auto}
+.btn.gh{background:#fff;color:var(--g);border:1px solid var(--gb)}
+.btn:disabled{opacity:.55;cursor:default}
+.btn.fin{background:var(--ok);opacity:1}
+.row{display:flex;gap:8px;align-items:center;margin-top:8px}
+.row .btn:last-child{margin-left:auto}
 
-/* toast */
-.toast{position:fixed;left:50%;top:14px;transform:translate(-50%,-16px);opacity:0;display:flex;align-items:center;gap:8px;background:var(--gd);color:#fff;padding:9px 14px;border-radius:8px;font-size:12.5px;box-shadow:0 6px 18px rgba(0,0,0,.18);transition:.25s;pointer-events:none;max-width:calc(100% - 28px)}
+/* listes annexes */
+.tbl{width:100%;border-collapse:collapse;font-size:12px}
+.tbl td{padding:6px 4px;border-bottom:1px solid var(--line);vertical-align:top}
+.tbl td:first-child{width:28px;color:var(--g)}
+.tbl b{display:block}
+.tbl .r{text-align:right;white-space:nowrap}
+.kv{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;font-size:12px;margin-top:4px}
+.kv span{display:block;font-size:10.5px;color:var(--mut);text-transform:uppercase;letter-spacing:.6px}
+.tl{list-style:none;margin:0;padding:0;position:relative}
+.tl li{display:flex;gap:9px;padding:6px 0;font-size:12px}
+.tl .ic{width:24px;height:24px;border-radius:50%;background:var(--bg);color:var(--g);display:flex;align-items:center;justify-content:center;flex:none}
+.tl b{display:block}
+.tl .w{margin-left:auto;font-size:11px;color:var(--mut);white-space:nowrap}
+.kb{border:1px solid var(--line);border-radius:6px;margin-top:5px}
+.kb summary{padding:7px 9px;cursor:pointer;font-weight:bold;font-size:12px;list-style:none;display:flex;align-items:center;gap:7px}
+.kb summary::-webkit-details-marker{display:none}
+.kb summary svg{color:var(--g)}
+.kb div{padding:0 9px 8px 31px;font-size:12px;color:var(--mut)}
+
+.done-box{display:none;align-items:center;gap:9px;margin-top:8px;background:var(--gl);border-radius:7px;padding:9px 10px;color:var(--gd)}
+.done-box svg{width:20px;height:20px;color:var(--ok)}
+
+.toast{position:fixed;left:50%;top:12px;transform:translate(-50%,-14px);opacity:0;display:flex;align-items:center;gap:8px;background:var(--gd);color:#fff;padding:8px 13px;border-radius:7px;font-size:12px;box-shadow:0 6px 18px rgba(0,0,0,.18);transition:.22s;pointer-events:none;max-width:calc(100% - 24px);z-index:9}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 
-@media (max-width:380px){
-  body{padding:10px}
-  .steps button span{font-size:10px}
-  .act{flex-wrap:wrap}
-  .act .go{width:100%;margin-left:37px}
+@media (max-width:420px){
+  body{padding:8px}
+  .fld{grid-template-columns:1fr;gap:3px}
+  .fld>label{padding:0}
+  .tabs .prog{display:none}
+  .call .sep,.call .ch{display:none}
 }
 </style>
 </head>
 <body>
 
-<!-- ICÔNES (trait monochrome) -->
 <svg width="0" height="0" style="position:absolute">
   <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
-  <symbol id="i-hand" viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></symbol>
   <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/></symbol>
-  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
-  <symbol id="i-tool" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></symbol>
-  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><path d="M4 22v-7"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
   <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
   <symbol id="i-checkc" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></symbol>
+  <symbol id="i-warn" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4M12 17h.01"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-say" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></symbol>
   <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></symbol>
   <symbol id="i-sms" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
   <symbol id="i-file" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4M16 13H8M16 17H8M10 9H8"/></symbol>
+  <symbol id="i-folder" viewBox="0 0 24 24"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/><path d="M12 10v6M9 13h6"/></symbol>
   <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
   <symbol id="i-car" viewBox="0 0 24 24"><path d="M5 11l1.6-4.2A2 2 0 0 1 8.5 5.5h7a2 2 0 0 1 1.9 1.3L19 11"/><rect x="3" y="11" width="18" height="6" rx="2"/><path d="M6 17v2M18 17v2M7 14h.01M17 14h.01"/></symbol>
   <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9v12h14V9"/><path d="M10 21v-6h4v6"/></symbol>
-  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M3.22 12H9.5l.5-1 2 4.5 2-7 1.5 3.5h5.27"/></symbol>
-  <symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5S5 13 5 15a7 7 0 0 0 7 7z"/></symbol>
-  <symbol id="i-card" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></symbol>
-  <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></symbol>
-  <symbol id="i-warn" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4M12 17h.01"/></symbol>
-  <symbol id="i-exit" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5M21 12H9"/></symbol>
-  <symbol id="i-edit" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></symbol>
-  <symbol id="i-transfer" viewBox="0 0 24 24"><path d="m16 3 4 4-4 4M20 7H4M8 21l-4-4 4-4M4 17h16"/></symbol>
-  <symbol id="i-camera" viewBox="0 0 24 24"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></symbol>
+  <symbol id="i-tool" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></symbol>
   <symbol id="i-truck" viewBox="0 0 24 24"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2M15 18H9M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.62l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></symbol>
+  <symbol id="i-camera" viewBox="0 0 24 24"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></symbol>
+  <symbol id="i-bed" viewBox="0 0 24 24"><path d="M2 4v16M2 8h18a2 2 0 0 1 2 2v10M2 17h20M6 8v9"/></symbol>
   <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/></symbol>
-  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="14" height="14" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></symbol>
-  <symbol id="i-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
-  <symbol id="i-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
-  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
-  <symbol id="i-mic" viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v3"/></symbol>
-  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></symbol>
+  <symbol id="i-card" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></symbol>
+  <symbol id="i-edit" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></symbol>
+  <symbol id="i-exit" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5M21 12H9"/></symbol>
+  <symbol id="i-transfer" viewBox="0 0 24 24"><path d="m16 3 4 4-4 4M20 7H4M8 21l-4-4 4-4M4 17h16"/></symbol>
+  <symbol id="i-build" viewBox="0 0 24 24"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2M10 6h4M10 10h4M10 14h4M10 18h4"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></symbol>
   <symbol id="i-hist" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5M12 7v5l4 2"/></symbol>
+  <symbol id="i-route" viewBox="0 0 24 24"><circle cx="6" cy="19" r="3"/><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/><circle cx="18" cy="5" r="3"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol>
   <symbol id="i-send" viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
   <symbol id="i-euro" viewBox="0 0 24 24"><path d="M4 10h12M4 14h9"/><path d="M19 6a7.7 7.7 0 0 0-5.2-2A7.9 7.9 0 0 0 6 12c0 4.4 3.5 8 7.8 8 2 0 3.8-.8 5.2-2"/></symbol>
+  <symbol id="i-app" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
 </svg>
 
 <div class="wrap">
 
-<!-- EN-TÊTE -->
-<div class="top">
+<!-- BARRE D'APPEL -->
+<div class="bar">
   <img src="https://lareclame.fr/wp-content/uploads/2024/11/groupama-nouvelle-identite-viquelle-logo-top.jpg" alt="Groupama">
-  <div class="t">Script conseiller<span>Relation sociétaires</span></div>
-  <div class="live"><b></b><svg class="i s"><use href="#i-phone"/></svg>Appel entrant</div>
+  <div class="call"><span class="dot"></span><svg class="i s"><use href="#i-phone"/></svg><span>Appel entrant</span><span class="sep"></span><span class="ch">File Sinistres habitation</span><span class="sep"></span><b id="timer">00:00</b></div>
 </div>
 
-<!-- FICHE SOCIÉTAIRE -->
+<!-- SOCIÉTAIRE -->
 <div class="cli">
   <div class="h">
     <div class="av">LD</div>
-    <div><b>Louis Dubois</b><div class="sub">Sociétaire n° 4512 8730 9 · Agence Orléans Centre</div></div>
-    <span class="vb" id="vb"><svg class="i s"><use href="#i-lock"/></svg><span>À vérifier</span></span>
+    <div><div class="nm">Louis Dubois</div><div class="sb">Sociétaire n° 4512 8730 9 · depuis 2014 · Orléans (45)</div></div>
+    <span class="idb" id="idb"><svg class="i s"><use href="#i-lock"/></svg><span>Identité à vérifier</span></span>
   </div>
-  <div class="meta">
-    <span><svg class="i s"><use href="#i-home"/></svg>Habitation · Maison</span>
-    <span><svg class="i s"><use href="#i-car"/></svg>Auto · Tous risques</span>
-    <span><svg class="i s"><use href="#i-heart"/></svg>Santé · Famille</span>
-    <span><svg class="i s"><use href="#i-euro"/></svg>Cotisations à jour</span>
+  <div class="flags">
+    <span class="flag"><svg class="i s"><use href="#i-home"/></svg>Habitation</span>
+    <span class="flag"><svg class="i s"><use href="#i-car"/></svg>Auto</span>
+    <span class="flag"><svg class="i s"><use href="#i-heart"/></svg>Santé</span>
+    <span class="flag"><svg class="i s"><use href="#i-euro"/></svg>Cotisations à jour</span>
+    <span class="flag inf"><svg class="i s"><use href="#i-phone"/></svg>Serveur vocal : sinistre habitation</span>
+    <span class="flag opp"><svg class="i s"><use href="#i-target"/></svg>Opportunité : prévoyance</span>
   </div>
-  <div class="svi"><svg class="i s"><use href="#i-info"/></svg><span>Motif sélectionné sur le serveur vocal : <b>Sinistre habitation</b></span></div>
 </div>
 
-<!-- ÉTAPES -->
-<div class="steps" id="steps">
-  <button data-p="0" class="act"><svg class="i"><use href="#i-hand"/></svg><span>Accueil</span></button>
-  <button data-p="1"><svg class="i"><use href="#i-shield"/></svg><span>Identité</span></button>
-  <button data-p="2"><svg class="i"><use href="#i-search"/></svg><span>Besoin</span></button>
-  <button data-p="3"><svg class="i"><use href="#i-tool"/></svg><span>Traitement</span><i class="cnt" id="cnt"></i></button>
-  <button data-p="4"><svg class="i"><use href="#i-flag"/></svg><span>Clôture</span></button>
+<!-- ONGLETS -->
+<div class="tabs" id="tabs">
+  <button class="on" data-v="v-flow"><svg class="i s"><use href="#i-route"/></svg>Traitement</button>
+  <button data-v="v-cli"><svg class="i s"><use href="#i-user"/></svg>Contrats</button>
+  <button data-v="v-hist"><svg class="i s"><use href="#i-hist"/></svg>Historique</button>
+  <button data-v="v-kb"><svg class="i s"><use href="#i-book"/></svg>Aide</button>
+  <span class="prog"><span id="progTxt">0/5</span><i><b id="progBar"></b></i></span>
 </div>
 
-<div class="panel">
+<div class="body">
 
-  <!-- 1. ACCUEIL -->
-  <div class="pane on">
-    <div class="seg" id="canal">
-      <button class="on" data-c="voix"><svg class="i s"><use href="#i-phone"/></svg>Voix</button>
-      <button data-c="ecrit"><svg class="i s"><use href="#i-sms"/></svg>Écrit</button>
+<!-- ===== TRAITEMENT ===== -->
+<div class="view on" id="v-flow">
+
+  <!-- 1 -->
+  <section class="st open" data-s="0">
+    <header><span class="num">1</span><span class="tt">Identification</span><span class="sum"></span><svg class="i chev"><use href="#i-down"/></svg></header>
+    <div class="bd">
+      <div class="say"><svg class="i s"><use href="#i-say"/></svg><span>« Groupama bonjour Monsieur Dubois. Pour sécuriser votre dossier, pouvez-vous me confirmer votre date de naissance et votre code postal ? »</span></div>
+      <ul class="chk" id="idChk">
+        <li><span class="bx"><svg class="i"><use href="#i-check"/></svg></span>Numéro appelant reconnu<span class="v">06 12 34 56 78</span></li>
+        <li><span class="bx"><svg class="i"><use href="#i-check"/></svg></span>Date de naissance<span class="v">12/03/1981</span></li>
+        <li><span class="bx"><svg class="i"><use href="#i-check"/></svg></span>Code postal du domicile<span class="v">45000</span></li>
+        <li><span class="bx"><svg class="i"><use href="#i-check"/></svg></span>Information sur l'enregistrement de l'appel donnée</li>
+      </ul>
+      <div class="row"><span class="mut" style="font-size:11px">Ne jamais demander mot de passe, code SMS ou n° de carte.</span><button class="btn" id="idOk" disabled>Valider</button></div>
     </div>
-    <div class="say"><span id="accueil">« Groupama bonjour, Monsieur Dubois ! Je vois que vous nous appelez au sujet d'un sinistre sur votre habitation. Je suis là pour vous aider. »</span><button class="cp" title="Copier"><svg class="i s"><use href="#i-copy"/></svg></button></div>
-    <div class="note"><svg class="i s"><use href="#i-mic"/></svg><span>Si le message d'information n'a pas été diffusé : « Cet appel peut être enregistré à des fins de qualité et de formation. »</span></div>
-    <div class="note"><svg class="i s"><use href="#i-hist"/></svg><span>Dernier contact : demande d'attestation auto via l'appli Groupama, traitée.</span></div>
-  </div>
+  </section>
 
-  <!-- 2. IDENTITÉ -->
-  <div class="pane">
-    <div class="lbl">Vérifications obligatoires</div>
-    <ul class="chk" id="chk">
-      <li><span class="bx"><svg class="i"><use href="#i-check"/></svg></span><span class="q">Nom et prénom du titulaire</span><span class="v">Louis Dubois</span></li>
-      <li><span class="bx"><svg class="i"><use href="#i-check"/></svg></span><span class="q">Date de naissance</span><span class="v">12/03/1981</span></li>
-      <li><span class="bx"><svg class="i"><use href="#i-check"/></svg></span><span class="q">Code postal du domicile</span><span class="v">45000</span></li>
-    </ul>
-    <div class="lbl">À dire</div>
-    <div class="say">« Pour sécuriser l'accès à votre dossier, pouvez-vous me confirmer votre date de naissance et le code postal de votre domicile ? »<button class="cp" title="Copier"><svg class="i s"><use href="#i-copy"/></svg></button></div>
-    <div class="note w"><svg class="i s"><use href="#i-lock"/></svg><span>Ne demandez jamais de mot de passe, de code reçu par SMS ni de numéro de carte bancaire.</span></div>
-  </div>
-
-  <!-- 3. BESOIN -->
-  <div class="pane">
-    <div class="lbl">Motif du contact</div>
-    <div class="chips" id="motifs"></div>
-    <div class="lbl">Questions à poser</div>
-    <ul class="chk" id="qs"></ul>
-    <div class="lbl">Reformuler</div>
-    <div class="say"><span id="refo"></span><button class="cp" title="Copier"><svg class="i s"><use href="#i-copy"/></svg></button></div>
-  </div>
-
-  <!-- 4. TRAITEMENT -->
-  <div class="pane">
-    <div class="say"><span id="trt"></span><button class="cp" title="Copier"><svg class="i s"><use href="#i-copy"/></svg></button></div>
-    <div class="lbl">Actions recommandées</div>
-    <div class="acts" id="acts"></div>
-    <div class="note" id="savoir"></div>
-    <div class="lbl">Si besoin</div>
-    <div class="acts" id="acts2"></div>
-  </div>
-
-  <!-- 5. CLÔTURE -->
-  <div class="pane">
-    <div class="say">« Pour récapituler, Monsieur Dubois : <span id="recapTxt">[demande, action réalisée, prochaine étape]</span>. Avez-vous d'autres questions ? Merci de votre confiance et bonne journée. »<button class="cp" title="Copier"><svg class="i s"><use href="#i-copy"/></svg></button></div>
-    <div class="lbl">Actions réalisées</div>
-    <ul class="log" id="log"><li class="em">Aucune action réalisée.</li></ul>
-    <div class="lbl">Résultat</div>
-    <div class="chips" id="res">
-      <button class="chip" data-r="Traité au premier contact"><svg class="i s"><use href="#i-checkc"/></svg>Traité</button>
-      <button class="chip" data-r="Suivi en cours"><svg class="i s"><use href="#i-hist"/></svg>Suivi en cours</button>
-      <button class="chip" data-r="Transféré"><svg class="i s"><use href="#i-transfer"/></svg>Transféré</button>
+  <!-- 2 -->
+  <section class="st" data-s="1">
+    <header><span class="num">2</span><span class="tt">Qualification</span><span class="sum"></span><svg class="i chev"><use href="#i-down"/></svg></header>
+    <div class="bd">
+      <div class="fld"><label>Motif</label><select id="motif"></select></div>
+      <div id="fields"></div>
+      <div class="say"><svg class="i s"><use href="#i-say"/></svg><span id="refo"></span></div>
+      <div class="row"><span></span><button class="btn" id="qOk">Valider la qualification</button></div>
     </div>
-    <div class="lbl">Synthèse (enregistrée dans la fiche)</div>
-    <textarea id="note"></textarea>
-    <div class="ok" id="ok"><svg class="i"><use href="#i-checkc"/></svg><span><b>Interaction clôturée.</b> Synthèse enregistrée dans la fiche de Louis Dubois.</span></div>
-  </div>
+  </section>
 
-  <div class="nav">
-    <button class="btn gh" id="prev"><svg class="i s"><use href="#i-left"/></svg>Précédent</button>
-    <button class="btn" id="next">Suivant<svg class="i s"><use href="#i-right"/></svg></button>
+  <!-- 3 -->
+  <section class="st" data-s="2">
+    <header><span class="num">3</span><span class="tt">Vérification du contrat</span><span class="sum"></span><svg class="i chev"><use href="#i-down"/></svg></header>
+    <div class="bd">
+      <ul class="cov" id="cov"></ul>
+      <div class="say"><svg class="i s"><use href="#i-say"/></svg><span id="covSay"></span></div>
+      <div class="row"><span></span><button class="btn" id="cOk">Informé · passer aux actions</button></div>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section class="st" data-s="3">
+    <header><span class="num">4</span><span class="tt">Actions</span><span class="sum"></span><svg class="i chev"><use href="#i-down"/></svg></header>
+    <div class="bd">
+      <div class="lbl">Actions recommandées</div>
+      <div class="acts" id="acts"></div>
+      <div class="msg">
+        <div class="hd"><b><svg class="i s"><use href="#i-send"/></svg>Message au sociétaire</b>
+          <span class="pills" id="chan"><button class="pill on" data-c="sms">SMS</button><button class="pill" data-c="mail">E-mail</button></span>
+          <span class="to" id="to">06 12 34 56 78</span></div>
+        <textarea id="msgTxt" rows="3"></textarea>
+        <div class="ft"><span class="cnt" id="msgCnt"></span><button class="btn" id="msgSend" style="margin-left:auto"><svg class="i s"><use href="#i-send"/></svg>Envoyer</button></div>
+      </div>
+      <div class="row"><span></span><button class="btn" id="aOk">Passer à la clôture</button></div>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section class="st" data-s="4">
+    <header><span class="num">5</span><span class="tt">Clôture</span><span class="sum"></span><svg class="i chev"><use href="#i-down"/></svg></header>
+    <div class="bd">
+      <div class="fld"><label>Résultat</label><div class="pills" id="res"><button class="pill" data-r="Traité">Traité</button><button class="pill" data-r="Suivi en cours">Suivi en cours</button><button class="pill" data-r="Transféré">Transféré</button></div></div>
+      <div class="fld"><label>Tâche de suivi</label><select id="task"><option value="">Aucune</option></select></div>
+      <div class="fld"><label>Opportunité</label><div class="pills" id="opp"><button class="pill" data-o="1">Bilan prévoyance à proposer par l'agence</button></div></div>
+      <div class="lbl">Synthèse (générée, modifiable)</div>
+      <textarea id="syn" rows="4"></textarea>
+      <div class="say"><svg class="i s"><use href="#i-say"/></svg><span>« Je récapitule : <span id="recap"></span>. Avez-vous d'autres questions ? Merci de votre confiance, bonne journée Monsieur Dubois. »</span></div>
+      <div class="row"><span></span><button class="btn" id="close">Clôturer l'interaction</button></div>
+      <div class="done-box" id="doneBox"><svg class="i"><use href="#i-checkc"/></svg><span id="doneTxt"></span></div>
+    </div>
+  </section>
+</div>
+
+<!-- ===== CONTRATS ===== -->
+<div class="view" id="v-cli">
+  <table class="tbl">
+    <tr><td><svg class="i"><use href="#i-home"/></svg></td><td><b>Habitation · Formule Confort</b>Maison 5 pièces, Orléans · propriétaire occupant<br><span class="mut">Franchise 150 € · Recherche de fuite 1 500 € · Relogement 12 mois</span></td><td class="r">38,90 €/mois</td></tr>
+    <tr><td><svg class="i"><use href="#i-car"/></svg></td><td><b>Auto · Tous risques</b>Peugeot 3008 · bonus 0,50<br><span class="mut">Franchise 300 € · Assistance 0 km · Véhicule de remplacement 7 j</span></td><td class="r">64,20 €/mois</td></tr>
+    <tr><td><svg class="i"><use href="#i-heart"/></svg></td><td><b>Santé · Formule Famille</b>3 bénéficiaires<br><span class="mut">Tiers payant · Téléconsultation incluse</span></td><td class="r">142,60 €/mois</td></tr>
+  </table>
+  <div class="kv" style="margin-top:10px">
+    <div><span>Mobile</span>06 12 34 56 78 · SMS autorisés</div>
+    <div><span>E-mail</span>louis.dubois@email.fr · autorisé</div>
+    <div><span>Paiement</span>Prélèvement mensuel · FR76 •••• 4821</div>
+    <div><span>Agence</span>Orléans Centre</div>
+    <div><span>Espace client / appli</span>Actif</div>
+    <div><span>Non équipé</span>Prévoyance, Garantie accidents de la vie</div>
   </div>
 </div>
 
+<!-- ===== HISTORIQUE ===== -->
+<div class="view" id="v-hist">
+  <ul class="tl">
+    <li><span class="ic"><svg class="i s"><use href="#i-phone"/></svg></span><div><b>Serveur vocal · Sinistre habitation</b><span class="mut">Choix « déclarer un sinistre », puis « habitation ».</span></div><span class="w">À l'instant</span></li>
+    <li><span class="ic"><svg class="i s"><use href="#i-app"/></svg></span><div><b>Appli · Mémo véhicule assuré</b><span class="mut">Téléchargé en autonomie.</span></div><span class="w">Il y a 3 sem.</span></li>
+    <li><span class="ic"><svg class="i s"><use href="#i-mail"/></svg></span><div><b>E-mail · Avis d'échéance habitation</b><span class="mut">Ouvert.</span></div><span class="w">Il y a 2 mois</span></li>
+    <li><span class="ic"><svg class="i s"><use href="#i-build"/></svg></span><div><b>Agence · Changement de véhicule</b><span class="mut">Avenant auto signé, Peugeot 3008.</span></div><span class="w">Il y a 8 mois</span></li>
+    <li><span class="ic"><svg class="i s"><use href="#i-folder"/></svg></span><div><b>Sinistre auto · Bris de glace</b><span class="mut">Clos, réparation chez un partenaire, 0 € de franchise.</span></div><span class="w">Il y a 1 an</span></li>
+  </ul>
+</div>
+
+<!-- ===== AIDE ===== -->
+<div class="view" id="v-kb">
+  <input type="text" id="kbq" placeholder="Rechercher : délai, IRSI, franchise, résiliation…">
+  <div id="kbl"></div>
+</div>
+
+</div>
 </div>
 <div class="toast" id="toast"><svg class="i"><use href="#i-checkc"/></svg><span></span></div>
 
@@ -284,187 +363,313 @@ textarea{width:100%;padding:7px 8px;border:1px solid var(--line);border-radius:6
 (function(){
 var $=function(s){return document.querySelector(s);},$$=function(s){return [].slice.call(document.querySelectorAll(s));};
 function ico(n,c){return '<svg class="i'+(c?' '+c:'')+'"><use href="#i-'+n+'"/></svg>';}
+function esc(t){var d=document.createElement("div");d.textContent=t;return d.innerHTML;}
 var tT;function toast(t){var e=$("#toast");e.lastChild.textContent=t;e.classList.add("show");clearTimeout(tT);tT=setTimeout(function(){e.classList.remove("show");},2300);}
-
 var MAIL="louis.dubois@email.fr",TEL="06 12 34 56 78";
 
-/* ---------- motifs ---------- */
+/* ---------- chrono d'appel ---------- */
+var sec=0,tick=setInterval(function(){sec++;$("#timer").textContent=fmt(sec);},1000);
+function fmt(s){return ("0"+Math.floor(s/60)).slice(-2)+":"+("0"+s%60).slice(-2);}
+
+/* ---------- onglets ---------- */
+$$("#tabs button").forEach(function(b){b.addEventListener("click",function(){
+  $$("#tabs button").forEach(function(x){x.classList.remove("on");});b.classList.add("on");
+  $$(".view").forEach(function(v){v.classList.toggle("on",v.id===b.dataset.v);});
+});});
+
+/* ---------- accordéon ---------- */
+var steps=$$(".st"),doneSteps={};
+function openStep(i){steps.forEach(function(s,k){s.classList.toggle("open",k===i);});}
+steps.forEach(function(s,i){s.querySelector("header").addEventListener("click",function(){
+  if(s.classList.contains("open"))s.classList.remove("open");else openStep(i);
+});});
+function finish(i,sum){
+  doneSteps[i]=1;steps[i].classList.add("done");steps[i].querySelector(".num").innerHTML=ico("check","s");
+  steps[i].querySelector(".sum").textContent=sum;
+  var n=Object.keys(doneSteps).length;$("#progTxt").textContent=n+"/5";$("#progBar").style.width=(n*20)+"%";
+  if(i<4)openStep(i+1);
+}
+
+/* ---------- 1. identification ---------- */
+$$("#idChk li").forEach(function(li){li.addEventListener("click",function(){
+  li.classList.toggle("on");
+  $("#idOk").disabled=!$$("#idChk li").every(function(x){return x.classList.contains("on");});
+});});
+$("#idOk").addEventListener("click",function(){
+  var b=$("#idb");b.classList.add("on");b.innerHTML=ico("shield","s")+"<span>Identité vérifiée</span>";
+  finish(0,"Identité vérifiée");toast("Identité du sociétaire vérifiée");
+});
+
+/* ---------- référentiel des motifs ---------- */
+var DLY={"Aujourd'hui":0,"Hier":1,"Il y a 2 à 5 jours":3,"Il y a plus de 5 jours":6};
+var SURV=["Aujourd'hui","Hier","Il y a 2 à 5 jours","Il y a plus de 5 jours"];
 var M={
-hab:{l:"Sinistre habitation",i:"drop",
- q:["Date et heure de la découverte","Nature : dégât des eaux, incendie, vol, bris de glace…","Origine identifiée (fuite chez vous, chez un voisin) ?","Mesures prises : arrivée d'eau coupée, logement habitable ?","Photos et factures disponibles ?"],
- r:"« Si je résume, vous avez constaté un dégât des eaux à votre domicile et vous souhaitez le déclarer. C'est bien cela ? »",
- t:"« Je vous ouvre la déclaration maintenant. Je vous envoie ensuite le constat amiable et un lien pour déposer vos photos. Si la fuite n'est pas réparée, je peux vous envoyer un plombier. »",
- s:"Déclaration sous 5 jours ouvrés (2 jours pour un vol). Dommages jusqu'à 1 600 € HT : pas d'expert en général (convention IRSI).",
- a:[["file","Ouvrir la déclaration de sinistre","Contrat Habitation · Maison","Ouvrir","Déclaration ouverte · dossier n° 26-H-458213"],
-    ["tool","Missionner un plombier (assistance)","Intervention sous 3 h, 24h/24","Missionner","Plombier missionné · rappel du prestataire sous 30 min"],
-    ["mail","Envoyer le constat amiable dégât des eaux","Par e-mail · "+MAIL,"Envoyer","Constat amiable envoyé à "+MAIL],
-    ["camera","Envoyer le lien de dépôt des photos","Par SMS · "+TEL,"Envoyer","Lien de dépôt des photos envoyé par SMS"]]},
-auto:{l:"Sinistre auto",i:"car",
- q:["Personne blessée ?","Lieu, date et circonstances de l'accident","Tiers impliqué : constat amiable ou e-constat rempli ?","Véhicule en état de rouler ?","Besoin d'un véhicule de remplacement ?"],
- r:"« Si je comprends bien, vous avez eu un accident avec votre Peugeot 3008 et vous souhaitez le déclarer. C'est bien cela ? »",
- t:"« Je déclare le sinistre tout de suite. Si votre véhicule ne roule pas, je vous envoie une dépanneuse et je vous oriente vers un garage partenaire, sans avance de frais. »",
- s:"Déclaration sous 5 jours ouvrés. Garage partenaire : pas d'avance de frais, hors franchise.",
- a:[["file","Ouvrir la déclaration de sinistre","Contrat Auto · Tous risques","Ouvrir","Déclaration ouverte · dossier n° 26-A-731045"],
-    ["truck","Envoyer un dépanneur","Groupama Assistance, 24h/24","Envoyer","Dépannage déclenché · arrivée estimée 45 min"],
-    ["tool","Orienter vers un garage partenaire","Adresse envoyée par SMS","Orienter","Coordonnées du garage partenaire envoyées par SMS"],
-    ["car","Réserver un véhicule de remplacement","Selon garanties du contrat","Réserver","Véhicule de remplacement réservé"]]},
-att:{l:"Attestation",i:"file",
- q:["Contrat concerné : habitation, auto, santé","Usage : bailleur, école, location, administration","Canal souhaité : e-mail ou SMS"],
- r:"« Vous avez besoin d'une attestation pour votre contrat. C'est bien cela ? »",
- t:"« Je vous l'envoie tout de suite. Vous la retrouverez aussi à tout moment dans votre espace client et l'appli Groupama. »",
- s:"Auto : la carte verte n'existe plus, le Mémo véhicule assuré est envoyé à la place.",
- a:[["home","Attestation habitation","Par e-mail · "+MAIL,"Envoyer","Attestation habitation envoyée par e-mail"],
-    ["car","Mémo véhicule assuré","Par e-mail · "+MAIL,"Envoyer","Mémo véhicule assuré envoyé par e-mail"],
-    ["sms","Lien vers l'espace client","Par SMS · "+TEL,"Envoyer","Lien espace client envoyé par SMS"]]},
-modif:{l:"Modification de contrat",i:"edit",
- q:["Nature : déménagement, nouveau véhicule, conducteur, garanties","Date d'effet souhaitée","Impact sur la cotisation présenté au sociétaire"],
- r:"« Vous souhaitez modifier votre contrat suite à un changement de situation. C'est bien cela ? »",
- t:"« Je fais la modification et je vous envoie l'avenant à signer en ligne. Il prendra effet dès votre signature. »",
- s:"Toute modification de garantie donne lieu à un avenant signé électroniquement.",
- a:[["user","Mettre à jour la fiche sociétaire","Adresse, téléphone, e-mail","Mettre à jour","Fiche sociétaire mise à jour"],
-    ["edit","Envoyer l'avenant en signature électronique","Par e-mail · "+MAIL,"Envoyer","Avenant envoyé pour signature électronique"]]},
-cotis:{l:"Cotisation",i:"card",
- q:["Échéance concernée et montant","Changement de RIB ou de mode de paiement ?","Difficulté de paiement passagère ?"],
- r:"« Vous avez une question sur votre cotisation. C'est bien cela ? »",
- t:"« Je regarde votre échéancier. Je peux vous envoyer un lien de paiement sécurisé ou mettre à jour votre prélèvement. »",
- s:"Aucune coordonnée bancaire ne se prend à l'oral : utilisez le lien sécurisé ou le mandat SEPA.",
- a:[["file","Envoyer l'échéancier","Par e-mail · "+MAIL,"Envoyer","Échéancier envoyé par e-mail"],
-    ["card","Lien de paiement sécurisé","Par SMS · "+TEL,"Envoyer","Lien de paiement envoyé par SMS"],
-    ["edit","Mandat SEPA (nouveau RIB)","Signature électronique","Envoyer","Mandat SEPA envoyé pour signature"]]},
-recl:{l:"Réclamation",i:"alert",
- q:["Objet du mécontentement","Contrat ou dossier concerné","Attente du sociétaire"],
- r:"« Je comprends votre mécontentement et je vous remercie de nous en faire part. Si je résume : [objet]. C'est bien cela ? »",
- t:"« J'enregistre votre réclamation. Vous recevrez un accusé de réception, puis une réponse dans les meilleurs délais. »",
- s:"Accusé de réception sous 10 jours ouvrés, réponse sous 2 mois maximum. Ensuite : recours au médiateur.",
- a:[["alert","Enregistrer la réclamation","Service Réclamations","Enregistrer","Réclamation enregistrée · n° REC-77120"],
-    ["mail","Envoyer l'accusé de réception","Par e-mail · "+MAIL,"Envoyer","Accusé de réception envoyé par e-mail"]]},
-resil:{l:"Résiliation",i:"exit",
- q:["Contrat concerné","Motif : tarif, déménagement, vente du véhicule, service","Ancienneté du contrat (plus d'un an : résiliation à tout moment)"],
- r:"« Vous envisagez de résilier votre contrat. Puis-je vous demander ce qui motive votre décision ? »",
- t:"« Avant d'enregistrer votre demande, je peux vous proposer un rendez-vous avec votre conseiller pour revoir votre contrat ensemble. »",
- s:"Après un an de contrat (auto, habitation), la résiliation est possible à tout moment, effet sous 1 mois.",
- a:[["cal","Proposer un rendez-vous en agence","Agence Orléans Centre","Proposer","Rendez-vous proposé · invitation envoyée par e-mail"],
-    ["exit","Enregistrer la demande de résiliation","Confirmation par e-mail","Enregistrer","Demande de résiliation enregistrée"]]}
+hab:{l:"Sinistre habitation",task:["Gestion sinistres habitation · relance sous 48 h","Expertise · suivi du rendez-vous"],
+ f:[["sub","Nature",["Dégât des eaux","Incendie","Vol / cambriolage","Bris de glace","Catastrophe naturelle"],0],
+    ["sv","Survenance",SURV,1],
+    ["or","Origine",["Chez le sociétaire","Chez un voisin","Partie commune","Inconnue"],1,function(v){return v.sub==="Dégât des eaux";}],
+    ["fu","Fuite",["Réparée","Toujours active"],1,function(v){return v.sub==="Dégât des eaux";}],
+    ["hb","Logement",["Habitable","Inhabitable"],0],
+    ["es","Estimation",["Moins de 1 600 € HT","Plus de 1 600 € HT","Ne sait pas"],0]],
+ r:function(v){return "« Si je résume : "+v.sub.toLowerCase()+" à votre domicile, survenu "+v.sv.toLowerCase().replace("il y a","il y a")+(v.or?", origine "+v.or.toLowerCase():"")+". C'est bien cela ? »";},
+ cov:function(v){var c=[],dde=v.sub==="Dégât des eaux",vol=v.sub==="Vol / cambriolage",cat=v.sub==="Catastrophe naturelle";
+  c.push(["ok",v.sub+" couvert · Habitation Formule Confort"]);
+  if(dde)c.push(["ok","Recherche de fuite prise en charge jusqu'à 1 500 €"]);
+  if(vol)c.push(["wa","Dépôt de plainte obligatoire · effraction à justifier"]);
+  if(cat)c.push(["in","Indemnisation après publication de l'arrêté CatNat · franchise légale 380 €"]);
+  else c.push(["in","Franchise contractuelle : 150 €"]);
+  var lim=vol?2:5;
+  if(!cat){if(DLY[v.sv]>lim)c.push(["wa","Délai de déclaration dépassé ("+lim+" jours ouvrés) : consigner le motif du retard"]);else c.push(["ok","Déclaration dans les délais ("+lim+" jours ouvrés)"]);}
+  if(v.hb==="Inhabitable")c.push(["ok","Frais de relogement couverts (jusqu'à 12 mois)"]);
+  if(dde&&v.es==="Moins de 1 600 € HT")c.push(["ok","Gestion sans expert · convention IRSI (moins de 1 600 € HT)"]);
+  else if(v.es==="Plus de 1 600 € HT")c.push(["in","Expertise nécessaire · rendez-vous à planifier"]);
+  else if(v.es==="Ne sait pas")c.push(["in","Expertise décidée à réception des devis"]);
+  if(v.or==="Chez un voisin"||v.or==="Partie commune")c.push(["in","Constat amiable dégât des eaux à établir avec "+(v.or==="Chez un voisin"?"le voisin":"le syndic")]);
+  return c;},
+ say:function(v){return "« Bonne nouvelle, votre contrat couvre ce sinistre. Il reste une franchise de "+(v.sub==="Catastrophe naturelle"?"380":"150")+" €. Je vous ouvre le dossier et j'organise la suite. »";},
+ a:function(v){var a=[],dde=v.sub==="Dégât des eaux";
+  a.push(["folder","Créer le dossier sinistre","Gestion sinistres habitation","Créer","Dossier 26-H-458213 créé","dos"]);
+  if(dde&&v.fu==="Toujours active")a.push(["tool","Missionner un plombier","Recherche de fuite · intervention sous 3 h","Missionner","Plombier missionné · rappel du prestataire sous 30 min",0,1]);
+  if(v.hb==="Inhabitable")a.push(["bed","Organiser le relogement","Hôtel à proximité · prise en charge directe","Organiser","Relogement réservé · 3 nuits, Orléans centre",0,1]);
+  if(v.sub==="Vol / cambriolage")a.push(["shield","Envoyer le lien de pré-plainte en ligne","Par SMS · "+TEL,"Envoyer","Lien de pré-plainte envoyé par SMS"]);
+  if(v.es==="Plus de 1 600 € HT")a.push(["cal","Planifier la visite de l'expert",null,"slots","Visite de l'expert planifiée"]);
+  if(v.or==="Chez un voisin"||v.or==="Partie commune")a.push(["file","Envoyer le constat amiable dégât des eaux","Par e-mail · "+MAIL,"Envoyer","Constat amiable envoyé par e-mail"]);
+  a.push(["camera","Demander photos et factures","Lien de dépôt sécurisé par SMS","Envoyer","Lien de dépôt des justificatifs envoyé"]);
+  return a;},
+ m:"Groupama : votre dossier sinistre {dos} est ouvert. Déposez vos photos et factures dans l'appli Groupama, rubrique Sinistres. Un gestionnaire revient vers vous sous 48 h."},
+
+auto:{l:"Sinistre auto",task:["Gestion sinistres auto · relance sous 48 h","Gestion corporelle · prise de contact"],
+ f:[["sub","Nature",["Accident avec tiers","Accident sans tiers","Bris de glace","Vol du véhicule"],0],
+    ["sv","Survenance",SURV,0],
+    ["bl","Blessés",["Non","Oui"],0,function(v){return v.sub.indexOf("Accident")===0;}],
+    ["co","Constat",["E-constat","Constat papier","Aucun"],0,function(v){return v.sub==="Accident avec tiers";}],
+    ["vr","Véhicule",["Roulant","Non roulant"],0,function(v){return v.sub!=="Vol du véhicule";}]],
+ r:function(v){return "« Si je résume : "+v.sub.toLowerCase()+" avec votre Peugeot 3008, "+v.sv.toLowerCase()+(v.vr?", véhicule "+v.vr.toLowerCase():"")+". C'est bien cela ? »";},
+ cov:function(v){var c=[];
+  if(v.bl==="Oui")c.push(["wa","Victime corporelle : transfert vers la gestion corporelle"]);
+  c.push(["ok","Dommages au véhicule couverts · Tous risques"]);
+  if(v.sub==="Bris de glace")c.push(["ok","Franchise 0 € en cas de réparation chez un partenaire"]);
+  else c.push(["in","Franchise : 300 €"]);
+  if(v.sub==="Accident avec tiers")c.push(["in","Responsabilité déterminée selon le constat · bonus actuel 0,50"]);
+  if(v.sub==="Vol du véhicule")c.push(["wa","Dépôt de plainte sous 24 h · indemnisation après 30 jours sans découverte"]);
+  var lim=v.sub==="Vol du véhicule"?2:5;
+  if(DLY[v.sv]>lim)c.push(["wa","Délai de déclaration dépassé ("+lim+" jours ouvrés)"]);else c.push(["ok","Déclaration dans les délais ("+lim+" jours ouvrés)"]);
+  if(v.vr==="Non roulant")c.push(["ok","Assistance 0 km et véhicule de remplacement 7 jours inclus"]);
+  return c;},
+ say:function(v){return v.sub==="Bris de glace"?"« Votre bris de glace est couvert, sans franchise si vous passez par l'un de nos réparateurs partenaires. »":"« Votre contrat Tous risques couvre les dommages, avec une franchise de 300 €. Je m'occupe de la suite. »";},
+ a:function(v){var a=[];
+  a.push(["folder","Créer le dossier sinistre","Gestion sinistres auto","Créer","Dossier 26-A-731045 créé","dos"]);
+  if(v.bl==="Oui")a.push(["transfer","Transférer vers la gestion corporelle","Transfert accompagné","Transférer","Appel transféré · gestion corporelle",0,1]);
+  if(v.co==="Aucun")a.push(["sms","Envoyer le lien e-constat","Par SMS · "+TEL,"Envoyer","Lien e-constat envoyé par SMS"]);
+  if(v.vr==="Non roulant"){a.push(["truck","Déclencher le dépannage","Groupama Assistance · 24h/24","Déclencher","Dépanneuse en route · arrivée estimée 45 min",0,1]);
+    a.push(["car","Réserver le véhicule de remplacement","7 jours · catégorie équivalente","Réserver","Véhicule de remplacement réservé"]);}
+  if(v.sub==="Bris de glace")a.push(["cal","Rendez-vous chez un réparateur partenaire",null,"slots","Rendez-vous pare-brise confirmé"]);
+  else if(v.sub!=="Vol du véhicule")a.push(["tool","Orienter vers un garage partenaire","Sans avance de frais hors franchise","Orienter","Garage partenaire transmis par SMS"]);
+  return a;},
+ m:"Groupama : votre dossier sinistre {dos} est ouvert. Suivez son avancement dans l'appli Groupama. Assistance 24h/24 au numéro figurant sur votre Mémo véhicule assuré."},
+
+doc:{l:"Attestation / document",task:[],
+ f:[["sub","Document",["Attestation habitation","Mémo véhicule assuré","Carte de tiers payant","Avis d'échéance"],0],
+    ["ca","Envoi",["E-mail","SMS (lien)","Courrier"],0]],
+ r:function(v){return "« Vous avez besoin de votre "+v.sub.toLowerCase()+". Je vous l'envoie par "+v.ca.toLowerCase().replace(" (lien)","")+", c'est bien cela ? »";},
+ cov:function(v){var c=[["ok","Contrat actif"],["ok","Cotisations à jour : document disponible immédiatement"]];
+  if(v.sub==="Mémo véhicule assuré")c.push(["in","La carte verte n'existe plus : le Mémo véhicule assuré la remplace"]);
+  if(v.sub==="Attestation habitation")c.push(["in","Mentionne la responsabilité civile (utile pour bailleur, école, location)"]);
+  c.push(["in","Le sociétaire a un espace client actif : document aussi dans l'appli"]);return c;},
+ say:function(){return "« Votre contrat est bien à jour, je vous envoie le document tout de suite. Vous le retrouverez aussi dans votre appli Groupama. »";},
+ a:function(v){var ch=v.ca==="E-mail"?MAIL:v.ca==="Courrier"?"Domicile, Orléans":TEL;
+  return [["file","Envoyer : "+v.sub,v.ca+" · "+ch,"Envoyer",v.sub+" envoyé"+(v.sub.indexOf("Attestation")===0||v.sub.indexOf("Carte")===0?"e":"")+" · "+v.ca.toLowerCase()],
+          ["app","Rappeler l'accès à l'appli Groupama","Lien de connexion par SMS","Envoyer","Lien appli envoyé par SMS"]];},
+ m:"Groupama : votre document est disponible. Retrouvez tous vos documents à tout moment dans l'appli Groupama, rubrique Mes contrats."},
+
+cot:{l:"Cotisation / paiement",task:["Recouvrement · vérification du paiement"],
+ f:[["sub","Demande",["Explication du montant","Changement de RIB","Échéance rejetée","Changement de périodicité"],0],
+    ["ct","Contrat",["Auto","Habitation","Santé"],0]],
+ r:function(v){return "« Vous avez une question concernant votre contrat "+v.ct.toLowerCase()+" : "+v.sub.toLowerCase()+". C'est bien cela ? »";},
+ cov:function(v){var P={Auto:"64,20",Habitation:"38,90",Santé:"142,60"},c=[["in","Cotisation "+v.ct.toLowerCase()+" : "+P[v.ct]+" € par mois, prélèvement mensuel"]];
+  if(v.sub==="Échéance rejetée")c.push(["ok","Aucun rejet constaté sur le compte : vérifier avec le sociétaire"]);
+  if(v.sub==="Changement de RIB")c.push(["wa","Aucune coordonnée bancaire à l'oral : mandat SEPA électronique uniquement"]);
+  if(v.sub==="Changement de périodicité")c.push(["in","Passage en annuel possible à l'échéance principale, sans frais"]);
+  if(v.sub==="Explication du montant")c.push(["in","Évolution annuelle : indice du marché et évolution du risque"]);
+  return c;},
+ say:function(v){return "« Je regarde votre échéancier "+v.ct.toLowerCase()+". Je vous envoie tout de suite ce qu'il faut pour régler cela. »";},
+ a:function(v){var a=[["file","Envoyer l'échéancier "+v.ct.toLowerCase(),"Par e-mail · "+MAIL,"Envoyer","Échéancier envoyé par e-mail"]];
+  if(v.sub==="Changement de RIB")a.unshift(["edit","Envoyer le mandat SEPA","Signature électronique","Envoyer","Mandat SEPA envoyé pour signature"]);
+  if(v.sub==="Échéance rejetée")a.unshift(["card","Envoyer un lien de paiement CB","Paiement sécurisé par SMS","Envoyer","Lien de paiement envoyé par SMS"]);
+  if(v.sub==="Changement de périodicité")a.unshift(["edit","Envoyer l'avenant de périodicité","Signature électronique","Envoyer","Avenant envoyé pour signature"]);
+  return a;},
+ m:"Groupama : comme convenu, vous trouverez les éléments concernant votre cotisation dans votre espace client. Nous restons à votre disposition."},
+
+res:{l:"Résiliation",task:["Agence Orléans Centre · rappel de fidélisation sous 48 h"],
+ f:[["sub","Raison",["Tarif","Déménagement","Vente du véhicule","Insatisfaction"],0],
+    ["ct","Contrat",["Auto","Habitation","Santé"],0]],
+ r:function(v){return "« Vous envisagez de résilier votre contrat "+v.ct.toLowerCase()+" pour une raison de "+v.sub.toLowerCase()+". C'est bien cela ? »";},
+ cov:function(v){var c=[["ok","Contrat de plus d'un an : résiliation possible à tout moment, effet sous 1 mois"],["in","Sociétaire fidèle depuis 2014 · 3 contrats · à fidéliser"]];
+  var A={"Tarif":"Proposer une révision des garanties ou de la franchise","Déménagement":"Transférer le contrat à la nouvelle adresse plutôt que résilier","Vente du véhicule":"Reporter le contrat sur le prochain véhicule","Insatisfaction":"Ouvrir une réclamation en parallèle"};
+  c.push(["wa","Alternative à proposer : "+A[v.sub]]);return c;},
+ say:function(){return "« Avant d'enregistrer votre demande, je peux vous proposer une solution plus adaptée. Souhaitez-vous que nous regardions ensemble ? »";},
+ a:function(v){var a=[];
+  if(v.sub==="Tarif")a.push(["euro","Proposer un devis révisé","Ajustement franchise et garanties","Envoyer","Devis révisé envoyé par e-mail"]);
+  if(v.sub==="Déménagement")a.push(["home","Proposer le transfert à la nouvelle adresse","Avenant en signature électronique","Proposer","Avenant de transfert envoyé"]);
+  if(v.sub==="Vente du véhicule")a.push(["car","Mettre le contrat en attente du prochain véhicule","Suspension temporaire","Appliquer","Contrat suspendu en attente du prochain véhicule"]);
+  if(v.sub==="Insatisfaction")a.push(["alert","Ouvrir une réclamation","Service Réclamations","Ouvrir","Réclamation enregistrée · n° REC-77120"]);
+  a.push(["cal","Rendez-vous avec l'agence",null,"slots","Rendez-vous agence confirmé"]);
+  a.push(["exit","Enregistrer la demande de résiliation","Confirmation par e-mail","Enregistrer","Demande de résiliation enregistrée"]);
+  return a;},
+ m:"Groupama : suite à notre échange, votre agence Orléans Centre vous recontacte pour étudier une solution adaptée à votre situation."},
+
+rec:{l:"Réclamation",task:["Service Réclamations · réponse sous 10 jours ouvrés"],
+ f:[["sub","Objet",["Gestion d'un sinistre","Tarif","Qualité de service","Délai de traitement"],0],
+    ["nv","Niveau",["Premier contact","Relance","Menace de départ"],0]],
+ r:function(v){return "« Je comprends votre mécontentement concernant "+v.sub.toLowerCase()+". Je l'enregistre pour qu'il soit traité. »";},
+ cov:function(v){var c=[["in","Accusé de réception sous 10 jours ouvrés, réponse sous 2 mois maximum"]];
+  if(v.nv==="Relance")c.push(["wa","Relance : escalade au Service Réclamations (niveau 2)"]);
+  if(v.nv==="Menace de départ")c.push(["wa","Risque de départ : alerter l'agence"]);
+  c.push(["in","Après réponse : recours possible au médiateur de l'assurance"]);return c;},
+ say:function(){return "« Votre réclamation est enregistrée. Vous recevrez un accusé de réception, puis une réponse écrite. »";},
+ a:function(v){var a=[["alert","Enregistrer la réclamation","Service Réclamations","Enregistrer","Réclamation enregistrée · n° REC-77120","dos"],
+   ["mail","Envoyer l'accusé de réception","Par e-mail · "+MAIL,"Envoyer","Accusé de réception envoyé par e-mail"]];
+  if(v.nv==="Relance")a.push(["transfer","Escalader en niveau 2","Service Réclamations","Escalader","Réclamation escaladée en niveau 2",0,1]);
+  if(v.nv==="Menace de départ")a.push(["build","Alerter l'agence Orléans Centre","Risque de départ","Alerter","Agence alertée · rappel du sociétaire prévu"]);
+  return a;},
+ m:"Groupama : votre réclamation {dos} est bien enregistrée. Vous recevrez une réponse écrite dans les meilleurs délais."}
 };
-var X=[
- ["cal","Planifier un rappel",'<select id="cr"><option>Aujourd\'hui · 17h – 19h</option><option>Demain · 9h – 12h</option><option>Demain · 14h – 17h</option></select>',"Planifier",function(){return "Rappel planifié · "+$("#cr").value;}],
- ["transfer","Transférer l'appel",'<select id="sv"><option>Agence Orléans Centre</option><option>Gestion sinistres</option><option>Groupama Assistance</option><option>Service Réclamations</option></select>',"Transférer",function(){return "Appel transféré · "+$("#sv").value;}]
-];
 
-/* ---------- navigation ---------- */
-var cur=0,panes=$$(".pane"),tabs=$$("#steps button");
-function go(n){
-  cur=Math.max(0,Math.min(4,n));
-  panes.forEach(function(p,i){p.classList.toggle("on",i===cur);});
-  tabs.forEach(function(t,i){t.classList.toggle("act",i===cur);if(i<cur)t.classList.add("done");});
-  $("#prev").disabled=cur===0;
-  var nx=$("#next");
-  if(cur===4){nx.innerHTML=ico("flag","s")+"Clôturer l'interaction";}
-  else nx.innerHTML=["Identifier le sociétaire","Qualifier le besoin","Traiter la demande","Conclure"][cur]+ico("right","s");
-  if(closed){nx.disabled=true;nx.innerHTML=ico("check","s")+"Clôturée";}
-}
-tabs.forEach(function(t,i){t.addEventListener("click",function(){go(i);});});
-$("#prev").addEventListener("click",function(){go(cur-1);});
-$("#next").addEventListener("click",function(){if(cur<4)go(cur+1);else cloturer();});
-
-/* ---------- accueil ---------- */
-var ACC={voix:"« Groupama bonjour, Monsieur Dubois ! Je vois que vous nous appelez au sujet d'un sinistre sur votre habitation. Je suis là pour vous aider. »",
-ecrit:"« Bonjour Monsieur Dubois, merci pour votre message. Je prends en charge votre demande concernant votre sinistre habitation. »"};
-$$("#canal button").forEach(function(b){b.addEventListener("click",function(){
-  $$("#canal button").forEach(function(x){x.classList.remove("on");});b.classList.add("on");$("#accueil").textContent=ACC[b.dataset.c];
-});});
-
-/* ---------- copier ---------- */
-$$(".cp").forEach(function(b){b.addEventListener("click",function(){
-  var t=b.parentNode.textContent.trim();
-  try{navigator.clipboard.writeText(t);}catch(e){}
-  toast("Texte copié");
-});});
-
-/* ---------- identité ---------- */
-function bindChk(ul,cb){$$(ul+" li").forEach(function(li){li.addEventListener("click",function(){li.classList.toggle("on");if(cb)cb();});});}
-bindChk("#chk",function(){
-  var all=$$("#chk li").every(function(x){return x.classList.contains("on");});
-  var vb=$("#vb");vb.classList.toggle("on",all);
-  vb.innerHTML=all?ico("shield","s")+"<span>Identité vérifiée</span>":ico("lock","s")+"<span>À vérifier</span>";
-  if(all)toast("Identité du sociétaire vérifiée");
-});
-
-/* ---------- actions ---------- */
-var done=[],motif="hab",res="";
-function row(a,dyn){
-  var d=document.createElement("div");d.className="act";
-  d.innerHTML='<div class="ic">'+ico(a[0])+'</div><div class="tx"><b></b>'+(dyn?a[2]:"")+'<span></span></div><button class="go"></button>';
-  d.querySelector("b").textContent=a[1];
-  if(!dyn)d.querySelector(".tx span").textContent=a[2];
-  var btn=d.querySelector(".go");btn.textContent=a[3];
-  btn.addEventListener("click",function(){
-    if(d.classList.contains("done")||d.classList.contains("run"))return;
-    var ok=typeof a[4]==="function"?a[4]():a[4];
-    d.classList.add("run");btn.innerHTML='<i class="spin"></i>';
-    setTimeout(function(){
-      d.classList.remove("run");d.classList.add("done");
-      btn.innerHTML=ico("check","s")+"Fait";
-      var s=d.querySelector(".tx span");s.textContent=ok;
-      var sel=d.querySelector("select");if(sel)sel.style.display="none";
-      d.querySelector(".ic").innerHTML=ico("check");
-      done.push(ok);majLog();toast(ok);
-    },850);
+/* ---------- 2. qualification ---------- */
+var mk="hab",V={},dos="",done=[],nba={};
+Object.keys(M).forEach(function(k){var o=document.createElement("option");o.value=k;o.textContent=M[k].l;$("#motif").appendChild(o);});
+$("#motif").addEventListener("change",function(){mk=this.value;V={};dos="";done=[];initV();renderFields();reset();});
+function initV(){M[mk].f.forEach(function(f){if(!(f[0] in V))V[f[0]]=f[2][f[3]];});}
+function renderFields(){
+  var box=$("#fields");box.innerHTML="";
+  M[mk].f.forEach(function(f){
+    if(f[4]&&!f[4](V)){delete V[f[0]];return;}
+    if(!(f[0] in V))V[f[0]]=f[2][f[3]];
+    var d=document.createElement("div");d.className="fld";
+    d.innerHTML="<label>"+esc(f[1])+"</label><div class='pills'></div>";
+    f[2].forEach(function(o){var b=document.createElement("button");b.className="pill"+(V[f[0]]===o?" on":"");b.textContent=o;
+      b.addEventListener("click",function(){V[f[0]]=o;renderFields();});d.lastChild.appendChild(b);});
+    box.appendChild(d);
   });
-  return d;
+  $("#refo").textContent=M[mk].r(V);
 }
-X.forEach(function(a){$("#acts2").appendChild(row(a,true));});
+function reset(){
+  [1,2,3,4].forEach(function(i){delete doneSteps[i];steps[i].classList.remove("done");steps[i].querySelector(".num").textContent=i+1;steps[i].querySelector(".sum").textContent="";});
+  var n=Object.keys(doneSteps).length;$("#progTxt").textContent=n+"/5";$("#progBar").style.width=(n*20)+"%";
+}
+initV();renderFields();
 
-function majLog(){
-  var ul=$("#log");ul.innerHTML="";
-  if(!done.length){ul.innerHTML='<li class="em">Aucune action réalisée.</li>';}
-  done.forEach(function(t){var li=document.createElement("li");li.innerHTML=ico("check","s")+"<span></span>";li.lastChild.textContent=t;ul.appendChild(li);});
-  var c=$("#cnt");c.textContent=done.length;c.style.display=done.length?"inline-flex":"none";
-  majNote();
-}
-function majNote(){
-  if(closed)return;
-  var t="Motif : "+M[motif].l;
-  if(done.length)t+="\nActions : "+done.join(" ; ");
-  if(res)t+="\nRésultat : "+res;
-  $("#note").value=t;
-  $("#recapTxt").textContent=done.length?M[motif].l.toLowerCase()+", "+done.map(function(x){return x.split(" · ")[0].toLowerCase();}).join(", "):"[demande, action réalisée, prochaine étape]";
-}
-
-/* ---------- motif ---------- */
-Object.keys(M).forEach(function(k){
-  var b=document.createElement("button");b.className="chip";b.dataset.m=k;
-  b.innerHTML=ico(M[k].i,"s")+"<span></span>";b.lastChild.textContent=M[k].l;
-  b.addEventListener("click",function(){setMotif(k);});
-  $("#motifs").appendChild(b);
+$("#qOk").addEventListener("click",function(){
+  var m=M[mk];
+  var cov=$("#cov");cov.innerHTML="";var ic={ok:"checkc",wa:"warn",in:"info"};
+  m.cov(V).forEach(function(c){var li=document.createElement("li");li.className=c[0];li.innerHTML=ico(ic[c[0]],"s")+"<span></span>";li.lastChild.textContent=c[1];cov.appendChild(li);});
+  $("#covSay").textContent=m.say(V);
+  buildActs();buildTasks();
+  var w=m.cov(V).filter(function(c){return c[0]==="wa";}).length;
+  finish(1,m.l+" · "+(V.sub||""));
+  steps[2].querySelector(".sum").textContent=w?w+" point(s) d'attention":"Contrat couvrant";
 });
-function setMotif(k){
-  motif=k;var m=M[k];
-  $$("#motifs .chip").forEach(function(c){c.classList.toggle("on",c.dataset.m===k);});
-  var q=$("#qs");q.innerHTML="";
-  m.q.forEach(function(t){var li=document.createElement("li");li.innerHTML='<span class="bx">'+ico("check")+'</span><span class="q"></span>';li.lastChild.textContent=t;q.appendChild(li);});
-  bindChk("#qs");
-  $("#refo").textContent=m.r;$("#trt").textContent=m.t;
-  $("#savoir").innerHTML=ico("info","s")+"<span></span>";$("#savoir").lastChild.textContent=m.s;
-  var a=$("#acts");a.innerHTML="";m.a.forEach(function(x){a.appendChild(row(x));});
-  majNote();
-}
-setMotif("hab");
+$("#cOk").addEventListener("click",function(){finish(2,steps[2].querySelector(".sum").textContent);});
 
-/* ---------- clôture ---------- */
-$$("#res .chip").forEach(function(b){b.addEventListener("click",function(){
-  $$("#res .chip").forEach(function(x){x.classList.remove("on");});b.classList.add("on");res=b.dataset.r;majNote();
-});});
-var closed=false;
-function cloturer(){
-  if(!res){toast("Sélectionnez le résultat de l'interaction");return;}
-  var nx=$("#next");nx.disabled=true;nx.innerHTML='<i class="spin"></i>Enregistrement';
-  setTimeout(function(){
-    closed=true;$("#next").classList.add("fin");$("#note").readOnly=true;$("#ok").style.display="flex";
-    tabs[4].classList.add("done");go(4);toast("Interaction clôturée et synthèse enregistrée");
-  },900);
+/* ---------- 4. actions ---------- */
+var SLOTS=["Lun. 9h – 12h","Mar. 14h – 17h","Jeu. 9h – 12h"];
+function buildActs(){
+  var box=$("#acts");box.innerHTML="";
+  M[mk].a(V).forEach(function(a){
+    var d=document.createElement("div");d.className="act";
+    d.innerHTML='<div class="ic">'+ico(a[0])+'</div><div class="tx"><b></b><span></span></div>';
+    d.querySelector("b").textContent=a[1];if(a[6])d.querySelector("b").insertAdjacentHTML("beforeend",'<i class="tag">Prioritaire</i>');
+    var sp=d.querySelector(".tx span");
+    if(a[3]==="slots"){
+      sp.textContent="Choisissez un créneau";
+      var sl=document.createElement("div");sl.className="slots";
+      SLOTS.forEach(function(s){var b=document.createElement("button");b.className="pill";b.textContent=s;
+        b.addEventListener("click",function(){if(d.classList.contains("done"))return;
+          sl.remove();doAct(d,null,a[4]+" · "+s);});sl.appendChild(b);});
+      d.querySelector(".tx").appendChild(sl);
+    }else{
+      sp.textContent=a[2];
+      var btn=document.createElement("button");btn.className="go";btn.textContent=a[3];d.appendChild(btn);
+      btn.addEventListener("click",function(){if(d.classList.contains("done")||btn.disabled)return;doAct(d,btn,a[4],a[5]);});
+    }
+    box.appendChild(d);
+  });
+  majMsg();
 }
-go(0);
+function doAct(d,btn,ok,isDos){
+  if(btn){btn.disabled=true;btn.innerHTML='<i class="spin"></i>';}
+  setTimeout(function(){
+    d.classList.add("done");d.querySelector(".ic").innerHTML=ico("check");
+    d.querySelector(".tx span").textContent=ok;
+    if(btn){btn.disabled=false;btn.innerHTML=ico("check","s")+"Fait";}
+    if(isDos){var m=ok.match(/(\d\d-[AH]-\d+|REC-\d+)/);if(m)dos=m[1];majMsg();}
+    done.push(ok);toast(ok);majSyn();
+  },800);
+}
+
+/* message */
+var chan="sms";
+$$("#chan .pill").forEach(function(b){b.addEventListener("click",function(){
+  $$("#chan .pill").forEach(function(x){x.classList.remove("on");});b.classList.add("on");chan=b.dataset.c;
+  $("#to").textContent=chan==="sms"?TEL:MAIL;majMsg();
+});});
+function majMsg(){
+  var t=M[mk].m.replace("{dos}",dos||"[n° de dossier]");
+  if(chan==="mail")t="Bonjour Monsieur Dubois,\n\n"+t.replace("Groupama : ","")+"\n\nCordialement,\nVotre service Relation sociétaires Groupama";
+  $("#msgTxt").value=t;cnt();$("#msgSend").disabled=false;$("#msgSend").innerHTML=ico("send","s")+"Envoyer";
+}
+function cnt(){var l=$("#msgTxt").value.length;$("#msgCnt").textContent=chan==="sms"?l+" car. · "+Math.ceil(l/160)+" SMS":"E-mail · modèle Relation sociétaires";}
+$("#msgTxt").addEventListener("input",cnt);
+$("#msgSend").addEventListener("click",function(){
+  var b=this;b.disabled=true;b.innerHTML='<i class="spin"></i>Envoi';
+  setTimeout(function(){b.innerHTML=ico("check","s")+(chan==="sms"?"SMS délivré":"E-mail envoyé");
+    var t=(chan==="sms"?"SMS de confirmation envoyé au ":"E-mail de confirmation envoyé à ")+(chan==="sms"?TEL:MAIL);done.push(t);toast(t);majSyn();},900);
+});
+$("#aOk").addEventListener("click",function(){finish(3,done.length+" action(s) réalisée(s)");majSyn();});
+
+/* ---------- 5. clôture ---------- */
+var res="",opp=false;
+function buildTasks(){var s=$("#task");s.innerHTML='<option value="">Aucune</option>';M[mk].task.forEach(function(t){var o=document.createElement("option");o.textContent=t;s.appendChild(o);});if(M[mk].task.length)s.selectedIndex=1;majSyn();}
+$("#task").addEventListener("change",majSyn);
+$$("#res .pill").forEach(function(b){b.addEventListener("click",function(){$$("#res .pill").forEach(function(x){x.classList.remove("on");});b.classList.add("on");res=b.dataset.r;majSyn();});});
+$("#opp .pill").addEventListener("click",function(){opp=!opp;this.classList.toggle("on",opp);majSyn();});
+var closed=false;
+function majSyn(){
+  if(closed)return;
+  var q=Object.keys(V).map(function(k){return V[k];}).join(", ");
+  var t="Motif : "+M[mk].l+" ("+q+")"+(dos?"\nDossier : "+dos:"")+(done.length?"\nActions : "+done.join(" ; "):"")+($("#task").value?"\nTâche : "+$("#task").value:"")+(opp?"\nOpportunité : bilan prévoyance transmis à l'agence":"")+(res?"\nRésultat : "+res:"");
+  $("#syn").value=t;
+  $("#recap").textContent=done.length?done.slice(0,3).map(function(x){var s=x.split(" · ")[0];return s.charAt(0).toLowerCase()+s.slice(1);}).join(", "):"[demande, actions, prochaine étape]";
+}
+$("#close").addEventListener("click",function(){
+  if(!doneSteps[0]){toast("Identification du sociétaire à valider");openStep(0);return;}
+  if(!res){toast("Sélectionnez le résultat de l'interaction");return;}
+  var b=this;b.disabled=true;b.innerHTML='<i class="spin"></i>Enregistrement';
+  setTimeout(function(){
+    closed=true;clearInterval(tick);$("#syn").readOnly=true;
+    b.classList.add("fin");b.innerHTML=ico("check","s")+"Clôturée";
+    $("#doneTxt").innerHTML="<b>Interaction clôturée</b> · durée "+fmt(sec)+" · qualification et synthèse enregistrées"+($("#task").value?", tâche créée":"")+(opp?", piste transmise à l'agence":"")+".";
+    $("#doneBox").style.display="flex";finish(4,res);steps[4].classList.add("open");
+    toast("Interaction clôturée");
+  },900);
+});
+
+/* ---------- aide ---------- */
+var KB=[
+["Délais de déclaration","5 jours ouvrés pour la plupart des sinistres, 2 jours ouvrés pour un vol, 30 jours après publication de l'arrêté pour une catastrophe naturelle."],
+["Convention IRSI (dégât des eaux)","Jusqu'à 1 600 € HT de dommages par local : l'assureur de l'occupant gère sans expertise. Au-delà : expertise."],
+["Franchises Groupama du sociétaire","Habitation : 150 €. Auto Tous risques : 300 €. Bris de glace : 0 € chez un réparateur partenaire. CatNat : franchise légale de 380 €."],
+["Mémo véhicule assuré","Remplace la carte verte. Disponible dans l'appli et l'espace client, envoi possible par e-mail."],
+["Résiliation à tout moment","Après un an de contrat (auto, habitation, santé), résiliation possible à tout moment, effet un mois après réception."],
+["Traitement des réclamations","Accusé de réception sous 10 jours ouvrés, réponse sous 2 mois maximum. Ensuite : médiateur de l'assurance."],
+["Données bancaires","Jamais de RIB ni de numéro de carte à l'oral : lien de paiement sécurisé ou mandat SEPA électronique."]
+];
+function kb(q){var l=$("#kbl");l.innerHTML="";q=(q||"").toLowerCase();
+  KB.filter(function(k){return !q||(k[0]+" "+k[1]).toLowerCase().indexOf(q)>-1;}).forEach(function(k){
+    var d=document.createElement("details");d.className="kb";d.innerHTML="<summary>"+ico("book","s")+"<span></span></summary><div></div>";
+    d.querySelector("summary span").textContent=k[0];d.querySelector("div").textContent=k[1];l.appendChild(d);});
+  if(!l.children.length)l.innerHTML='<div class="mut" style="padding:8px 2px">Aucun résultat.</div>';}
+$("#kbq").addEventListener("input",function(){kb(this.value);});kb();
 })();
 </script>
 </body>
